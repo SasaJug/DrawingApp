@@ -1,35 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:orientation="horizontal">
+<merge xmlns:android="http://schemas.android.com/apk/res/android" >
 
-    <TextView
+    <ImageButton
+        android:id="@+id/select_tool"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"
-        android:gravity="center"
-        android:text="B"/>
+        android:background="@android:color/transparent"
+        android:scaleType="centerInside"
+        android:padding="5dp"
+        android:src="@drawable/ic_tools"/>
 
-    <TextView
+
+    <ImageButton
+        android:id="@+id/select_background"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"
-        android:gravity="center"
-        android:text="B"/>
+        android:background="@android:color/transparent"
+        android:scaleType="centerInside"
+        android:padding="5dp"
+        android:src="@drawable/ic_background"/>
 
-    <TextView
+
+    <ImageButton
+        android:id="@+id/select_layer"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"
-        android:gravity="center"
-        android:text="S"/>
+        android:background="@android:color/transparent"
+        android:scaleType="centerInside"
+        android:padding="5dp"
+        android:src="@drawable/ic_layers"/>
 
-    <TextView
+
+    <ImageButton
+        android:id="@+id/save"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"
-        android:gravity="center"
-        android:text="C"/>
+        android:background="@android:color/transparent"
+        android:scaleType="centerInside"
+        android:padding="5dp"
+        android:src="@drawable/ic_save"/>
 
-</LinearLayout>
+</merge>

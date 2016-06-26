@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <com.sasaj.graphics.drawingapp.views.misc.BrushSample
+        android:id="@+id/brush_sample"
+        android:background="@drawable/bg_contour"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        />
+
+    <SeekBar
+        android:id="@+id/brush_size_seekbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:max="300" />
+
+    <SeekBar
+        android:id="@+id/brush_blur_seekbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:max="50" />
+
+
+    <SeekBar
+        android:id="@+id/brush_alpha_seekbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:max="255" />
+
+
+    <SeekBar
+        android:id="@+id/brush_color_seekbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:max="1530" />
+
+</merge>
