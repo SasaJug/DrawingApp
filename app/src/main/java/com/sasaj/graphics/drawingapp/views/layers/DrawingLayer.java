@@ -48,15 +48,7 @@ public class DrawingLayer extends View {
     private void setupLayer(){
 
         mDrawPath = new Path();
-//
-//        mDrawPaint = new Paint();
-//        mDrawPaint.setColor(mPaintColor);
-//        mDrawPaint.setAntiAlias(true);
-//        mDrawPaint.setStrokeWidth(20);
-//        mDrawPaint.setStyle(Paint.Style.STROKE);
-//        mDrawPaint.setStrokeJoin(Paint.Join.ROUND);
-//        mDrawPaint.setStrokeCap(Paint.Cap.ROUND);
-        paint = DrawingApplication.getPaint();
+        paint = DrawingApplication.getPaint().getPaint();
         mCanvasPaint = new Paint(Paint.DITHER_FLAG);
     }
 
@@ -98,7 +90,7 @@ public class DrawingLayer extends View {
 
             case MotionEvent.ACTION_UP:
                 mDrawPath.lineTo(touchX, touchY);
-                mDrawCanvas.drawPath(mDrawPath, DrawingApplication.getPaint());
+                mDrawCanvas.drawPath(mDrawPath, DrawingApplication.getPaint().getPaint());
                 mDrawPath.reset();
                 break;
             default:

@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.support.annotation.ColorInt;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
@@ -20,6 +21,8 @@ import com.sasaj.graphics.drawingapp.views.misc.BrushSample;
  * Created by User on 6/25/2016.
  */
 public class SelectToolDialog extends LinearLayout {
+
+    private static final String TAG = "SelectToolDialog";
 
     public SelectToolDialog(Context context) {
         super(context);
@@ -56,13 +59,13 @@ public class SelectToolDialog extends LinearLayout {
         SeekBar brushAlphaSeekBar = (SeekBar) findViewById(R.id.brush_alpha_seekbar);
         SeekBar brushColorSeekBar = (SeekBar) findViewById(R.id.brush_color_seekbar);
 
-        brushSizeSeekBar.setProgress((int) DrawingApplication.getPaint().getStrokeWidth());
+        brushSizeSeekBar.setProgress((int) DrawingApplication.getPaint().getSize());
         brushSizeSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
 
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                DrawingApplication.getPaint().setStrokeWidth(progress);
-                brushSample.setDrawPaint(DrawingApplication.getPaint());
+                DrawingApplication.getPaint().setSize(progress);
+                brushSample.setDrawPaint(DrawingApplication.getPaint().getPaint());
             }
 
             @Override
@@ -77,7 +80,7 @@ public class SelectToolDialog extends LinearLayout {
         });
 
 
-//        brushBlurSeekBar.setProgress();
+        brushBlurSeekBar.setProgress(DrawingApplication.getPaint().getBlur());
         brushBlurSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
 
             @Override
@@ -85,8 +88,8 @@ public class SelectToolDialog extends LinearLayout {
                 if(progress == 0){
                     progress = 1;
                 }
-                DrawingApplication.getPaint().setMaskFilter(new BlurMaskFilter(progress, BlurMaskFilter.Blur.NORMAL));
-                brushSample.setDrawPaint(DrawingApplication.getPaint());
+                DrawingApplication.getPaint().setBlur(progress);
+                brushSample.setDrawPaint(DrawingApplication.getPaint().getPaint());
             }
 
             @Override
@@ -108,7 +111,7 @@ public class SelectToolDialog extends LinearLayout {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 DrawingApplication.getPaint().setAlpha(progress);
-                brushSample.setDrawPaint(DrawingApplication.getPaint());
+                brushSample.setDrawPaint(DrawingApplication.getPaint().getPaint());
             }
 
             @Override
@@ -124,14 +127,14 @@ public class SelectToolDialog extends LinearLayout {
 
 
 
-        brushColorSeekBar.setProgress(DrawingApplication.getPaint().getAlpha());
+        brushColorSeekBar.setProgress(setChosenColor(DrawingApplication.getPaint().getColor()));
         brushColorSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
 
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 int color = getColor(progress);
                 DrawingApplication.getPaint().setColor(color);
-                brushSample.setDrawPaint(DrawingApplication.getPaint());
+                brushSample.setDrawPaint(DrawingApplication.getPaint().getPaint());
             }
 
             @Override
@@ -146,7 +149,7 @@ public class SelectToolDialog extends LinearLayout {
         });
 
 
-        brushSample.setDrawPaint(DrawingApplication.getPaint());
+        brushSample.setDrawPaint(DrawingApplication.getPaint().getPaint());
     }
 
     private int getColor(int progress){
@@ -181,8 +184,51 @@ public class SelectToolDialog extends LinearLayout {
             blue = 255 - progress % 255;
         }
 
-        color = Color.argb(255, red,green, blue);
+        color = Color.argb(255, red, green, blue);
 
         return color;
     }
+
+    private int setChosenColor(int color){
+
+        int red = Color.red(color);
+        int green = Color.green(color);
+        int blue = Color.blue(color);
+
+        if(red == 255 && blue == 0){
+            return 0 + green;
+        }else if(green == 255 && blue == 0){
+            return 255 + red;
+        }else if(red == 0 && green == 255){
+            return 510 + blue;
+        }else if(red == 0 && blue == 255){
+            return 765 + green;
+        }else if(green == 0 && blue == 255){
+            return 1020 + red;
+        }else if(red == 255 && green == 0){
+            return 1275 + blue;
+        }
+        return 0;
+    }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

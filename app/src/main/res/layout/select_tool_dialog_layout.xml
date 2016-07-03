@@ -14,7 +14,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:max="300" />
+        android:max="100" />
 
     <SeekBar
         android:id="@+id/brush_blur_seekbar"
