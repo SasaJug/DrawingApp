@@ -90,6 +90,8 @@ public class CustomActionBar extends LinearLayout {
                     mDelegate.removeActiveDialog();
                     mDelegate.startDialog(SELECT_TOOL_OPTION);
                 }
+            }else if (v == mSave){
+                    mDelegate.startSaveDialog();
             }
 
         }
@@ -99,6 +101,7 @@ public class CustomActionBar extends LinearLayout {
         public void startDialog(int option);
         public void removeActiveDialog();
         public void setPaint(Paint paint);
+        public void startSaveDialog();
     }
 
 }
