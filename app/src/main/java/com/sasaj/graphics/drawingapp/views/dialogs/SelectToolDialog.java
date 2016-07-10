@@ -15,6 +15,7 @@ import android.widget.SeekBar;
 
 import com.sasaj.graphics.drawingapp.DrawingApplication;
 import com.sasaj.graphics.drawingapp.R;
+import com.sasaj.graphics.drawingapp.Utilities.CustomPaint;
 import com.sasaj.graphics.drawingapp.views.misc.BrushSample;
 
 /**
@@ -51,21 +52,23 @@ public class SelectToolDialog extends LinearLayout {
 //        layoutParams.setMargins(30, 30, 30, 30);
         this.setLayoutParams(layoutParams);
 
-
-
         final BrushSample brushSample = (BrushSample) findViewById(R.id.brush_sample);
         SeekBar brushSizeSeekBar = (SeekBar) findViewById(R.id.brush_size_seekbar);
         SeekBar brushBlurSeekBar = (SeekBar) findViewById(R.id.brush_blur_seekbar);
         SeekBar brushAlphaSeekBar = (SeekBar) findViewById(R.id.brush_alpha_seekbar);
         SeekBar brushColorSeekBar = (SeekBar) findViewById(R.id.brush_color_seekbar);
 
-        brushSizeSeekBar.setProgress((int) DrawingApplication.getPaint().getSize());
+        final CustomPaint customPaint = DrawingApplication.getPaint();
+        final Paint paint = DrawingApplication.getPaint().getPaint();
+
+
+        brushSizeSeekBar.setProgress((int) customPaint.getSize());
         brushSizeSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
 
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                DrawingApplication.getPaint().setSize(progress);
-                brushSample.setDrawPaint(DrawingApplication.getPaint().getPaint());
+                customPaint.setSize(progress);
+                brushSample.setDrawPaint(paint);
             }
 
             @Override
@@ -80,7 +83,7 @@ public class SelectToolDialog extends LinearLayout {
         });
 
 
-        brushBlurSeekBar.setProgress(DrawingApplication.getPaint().getBlur());
+        brushBlurSeekBar.setProgress((int)customPaint.getBlur());
         brushBlurSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
 
             @Override
@@ -88,8 +91,8 @@ public class SelectToolDialog extends LinearLayout {
                 if(progress == 0){
                     progress = 1;
                 }
-                DrawingApplication.getPaint().setBlur(progress);
-                brushSample.setDrawPaint(DrawingApplication.getPaint().getPaint());
+                customPaint.setBlur(progress);
+                brushSample.setDrawPaint(paint);
             }
 
             @Override
@@ -105,13 +108,13 @@ public class SelectToolDialog extends LinearLayout {
 
 
 
-        brushAlphaSeekBar.setProgress(DrawingApplication.getPaint().getAlpha());
+        brushAlphaSeekBar.setProgress(customPaint.getAlpha());
         brushAlphaSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
 
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                DrawingApplication.getPaint().setAlpha(progress);
-                brushSample.setDrawPaint(DrawingApplication.getPaint().getPaint());
+                customPaint.setAlpha(progress);
+                brushSample.setDrawPaint(paint);
             }
 
             @Override
@@ -127,14 +130,14 @@ public class SelectToolDialog extends LinearLayout {
 
 
 
-        brushColorSeekBar.setProgress(setChosenColor(DrawingApplication.getPaint().getColor()));
+        brushColorSeekBar.setProgress(setChosenColor(customPaint.getColor()));
         brushColorSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
 
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 int color = getColor(progress);
-                DrawingApplication.getPaint().setColor(color);
-                brushSample.setDrawPaint(DrawingApplication.getPaint().getPaint());
+                customPaint.setColor(color);
+                brushSample.setDrawPaint(paint);
             }
 
             @Override
@@ -149,7 +152,7 @@ public class SelectToolDialog extends LinearLayout {
         });
 
 
-        brushSample.setDrawPaint(DrawingApplication.getPaint().getPaint());
+        brushSample.setDrawPaint(paint);
     }
 
     private int getColor(int progress){

@@ -7,13 +7,17 @@ import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.RectF;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
+
+import com.sasaj.graphics.drawingapp.DrawingApplication;
 
 /**
  * Created by User on 6/25/2016.
  */
 public class BrushSample extends View {
 
+    private static final String TAG = "BrushSample";
     Path mPath;
     Paint mDrawPaint;
 

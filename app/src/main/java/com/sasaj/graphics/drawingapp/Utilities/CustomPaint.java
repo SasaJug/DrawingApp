@@ -2,14 +2,17 @@ package com.sasaj.graphics.drawingapp.Utilities;
 
 import android.graphics.BlurMaskFilter;
 import android.graphics.Paint;
+import android.util.Log;
 
 /**
  * Created by User on 6/28/2016.
  */
 public class CustomPaint {
 
+
+    private static final String TAG = "CustomPaint";
     private int size;
-    private int blur;
+    private float blur;
     private int alpha;
     private int color;
     private Paint paint;
@@ -41,13 +44,14 @@ public class CustomPaint {
         paint.setStrokeWidth(size);
     }
 
-    public int getBlur() {
+    public float getBlur() {
         return blur;
     }
 
-    public void setBlur(int blur) {
+    public void setBlur(float blur) {
         this.blur = blur;
         paint.setMaskFilter(new BlurMaskFilter(blur, BlurMaskFilter.Blur.NORMAL));
+
     }
 
     public int getAlpha() {

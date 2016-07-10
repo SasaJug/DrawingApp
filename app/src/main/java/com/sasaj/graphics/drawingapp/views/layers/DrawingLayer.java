@@ -22,9 +22,7 @@ public class DrawingLayer extends View {
 
     private Context mContext;
     private Path mDrawPath;
-    private Paint mDrawPaint;
     private Paint mCanvasPaint;
-    private int mPaintColor = 0xFF660000;
     private Canvas mDrawCanvas;
     private Bitmap mCanvasBitmap;
     private Paint paint;
@@ -57,8 +55,7 @@ public class DrawingLayer extends View {
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
-        mCanvasBitmap = Bitmap.createBitmap(w, h,
-                Bitmap.Config.ARGB_8888);
+        mCanvasBitmap = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888);
         mDrawCanvas = new Canvas(mCanvasBitmap);
     }
 
@@ -92,7 +89,7 @@ public class DrawingLayer extends View {
 
             case MotionEvent.ACTION_UP:
                 mDrawPath.lineTo(touchX, touchY);
-                mDrawCanvas.drawPath(mDrawPath, DrawingApplication.getPaint().getPaint());
+                mDrawCanvas.drawPath(mDrawPath, paint);
                 mDrawPath.reset();
                 break;
             default:
