@@ -92,9 +92,11 @@ public class DrawingLayer extends View {
                 mDrawCanvas.drawPath(mDrawPath, paint);
                 mDrawPath.reset();
                 break;
+
             default:
                 return false;
         }
+
         invalidate();
         return true;
     }

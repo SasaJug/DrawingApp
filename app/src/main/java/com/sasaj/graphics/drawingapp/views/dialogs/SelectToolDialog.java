@@ -16,14 +16,20 @@ import android.widget.SeekBar;
 import com.sasaj.graphics.drawingapp.DrawingApplication;
 import com.sasaj.graphics.drawingapp.R;
 import com.sasaj.graphics.drawingapp.Utilities.CustomPaint;
+import com.sasaj.graphics.drawingapp.interfaces.ColorPicker;
 import com.sasaj.graphics.drawingapp.views.misc.BrushSample;
+import com.sasaj.graphics.drawingapp.views.misc.SaturationBrightnessSelector;
 
 /**
  * Created by User on 6/25/2016.
  */
-public class SelectToolDialog extends LinearLayout {
+public class SelectToolDialog extends LinearLayout implements ColorPicker{
 
     private static final String TAG = "SelectToolDialog";
+    private SaturationBrightnessSelector sbSelector;
+    private CustomPaint customPaint;
+    private Paint paint;
+    private BrushSample brushSample;
 
     public SelectToolDialog(Context context) {
         super(context);
@@ -49,20 +55,21 @@ public class SelectToolDialog extends LinearLayout {
 
         FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT);
-//        layoutParams.setMargins(30, 30, 30, 30);
         this.setLayoutParams(layoutParams);
 
-        final BrushSample brushSample = (BrushSample) findViewById(R.id.brush_sample);
+        brushSample = (BrushSample) findViewById(R.id.brush_sample);
+        sbSelector = (SaturationBrightnessSelector) findViewById(R.id.sb_selector);
+        sbSelector.setColorPicker(this);
+
         SeekBar brushSizeSeekBar = (SeekBar) findViewById(R.id.brush_size_seekbar);
         SeekBar brushBlurSeekBar = (SeekBar) findViewById(R.id.brush_blur_seekbar);
         SeekBar brushAlphaSeekBar = (SeekBar) findViewById(R.id.brush_alpha_seekbar);
         SeekBar brushColorSeekBar = (SeekBar) findViewById(R.id.brush_color_seekbar);
 
-        final CustomPaint customPaint = DrawingApplication.getPaint();
-        final Paint paint = DrawingApplication.getPaint().getPaint();
+        customPaint = DrawingApplication.getPaint();
+        paint = DrawingApplication.getPaint().getPaint();
 
-
-        brushSizeSeekBar.setProgress((int) customPaint.getSize());
+        brushSizeSeekBar.setProgress(customPaint.getSize());
         brushSizeSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
 
             @Override
@@ -83,12 +90,12 @@ public class SelectToolDialog extends LinearLayout {
         });
 
 
-        brushBlurSeekBar.setProgress((int)customPaint.getBlur());
+        brushBlurSeekBar.setProgress((int) customPaint.getBlur());
         brushBlurSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
 
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                if(progress == 0){
+                if (progress == 0) {
                     progress = 1;
                 }
                 customPaint.setBlur(progress);
@@ -130,12 +137,29 @@ public class SelectToolDialog extends LinearLayout {
 
 
 
-        brushColorSeekBar.setProgress(setChosenColor(customPaint.getColor()));
+        brushColorSeekBar.setProgress((int)setChosenColor(customPaint.getColor())[0]);
+
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Thread.sleep(100);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                sbSelector.setColor(setChosenColor(customPaint.getColor()));
+            }
+        });
+        thread.start();
+
+
         brushColorSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
 
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                int color = getColor(progress);
+
+                int color = Color.HSVToColor(getColor((float) progress));
+                sbSelector.setColor(getColor((float)progress));
                 customPaint.setColor(color);
                 brushSample.setDrawPaint(paint);
             }
@@ -151,67 +175,37 @@ public class SelectToolDialog extends LinearLayout {
             }
         });
 
-
         brushSample.setDrawPaint(paint);
+        float[] hsv;
+        hsv = new float[3];
+        Color.colorToHSV(customPaint.getColor(), hsv);
     }
 
-    private int getColor(int progress){
-        int color = 0;
-        int red = 0;
-        int green = 0;
-        int blue = 0;
+    private float[] getColor(float progress){
+        float hue = progress;
+        float saturation = sbSelector.getSaturation();
+        float brightness = sbSelector.getBrightness();
+        Log.e(TAG, progress +" "+hue + " " + saturation + " " + brightness);
 
-        if(progress <= 255){
-            red = 255;
-            green = progress % 255;
-            blue = 0;
-        }else if(progress <= 510 && progress > 255){
-            red = 255 - progress % 255;
-            green = 255;
-            blue = 0;
-        }else if(progress <= 765 && progress > 510){
-            red = 0;
-            green = 255;
-            blue = progress % 255;
-        }else if(progress <= 1020 && progress > 765){
-            red = 0;
-            green = 255 - progress % 255;
-            blue = 255;
-        }else if(progress <= 1275 && progress > 1020){
-            red = progress % 255;
-            green = 0;
-            blue = 255;
-        }else if(progress <=1530 && progress > 1275){
-            red = 255;
-            green = 0;
-            blue = 255 - progress % 255;
-        }
+        float[] hsv;
+        hsv = new float[]{hue, saturation, brightness};
+        int color = Color.HSVToColor(hsv);
 
-        color = Color.argb(255, red, green, blue);
-
-        return color;
+        return hsv;
     }
 
-    private int setChosenColor(int color){
+    private float[] setChosenColor(int color){
+        float[] hsv;
+        hsv = new float[3];
+        Color.colorToHSV(color, hsv);
+        return hsv;
+    }
 
-        int red = Color.red(color);
-        int green = Color.green(color);
-        int blue = Color.blue(color);
-
-        if(red == 255 && blue == 0){
-            return 0 + green;
-        }else if(green == 255 && blue == 0){
-            return 255 + red;
-        }else if(red == 0 && green == 255){
-            return 510 + blue;
-        }else if(red == 0 && blue == 255){
-            return 765 + green;
-        }else if(green == 0 && blue == 255){
-            return 1020 + red;
-        }else if(red == 255 && green == 0){
-            return 1275 + blue;
-        }
-        return 0;
+    @Override
+    public void takeColor(int color) {
+        customPaint.setColor(color);
+        brushSample.setDrawPaint(paint);
+        Log.e(TAG,"called");
     }
 }
 

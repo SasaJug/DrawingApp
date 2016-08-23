@@ -55,6 +55,7 @@ public class DrawingActivity extends AppCompatActivity {
     }
 
 
+    private SelectToolDialog selectToolDialog;
     CustomActionBar.Delegate mDelegate = new CustomActionBar.Delegate() {
 
         @Override
@@ -63,10 +64,12 @@ public class DrawingActivity extends AppCompatActivity {
             mDialogContainer.setVisibility(View.VISIBLE);
             switch (option) {
                 case CustomActionBar.SELECT_TOOL_OPTION:
-                    SelectToolDialog selectToolDialog = new SelectToolDialog(DrawingActivity.this);
+                    selectToolDialog = new SelectToolDialog(DrawingActivity.this);
                     mDialogContainer.addView(selectToolDialog);
                     break;
                 default:
+                    if(selectToolDialog != null){
+                    }
                     mDialogContainer.removeAllViews();
             }
         }
