@@ -6,4 +6,5 @@ package com.sasaj.graphics.drawingapp.interfaces;
 public interface ColorPicker {
 
     public void takeColor(int color);
+    public void sendColor();
 }

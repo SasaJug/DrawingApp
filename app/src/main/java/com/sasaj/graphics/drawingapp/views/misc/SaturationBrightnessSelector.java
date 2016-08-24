@@ -37,6 +37,9 @@ public class SaturationBrightnessSelector extends SurfaceView implements Runnabl
     public float saturation;
     public float brightness;
     public ColorPicker picker;
+    private float cx;
+    private float cy;
+    private Paint circlePaint;
 
 
     public SaturationBrightnessSelector(Context context) {
@@ -57,6 +60,12 @@ public class SaturationBrightnessSelector extends SurfaceView implements Runnabl
     private void init() {
         holder = getHolder();
         holder.addCallback(this);
+        circlePaint = new Paint();
+        circlePaint.setStrokeWidth(5);
+        circlePaint.setAntiAlias(true);
+        circlePaint.setStyle(Paint.Style.STROKE);
+        circlePaint.setStrokeJoin(Paint.Join.ROUND);
+        circlePaint.setStrokeCap(Paint.Cap.ROUND);
     }
 
     public void setColorPicker(ColorPicker picker){
@@ -67,7 +76,7 @@ public class SaturationBrightnessSelector extends SurfaceView implements Runnabl
         running = true;
         renderThread = new Thread(this);
         renderThread.start();
-        postInvalidate();
+        picker.sendColor();
     }
 
     public void pause() {
@@ -107,8 +116,8 @@ public class SaturationBrightnessSelector extends SurfaceView implements Runnabl
             hue = hsv[0];
             saturation = hsv[1];
             brightness = hsv[2];
-
-
+            cx = saturation/0.005f;
+            cy = (1 - brightness)/0.005f;
             postInvalidate();
         }
     }
@@ -142,6 +151,11 @@ public class SaturationBrightnessSelector extends SurfaceView implements Runnabl
             if (targetBitmap != null && canvas != null) {
                 makeNewImage(hue);
                 canvas.drawBitmap(targetBitmap, 0, 0, null);
+                float circleHue = hue + 180; if(circleHue > 360) circleHue = circleHue - 360;
+                int circleColor = Color.HSVToColor(new float []{circleHue, 1- cx * 0.005f, cy*0.005f});
+                circlePaint.setColor(circleColor);
+                if(cx<0) cx=0; if(cx>sourceWidth) cx = sourceWidth; if (cy < 0) cy = 0; if(cy > sourceHeight) cy = sourceHeight;
+                canvas.drawCircle(cx, cy, 10, circlePaint);
                 holder.unlockCanvasAndPost(canvas);
             }
         }
@@ -149,26 +163,11 @@ public class SaturationBrightnessSelector extends SurfaceView implements Runnabl
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-
+        cx = event.getX();
+        cy = event.getY();
         saturation = event.getX()*0.005f;
         brightness = 1 - event.getY()*0.005f;
 
-//        int action = event.getAction();
-//
-//        switch (action) {
-//
-//            case MotionEvent.ACTION_DOWN:
-//                break;
-//
-//            case MotionEvent.ACTION_MOVE:
-//                break;
-//
-//            case MotionEvent.ACTION_UP:
-//                break;
-//
-//            default:
-//                return false;
-//        }
 
         float[] hsv;
         hsv = new float[]{(float)hue, (float)saturation, (float)brightness};

@@ -139,18 +139,18 @@ public class SelectToolDialog extends LinearLayout implements ColorPicker{
 
         brushColorSeekBar.setProgress((int)setChosenColor(customPaint.getColor())[0]);
 
-        Thread thread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    Thread.sleep(100);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                sbSelector.setColor(setChosenColor(customPaint.getColor()));
-            }
-        });
-        thread.start();
+//        Thread thread = new Thread(new Runnable() {
+//            @Override
+//            public void run() {
+//                try {
+//                    Thread.sleep(100);
+//                } catch (InterruptedException e) {
+//                    e.printStackTrace();
+//                }
+//                sbSelector.setColor(setChosenColor(customPaint.getColor()));
+//            }
+//        });
+//        thread.start();
 
 
         brushColorSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
@@ -205,7 +205,11 @@ public class SelectToolDialog extends LinearLayout implements ColorPicker{
     public void takeColor(int color) {
         customPaint.setColor(color);
         brushSample.setDrawPaint(paint);
-        Log.e(TAG,"called");
+    }
+
+    @Override
+    public void sendColor() {
+        sbSelector.setColor(setChosenColor(customPaint.getColor()));
     }
 }
 
