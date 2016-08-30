@@ -1,16 +1,13 @@
-package com.sasaj.graphics.drawingapp.views.misc;
+package com.sasaj.graphics.paintselector;
 
 import android.content.Context;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
-import android.graphics.RectF;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
 
-import com.sasaj.graphics.drawingapp.DrawingApplication;
 
 /**
  * Created by User on 6/25/2016.
@@ -18,8 +15,8 @@ import com.sasaj.graphics.drawingapp.DrawingApplication;
 public class BrushSample extends View {
 
     private static final String TAG = "BrushSample";
-    Path mPath;
-    Paint mDrawPaint;
+    Path path;
+    Paint paint;
 
     public BrushSample(Context context) {
         super(context);
@@ -41,8 +38,8 @@ public class BrushSample extends View {
     }
 
 
-    public void setDrawPaint(Paint drawPaint) {
-        mDrawPaint = drawPaint;
+    public void setPaint(Paint paint) {
+        this.paint = paint;
         invalidate();
     }
 
@@ -56,7 +53,7 @@ public class BrushSample extends View {
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
-        mPath = createPath(w, h);
+        path = createPath(w, h);
     }
 
     private Path createPath(int w, int h) {
@@ -74,8 +71,8 @@ public class BrushSample extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        if(mPath != null && mDrawPaint != null){
-            canvas.drawPath(mPath, mDrawPaint);
+        if(path != null && paint != null){
+            canvas.drawPath(path, paint);
         }
     }
 }

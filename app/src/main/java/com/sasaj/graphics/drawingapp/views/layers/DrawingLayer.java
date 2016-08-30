@@ -14,6 +14,7 @@ import android.view.View;
 
 import com.sasaj.graphics.drawingapp.DrawingApplication;
 import com.sasaj.graphics.drawingapp.R;
+import com.sasaj.graphics.paintselector.com.sasaj.graphics.paintselector.utils.PaintWrapper;
 
 /**
  * Created by User on 6/25/2016.
@@ -48,7 +49,7 @@ public class DrawingLayer extends View {
     private void setupLayer(){
 
         mDrawPath = new Path();
-        paint = DrawingApplication.getPaint().getPaint();
+        paint = PaintWrapper.getInstance().getPaint();
         mCanvasPaint = new Paint(Paint.DITHER_FLAG);
     }
 

@@ -3,6 +3,7 @@ package com.sasaj.graphics.drawingapp;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.os.AsyncTask;
 import android.support.v7.app.ActionBar;
@@ -11,18 +12,20 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
 import com.sasaj.graphics.drawingapp.Utilities.FileUtilities;
 import com.sasaj.graphics.drawingapp.views.CustomActionBar;
-import com.sasaj.graphics.drawingapp.views.dialogs.SelectToolDialog;
 import com.sasaj.graphics.drawingapp.views.layers.DrawingLayer;
+import com.sasaj.graphics.paintselector.SelectPaintView;
+import com.sasaj.graphics.paintselector.com.sasaj.graphics.paintselector.utils.PaintWrapper;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
-public class DrawingActivity extends AppCompatActivity {
+public class DrawingActivity extends AppCompatActivity{
 
     private FrameLayout mDialogContainer;
     public Paint currentPaint;
@@ -55,7 +58,7 @@ public class DrawingActivity extends AppCompatActivity {
     }
 
 
-    private SelectToolDialog selectToolDialog;
+    private SelectPaintView selectToolDialog;
     CustomActionBar.Delegate mDelegate = new CustomActionBar.Delegate() {
 
         @Override
@@ -64,8 +67,15 @@ public class DrawingActivity extends AppCompatActivity {
             mDialogContainer.setVisibility(View.VISIBLE);
             switch (option) {
                 case CustomActionBar.SELECT_TOOL_OPTION:
-                    selectToolDialog = new SelectToolDialog(DrawingActivity.this);
+                    selectToolDialog = new SelectPaintView(DrawingActivity.this);
                     mDialogContainer.addView(selectToolDialog);
+
+                    FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(
+                            ViewGroup.LayoutParams.MATCH_PARENT,
+                            ViewGroup.LayoutParams.WRAP_CONTENT);
+                    selectToolDialog.setLayoutParams(layoutParams);
+                    selectToolDialog.setBackgroundColor(Color.GREEN);
+
                     break;
                 default:
                     if(selectToolDialog != null){
@@ -83,6 +93,7 @@ public class DrawingActivity extends AppCompatActivity {
         public void setPaint(Paint paint) {
             DrawingActivity.this.currentPaint = paint;
         }
+
 
         @Override
         public void startSaveDialog() {

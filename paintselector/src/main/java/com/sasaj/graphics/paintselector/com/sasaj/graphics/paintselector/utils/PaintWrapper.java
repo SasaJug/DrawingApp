@@ -1,27 +1,32 @@
-package com.sasaj.graphics.drawingapp.Utilities;
+package com.sasaj.graphics.paintselector.com.sasaj.graphics.paintselector.utils;
 
 import android.graphics.BlurMaskFilter;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.util.Log;
 
 /**
  * Created by User on 6/28/2016.
  */
-public class CustomPaint {
+public class PaintWrapper {
 
+    private static final String TAG = "PaintWrapper";
+    private static PaintWrapper instance;
 
-    private static final String TAG = "CustomPaint";
     private int size;
     private float blur;
     private int alpha;
     private int color;
+    private float[] hsv;
+
     private Paint paint;
 
-    public CustomPaint() {
-        this.size = 10;
-        this.blur = 1;
-        this.alpha = 255;
-        this.color = 0xFF000000;
+    private PaintWrapper() {
+        size = 10;
+        blur = 1;
+        alpha = 255;
+        color = 0xFF000000;
+        hsv = new float[3];
 
         paint = new Paint();
         paint.setColor(color);
@@ -72,11 +77,28 @@ public class CustomPaint {
         paint.setColor(color);
     }
 
+    public float[] getHsv() {
+        Color.colorToHSV(color, hsv);
+        Log.e(TAG, "getHsv() called with: " + hsv[0]+hsv[1]+hsv[2]);
+        return hsv;
+    }
+
+    public void setHsv(float[] hsv) {
+        this.hsv = hsv;
+    }
+
     public Paint getPaint() {
         return paint;
     }
 
     public void setPaint(Paint paint) {
         this.paint = paint;
+    }
+
+    public static PaintWrapper getInstance() {
+        if(instance == null){
+            instance = new PaintWrapper();
+        }
+        return instance;
     }
 }

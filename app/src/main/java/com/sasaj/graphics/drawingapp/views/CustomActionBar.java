@@ -13,7 +13,6 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 
 import com.sasaj.graphics.drawingapp.R;
-import com.sasaj.graphics.drawingapp.views.dialogs.SelectToolDialog;
 
 /**
  * Created by User on 6/25/2016.
