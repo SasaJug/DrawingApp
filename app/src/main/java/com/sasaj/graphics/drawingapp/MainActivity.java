@@ -51,7 +51,8 @@ public class MainActivity extends AppCompatActivity {
         button1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, DrawingActivity.class);
+//                Intent intent = new Intent(MainActivity.this, DrawingActivity.class);
+                Intent intent = new Intent(MainActivity.this, ExperimentalActivity.class);
                 startActivity(intent);
             }
         });

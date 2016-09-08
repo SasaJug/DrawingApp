@@ -19,8 +19,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".DrawingActivity"
-                  android:hardwareAccelerated="false" >
+        <activity android:name=".DrawingActivity">
+        </activity>
+        <activity android:name=".ExperimentalActivity">
         </activity>
     </application>
 
