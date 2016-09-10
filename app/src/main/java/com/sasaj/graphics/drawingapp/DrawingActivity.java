@@ -74,9 +74,8 @@ public class DrawingActivity extends AppCompatActivity{
                             ViewGroup.LayoutParams.MATCH_PARENT,
                             ViewGroup.LayoutParams.WRAP_CONTENT);
                     selectToolDialog.setLayoutParams(layoutParams);
-                    selectToolDialog.setBackgroundColor(Color.GREEN);
-
                     break;
+
                 default:
                     if(selectToolDialog != null){
                     }
@@ -151,13 +150,6 @@ public class DrawingActivity extends AppCompatActivity{
         protected void onPostExecute(String result) {
         }
 
-        @Override
-        protected void onPreExecute() {
-        }
-
-        @Override
-        protected void onProgressUpdate(Void... values) {
-        }
     }
 }
 

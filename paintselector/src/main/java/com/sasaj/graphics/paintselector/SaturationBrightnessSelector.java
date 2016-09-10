@@ -99,8 +99,7 @@ public class SaturationBrightnessSelector extends View{
         this.hue = hue;
 
         hsv[0] = hue;
-        int color = Color.HSVToColor(hsv);
-        picker.setColor(color);
+        picker.setColor(getColorFromHsv());
 
         invalidate();
     }

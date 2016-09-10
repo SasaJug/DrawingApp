@@ -149,9 +149,6 @@ public class SelectPaintView extends LinearLayout implements PaintSelector {
             case HUE:
                 sbSelector.setHue((float) value);
                 break;
-
-            default:
-
         }
     }
 }
