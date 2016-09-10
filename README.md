@@ -19,4 +19,5 @@
 * Grid list of previous works
 
 * Screenshot - present look:
+
 ![Screenshot.png](https://bitbucket.org/repo/9a9649/images/837101722-Screenshot.png)
