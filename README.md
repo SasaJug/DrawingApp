@@ -2,16 +2,16 @@
 
 ### Drawing Application  ###
 
-* Android app for on drawing
+* Android app for on-screen drawing
 * Created for purpose of development of "paint selector", widget for choosing Android Paint Object's size, blur, alpha and color. The widget will be developed as standalone library. 
 
 ### To implement in PaintSelector: ###
 
 * On configuration change persistence
-* Responsiveness to diferent screen sizes and orientations
+* Responsiveness to different screen sizes and orientations
 * Customizable design (so it can blend into various environments)
 
-### To impelment in DrawingApp ###
+### To implement in DrawingApp ###
 
 * More efficient drawing surface
 * Photoshop-like layers
