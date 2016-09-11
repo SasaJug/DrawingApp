@@ -1,47 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
-<merge xmlns:android="http://schemas.android.com/apk/res/android" >
+<merge xmlns:android="http://schemas.android.com/apk/res/android">
 
     <ImageButton
         android:id="@+id/select_tool"
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight="1"
+        android:layout_weight="0.5"
         android:background="@android:color/transparent"
-        android:scaleType="centerInside"
         android:padding="5dp"
+        android:scaleType="centerInside"
         android:src="@drawable/ic_tools"/>
 
 
-    <ImageButton
-        android:id="@+id/select_background"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:background="@android:color/transparent"
-        android:scaleType="centerInside"
-        android:padding="5dp"
-        android:src="@drawable/ic_background"/>
+    <!--<ImageButton-->
+    <!--android:id="@+id/select_background"-->
+    <!--android:layout_width="0dp"-->
+    <!--android:layout_height="match_parent"-->
+    <!--android:layout_weight="1"-->
+    <!--android:background="@android:color/transparent"-->
+    <!--android:scaleType="centerInside"-->
+    <!--android:padding="5dp"-->
+    <!--android:src="@drawable/ic_background"/>-->
 
-
-    <ImageButton
-        android:id="@+id/select_layer"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:background="@android:color/transparent"
-        android:scaleType="centerInside"
-        android:padding="5dp"
-        android:src="@drawable/ic_layers"/>
+    <!--<ImageButton-->
+    <!--android:id="@+id/select_layer"-->
+    <!--android:layout_width="0dp"-->
+    <!--android:layout_height="match_parent"-->
+    <!--android:layout_weight="1"-->
+    <!--android:background="@android:color/transparent"-->
+    <!--android:scaleType="centerInside"-->
+    <!--android:padding="5dp"-->
+    <!--android:src="@drawable/ic_layers"/>-->
 
 
     <ImageButton
         android:id="@+id/save"
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight="1"
+        android:layout_weight="0.5"
         android:background="@android:color/transparent"
-        android:scaleType="centerInside"
         android:padding="5dp"
+        android:scaleType="centerInside"
         android:src="@drawable/ic_save"/>
 
 </merge>

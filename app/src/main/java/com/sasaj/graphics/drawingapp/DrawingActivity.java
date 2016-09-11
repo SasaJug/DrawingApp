@@ -1,6 +1,7 @@
 package com.sasaj.graphics.drawingapp;
 
 import android.app.AlertDialog;
+import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.Color;
@@ -17,6 +18,7 @@ import android.widget.FrameLayout;
 
 import com.sasaj.graphics.drawingapp.Utilities.FileUtilities;
 import com.sasaj.graphics.drawingapp.views.CustomActionBar;
+import com.sasaj.graphics.drawingapp.views.fragments.SelectPaintDialogFragment;
 import com.sasaj.graphics.drawingapp.views.layers.DrawingLayer;
 import com.sasaj.graphics.paintselector.SelectPaintView;
 import com.sasaj.graphics.paintselector.com.sasaj.graphics.paintselector.utils.PaintWrapper;
@@ -27,7 +29,6 @@ import java.io.IOException;
 
 public class DrawingActivity extends AppCompatActivity{
 
-    private FrameLayout mDialogContainer;
     public Paint currentPaint;
     private com.sasaj.graphics.drawingapp.views.layers.DrawingLayer drawing;
 
@@ -37,8 +38,6 @@ public class DrawingActivity extends AppCompatActivity{
         setContentView(R.layout.activity_drawing);
 
         drawing = (DrawingLayer) findViewById(R.id.drawing);
-
-        mDialogContainer = (FrameLayout) findViewById(R.id.dialog_container);
 
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayShowHomeEnabled(false);
@@ -64,29 +63,25 @@ public class DrawingActivity extends AppCompatActivity{
         @Override
         public void startDialog(int option) {
 
-            mDialogContainer.setVisibility(View.VISIBLE);
             switch (option) {
                 case CustomActionBar.SELECT_TOOL_OPTION:
-                    selectToolDialog = new SelectPaintView(DrawingActivity.this);
-                    mDialogContainer.addView(selectToolDialog);
+//                    selectToolDialog = new SelectPaintView(DrawingActivity.this);
+//                    mDialogContainer.addView(selectToolDialog);
+//
+//                    FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(
+//                            ViewGroup.LayoutParams.MATCH_PARENT,
+//                            ViewGroup.LayoutParams.WRAP_CONTENT);
+//                    selectToolDialog.setLayoutParams(layoutParams);
+                    DialogFragment newFragment = SelectPaintDialogFragment.newInstance(new Bundle());
+                    newFragment.show(getFragmentManager(), "com.sasaj.graphics.drawingapp.dialog");
 
-                    FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(
-                            ViewGroup.LayoutParams.MATCH_PARENT,
-                            ViewGroup.LayoutParams.WRAP_CONTENT);
-                    selectToolDialog.setLayoutParams(layoutParams);
                     break;
 
                 default:
-                    if(selectToolDialog != null){
-                    }
-                    mDialogContainer.removeAllViews();
+
             }
         }
 
-        @Override
-        public void removeActiveDialog() {
-            mDialogContainer.removeAllViews();
-        }
 
         @Override
         public void setPaint(Paint paint) {

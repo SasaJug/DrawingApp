@@ -8,6 +8,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_margin="20dp"
             android:orientation="vertical">
 
 
@@ -15,7 +16,6 @@
                 android:id="@+id/brush_sample"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="20dp"
                 android:background="@drawable/bg_contour"
                 />
 
@@ -44,8 +44,6 @@
                     android:id="@+id/sb_selector"
                     android:layout_width="100dp"
                     android:layout_height="100dp"
-                    android:layout_marginBottom="20dp"
-                    android:layout_marginLeft="20dp"
                     />
 
 

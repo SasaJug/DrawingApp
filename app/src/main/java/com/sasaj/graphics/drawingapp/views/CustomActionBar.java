@@ -28,8 +28,8 @@ public class CustomActionBar extends LinearLayout {
     public int mCurrentOption = NONE;
 
     private ImageButton mSelectTool;
-    private ImageButton mSelectBackground;
-    private ImageButton mSelectLayer;
+//    private ImageButton mSelectBackground;
+//    private ImageButton mSelectLayer;
     private ImageButton mSave;
 
     private Delegate mDelegate;
@@ -58,11 +58,11 @@ public class CustomActionBar extends LinearLayout {
         mSelectTool = (ImageButton) findViewById(R.id.select_tool);
         mSelectTool.setOnClickListener(buttonClick);
 
-        mSelectBackground = (ImageButton) findViewById(R.id.select_background);
-        mSelectBackground.setOnClickListener(buttonClick);
-
-        mSelectLayer = (ImageButton) findViewById(R.id.select_layer);
-        mSelectLayer.setOnClickListener(buttonClick);
+//        mSelectBackground = (ImageButton) findViewById(R.id.select_background);
+//        mSelectBackground.setOnClickListener(buttonClick);
+//
+//        mSelectLayer = (ImageButton) findViewById(R.id.select_layer);
+//        mSelectLayer.setOnClickListener(buttonClick);
 
         mSave = (ImageButton) findViewById(R.id.save);
         mSave.setOnClickListener(buttonClick);
@@ -79,26 +79,15 @@ public class CustomActionBar extends LinearLayout {
         public void onClick(View v) {
 
             if(v == mSelectTool){
-                if(mCurrentOption == SELECT_TOOL_OPTION){
-                    mCurrentOption = NONE;
-                    mSelectTool.getDrawable().clearColorFilter();
-                    mDelegate.removeActiveDialog();
-                }else{
-                    mCurrentOption = SELECT_TOOL_OPTION;
-                    mSelectTool.getDrawable().setColorFilter(Color.RED, PorterDuff.Mode.SRC_ATOP);
-                    mDelegate.removeActiveDialog();
                     mDelegate.startDialog(SELECT_TOOL_OPTION);
-                }
             }else if (v == mSave){
                     mDelegate.startSaveDialog();
             }
-
         }
     };
 
     public static interface Delegate{
         public void startDialog(int option);
-        public void removeActiveDialog();
         public void setPaint(Paint paint);
         public void startSaveDialog();
     }

@@ -23,6 +23,8 @@ import com.sasaj.graphics.drawingapp.views.fragments.DrawingListFragment;
 
 public class MainActivity extends AppCompatActivity {
 
+    private static final String TAG = "Main Activity";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

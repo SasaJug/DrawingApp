@@ -34,7 +34,7 @@ public class BrushSample extends View {
     }
 
     private void init() {
-
+        setLayerType(View.LAYER_TYPE_SOFTWARE, null);
     }
 
 
