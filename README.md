@@ -20,4 +20,4 @@
 
 * Screenshot - present look:
 
-![Screenshot.png](https://bitbucket.org/repo/9a9649/images/837101722-Screenshot.png)
+![Screenshot_2016-09-11-21-35-25.png](https://bitbucket.org/repo/9a9649/images/1957258725-Screenshot_2016-09-11-21-35-25.png)
