@@ -2,26 +2,24 @@ package com.sasaj.graphics.drawingapp;
 
 import android.app.AlertDialog;
 import android.app.DialogFragment;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.os.AsyncTask;
+import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.FrameLayout;
 
 import com.sasaj.graphics.drawingapp.Utilities.FileUtilities;
 import com.sasaj.graphics.drawingapp.views.CustomActionBar;
 import com.sasaj.graphics.drawingapp.views.fragments.SelectPaintDialogFragment;
 import com.sasaj.graphics.drawingapp.views.layers.DrawingLayer;
 import com.sasaj.graphics.paintselector.SelectPaintView;
-import com.sasaj.graphics.paintselector.com.sasaj.graphics.paintselector.utils.PaintWrapper;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -29,14 +27,26 @@ import java.io.IOException;
 
 public class DrawingActivity extends AppCompatActivity{
 
+    public static final String ORIENTATION = "ORIENTATION";
+    public static final int LANDSCAPE = 0;
+    public static final int PORTRAIT = 1;
+
     public Paint currentPaint;
     private com.sasaj.graphics.drawingapp.views.layers.DrawingLayer drawing;
+
+    public static Intent createIntent (Context context, int orientation){
+        Intent intent = new Intent(context, DrawingActivity.class);
+        intent.putExtra(ORIENTATION, orientation);
+        return intent;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_drawing);
 
+        setScreenOrientation(getIntent().getIntExtra(ORIENTATION, PORTRAIT));
+
+        setContentView(R.layout.activity_drawing);
         drawing = (DrawingLayer) findViewById(R.id.drawing);
 
         ActionBar actionBar = getSupportActionBar();
@@ -121,6 +131,14 @@ public class DrawingActivity extends AppCompatActivity{
             alertDialog.show();
         }
     };
+
+    private void setScreenOrientation(int orientation){
+        if(orientation == PORTRAIT){
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        }else{
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+        }
+    }
 
     private class SaveDrawing extends AsyncTask<Bitmap, Void, String> {
         @Override

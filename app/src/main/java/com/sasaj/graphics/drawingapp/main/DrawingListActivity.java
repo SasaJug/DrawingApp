@@ -1,27 +1,25 @@
-package com.sasaj.graphics.drawingapp;
+package com.sasaj.graphics.drawingapp.main;
 
 import android.animation.ObjectAnimator;
 import android.animation.PropertyValuesHolder;
 import android.content.Intent;
-import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
+import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 
 import com.oguzdev.circularfloatingactionmenu.library.FloatingActionButton;
 import com.oguzdev.circularfloatingactionmenu.library.FloatingActionMenu;
 import com.oguzdev.circularfloatingactionmenu.library.SubActionButton;
+import com.sasaj.graphics.drawingapp.DrawingActivity;
 import com.sasaj.graphics.drawingapp.R;
-import com.sasaj.graphics.drawingapp.views.fragments.DrawingListFragment;
 
-public class MainActivity extends AppCompatActivity {
+public class DrawingListActivity extends AppCompatActivity implements DrawingsListFragment.OnFragmentInteractionListener{
 
     private static final String TAG = "Main Activity";
 
@@ -31,9 +29,27 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         ActionBar actionBar = getSupportActionBar();
-        actionBar.setDisplayShowHomeEnabled(false);
-        actionBar.setDisplayShowTitleEnabled(true);
-        actionBar.setTitle("Drawing App");
+        if(actionBar != null){
+            actionBar.setDisplayShowHomeEnabled(false);
+            actionBar.setDisplayShowTitleEnabled(true);
+            actionBar.setTitle(R.string.app_title);
+        }
+
+        setFabButton();
+
+        if (null == savedInstanceState) {
+            initFragment(DrawingsListFragment.newInstance(null, null));
+        }
+    }
+
+    private void initFragment(Fragment drawingListFragment) {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        transaction.add(R.id.container, drawingListFragment);
+        transaction.commit();
+    }
+
+    private void setFabButton(){
 
         final ImageView icon = new ImageView(this);
         icon.setImageDrawable(getResources().getDrawable(R.drawable.ic_add));
@@ -42,7 +58,6 @@ public class MainActivity extends AppCompatActivity {
                 .setContentView(icon)
                 .setBackgroundDrawable(getResources().getDrawable(R.drawable.fab_bg))
                 .build();
-
 
         SubActionButton.Builder itemBuilder = new SubActionButton.Builder(this);
 
@@ -53,8 +68,7 @@ public class MainActivity extends AppCompatActivity {
         button1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                Intent intent = new Intent(MainActivity.this, DrawingActivity.class);
-                Intent intent = new Intent(MainActivity.this, ExperimentalActivity.class);
+                Intent intent = DrawingActivity.createIntent(DrawingListActivity.this, DrawingActivity.PORTRAIT);
                 startActivity(intent);
             }
         });
@@ -66,15 +80,15 @@ public class MainActivity extends AppCompatActivity {
         button2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, DrawingActivity.class);
+                Intent intent = DrawingActivity.createIntent(DrawingListActivity.this, DrawingActivity.LANDSCAPE);
                 startActivity(intent);
             }
         });
 
 
         FloatingActionMenu actionMenu = new FloatingActionMenu.Builder(this)
-                .addSubActionView(button1)
                 .addSubActionView(button2)
+                .addSubActionView(button1)
                 .attachTo(actionButton)
                 .build();
 
@@ -99,16 +113,10 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        if (null == savedInstanceState) {
-            initFragment(DrawingListFragment.newInstance());
-        }
     }
 
-    private void initFragment(Fragment drawingListFragment) {
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        FragmentTransaction transaction = fragmentManager.beginTransaction();
-        transaction.add(R.id.container, drawingListFragment);
-        transaction.commit();
-    }
+    @Override
+    public void onFragmentInteraction(Uri uri) {
 
+    }
 }

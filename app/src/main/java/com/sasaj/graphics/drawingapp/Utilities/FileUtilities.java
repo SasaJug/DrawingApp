@@ -15,9 +15,9 @@ public class FileUtilities {
 
     public static File getImageFile() throws IOException {
         String filename = createImageFileName();
-        File exst = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
+        File exst = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
         String exstPath = exst.getPath();
-        File dir = new File(exstPath + "/DrawingApp");
+        File dir = new File(exstPath);
 
         if (!dir.exists()) {
             try {

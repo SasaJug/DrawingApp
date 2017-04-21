@@ -2,7 +2,6 @@ package com.sasaj.graphics.drawingapp.views.layers;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -12,8 +11,6 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 
-import com.sasaj.graphics.drawingapp.DrawingApplication;
-import com.sasaj.graphics.drawingapp.R;
 import com.sasaj.graphics.paintselector.com.sasaj.graphics.paintselector.utils.PaintWrapper;
 
 /**
