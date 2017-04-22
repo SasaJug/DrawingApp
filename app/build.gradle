@@ -6,7 +6,7 @@ android {
 
     defaultConfig {
         applicationId "com.sasaj.graphics.drawingapp"
-        minSdkVersion 15
+        minSdkVersion 19
         targetSdkVersion 25
         versionCode 1
         versionName "1.0"
@@ -26,6 +26,7 @@ dependencies {
     compile "com.android.support:design:$rootProject.supportLibraryVersion"
     compile "com.android.support:recyclerview-v7:$rootProject.supportLibraryVersion"
     compile "com.android.support:support-v4:$rootProject.supportLibraryVersion"
+    compile 'com.squareup.picasso:picasso:2.5.2'
     compile project(":paintselector")
     compile 'com.oguzdev:CircularFloatingActionMenu:1.0.2'
     compile 'com.android.support:support-v4:25.3.1'

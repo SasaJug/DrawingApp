@@ -19,9 +19,10 @@ import com.oguzdev.circularfloatingactionmenu.library.SubActionButton;
 import com.sasaj.graphics.drawingapp.DrawingActivity;
 import com.sasaj.graphics.drawingapp.R;
 
-public class DrawingListActivity extends AppCompatActivity implements DrawingsListFragment.OnFragmentInteractionListener{
+public class DrawingListActivity extends AppCompatActivity implements DrawingsListFragment.OnFragmentInteractionListener {
 
     private static final String TAG = "Main Activity";
+    private static final int MY_PERMISSIONS_REQUEST_STORAGE = 10;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,7 +30,7 @@ public class DrawingListActivity extends AppCompatActivity implements DrawingsLi
         setContentView(R.layout.activity_main);
 
         ActionBar actionBar = getSupportActionBar();
-        if(actionBar != null){
+        if (actionBar != null) {
             actionBar.setDisplayShowHomeEnabled(false);
             actionBar.setDisplayShowTitleEnabled(true);
             actionBar.setTitle(R.string.app_title);
@@ -40,6 +41,7 @@ public class DrawingListActivity extends AppCompatActivity implements DrawingsLi
         if (null == savedInstanceState) {
             initFragment(DrawingsListFragment.newInstance(null, null));
         }
+
     }
 
     private void initFragment(Fragment drawingListFragment) {
@@ -49,7 +51,7 @@ public class DrawingListActivity extends AppCompatActivity implements DrawingsLi
         transaction.commit();
     }
 
-    private void setFabButton(){
+    private void setFabButton() {
 
         final ImageView icon = new ImageView(this);
         icon.setImageDrawable(getResources().getDrawable(R.drawable.ic_add));

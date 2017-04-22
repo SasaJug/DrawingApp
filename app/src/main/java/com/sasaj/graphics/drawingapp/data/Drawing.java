@@ -5,4 +5,14 @@ package com.sasaj.graphics.drawingapp.data;
  */
 
 public class Drawing {
+
+    private String imagePath;
+
+    public String getImagePath() {
+        return imagePath;
+    }
+
+    public void setImagePath(String imagePath) {
+        this.imagePath = imagePath;
+    }
 }

@@ -1,19 +1,24 @@
 package com.sasaj.graphics.drawingapp.main;
 
 import android.content.Context;
+import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.ProgressBar;
 
 import com.sasaj.graphics.drawingapp.R;
+import com.sasaj.graphics.drawingapp.adapter.DrawingsListAdapter;
 import com.sasaj.graphics.drawingapp.data.Drawing;
 import com.sasaj.graphics.drawingapp.data.source.DrawingsRepositoryImplementation;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -28,6 +33,8 @@ public class DrawingsListFragment extends Fragment implements DrawingsListContra
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+    private static final int NUMBER_OF_COLUMNS_PORTRAIT = 3;
+    private static final int NUMBER_OF_COLUMNS_LANDSCAPE = 5;
 
     private String mParam1;
     private String mParam2;
@@ -36,6 +43,15 @@ public class DrawingsListFragment extends Fragment implements DrawingsListContra
     private DrawingsListPresenter actionsListener;
     private RecyclerView drawingsList;
     private ProgressBar progressBar;
+
+
+    DrawingItemListener drawingItemListener = new DrawingItemListener() {
+        @Override
+        public void onItemClicked(Drawing clickedItem) {
+
+        }
+    };
+    private DrawingsListAdapter adapter;
 
     public DrawingsListFragment() {
         // Required empty public constructor
@@ -56,12 +72,6 @@ public class DrawingsListFragment extends Fragment implements DrawingsListContra
         args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
-    }
-
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
     }
 
     @Override
@@ -93,20 +103,24 @@ public class DrawingsListFragment extends Fragment implements DrawingsListContra
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+
         View root = inflater.inflate(R.layout.fragment_drawings_list, container, false);
 
-        drawingsList = (RecyclerView)root.findViewById(R.id.drawings_grid);
-        progressBar = (ProgressBar)root.findViewById(R.id.progress_bar);
+        drawingsList = (RecyclerView) root.findViewById(R.id.drawings_grid);
+        progressBar = (ProgressBar) root.findViewById(R.id.progress_bar);
 
         actionsListener = new DrawingsListPresenter(this, new DrawingsRepositoryImplementation(getActivity()));
-//
-//        reportsList.setLayoutManager(new LinearLayoutManager(getActivity()));
-//        Drawable dividerDrawable = ContextCompat.getDrawable(getActivity(), R.drawable.divider_drawable);
-//        RecyclerView.ItemDecoration dividerItemDecoration = new CustomDivider(dividerDrawable);
-//        reportsList.addItemDecoration(dividerItemDecoration);
-//        adapter = new HistoryAdapter(getActivity(), new ArrayList<ReportModel>(0), mHistoryItemListener);
-//        reportsList.setAdapter(adapter);
+
+        int orientation=this.getResources().getConfiguration().orientation;
+        if(orientation== Configuration.ORIENTATION_PORTRAIT){
+            drawingsList.setLayoutManager(new GridLayoutManager(getActivity(), NUMBER_OF_COLUMNS_PORTRAIT));
+        }
+        else{
+            drawingsList.setLayoutManager(new GridLayoutManager(getActivity(), NUMBER_OF_COLUMNS_LANDSCAPE));
+        }
+
+        adapter = new DrawingsListAdapter(getActivity(), new ArrayList<Drawing>(0), drawingItemListener);
+        drawingsList.setAdapter(adapter);
         return root;
     }
 
@@ -114,6 +128,12 @@ public class DrawingsListFragment extends Fragment implements DrawingsListContra
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        actionsListener.getDrawings();
     }
 
     @Override
@@ -128,12 +148,16 @@ public class DrawingsListFragment extends Fragment implements DrawingsListContra
 
     @Override
     public void setDrawingsData(List<Drawing> drawings) {
-
+        adapter.setDrawings(drawings);
     }
 
 
     public interface OnFragmentInteractionListener {
 
         void onFragmentInteraction(Uri uri);
+    }
+
+    public interface DrawingItemListener {
+        void onItemClicked(Drawing clickedItem);
     }
 }
