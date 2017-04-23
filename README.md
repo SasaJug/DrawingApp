@@ -14,7 +14,7 @@
 
 * More efficient drawing surface
 * Photoshop-like layers
-* Editing existing drawings capabilitiy
+* Editing existing drawings capability
 
 * Screenshots - present look:
 
