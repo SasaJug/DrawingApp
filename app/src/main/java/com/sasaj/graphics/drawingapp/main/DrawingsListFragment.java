@@ -1,19 +1,25 @@
 package com.sasaj.graphics.drawingapp.main;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Configuration;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.FileProvider;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.sasaj.graphics.drawingapp.BuildConfig;
 import com.sasaj.graphics.drawingapp.R;
 import com.sasaj.graphics.drawingapp.adapter.DrawingsListAdapter;
 import com.sasaj.graphics.drawingapp.data.Drawing;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,7 +49,20 @@ public class DrawingsListFragment extends Fragment{
     DrawingItemListener drawingItemListener = new DrawingItemListener() {
         @Override
         public void onItemClicked(Drawing clickedItem) {
-
+            if(Build.VERSION.SDK_INT < Build.VERSION_CODES.N){
+                Intent intent = new Intent();
+                intent.setAction(Intent.ACTION_VIEW);
+                intent.setDataAndType(Uri.parse("file://" + clickedItem.getImagePath()), "image/*");
+                startActivity(intent);
+            } else {
+                Intent intent = new Intent();
+                intent.setAction(Intent.ACTION_VIEW);
+                Uri photoUri = FileProvider.getUriForFile(getActivity(), BuildConfig.APPLICATION_ID + ".provider",
+                        new File(clickedItem.getImagePath()));
+                intent.setData(photoUri);
+                intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                startActivity(intent);
+            }
         }
     };
     private DrawingsListAdapter adapter;

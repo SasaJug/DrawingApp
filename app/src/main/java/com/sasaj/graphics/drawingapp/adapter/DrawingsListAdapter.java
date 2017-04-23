@@ -17,6 +17,7 @@ import com.squareup.picasso.Picasso;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -68,6 +69,7 @@ public class DrawingsListAdapter extends RecyclerView.Adapter<DrawingsListAdapte
 
     public void setDrawings(List<Drawing> list){
         data = list;
+        Collections.sort(data);
         notifyDataSetChanged();
     }
 

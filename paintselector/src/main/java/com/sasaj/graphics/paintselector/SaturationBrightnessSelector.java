@@ -85,7 +85,6 @@ public class SaturationBrightnessSelector extends View{
         factor = 1/(float)w;
         cx = saturation/factor;
         cy = (1 - brightness)/factor;
-
     }
 
     @Override

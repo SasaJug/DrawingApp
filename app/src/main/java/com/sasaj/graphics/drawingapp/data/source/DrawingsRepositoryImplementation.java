@@ -25,11 +25,11 @@ public class DrawingsRepositoryImplementation implements DrawingsRepository {
     private static final String TAG = DrawingsRepositoryImplementation.class.getSimpleName();
     private static DrawingsRepositoryImplementation INSTANCE;
 
-    private DrawingsRepositoryImplementation(){
+    private DrawingsRepositoryImplementation() {
     }
 
-    public synchronized static DrawingsRepositoryImplementation getInstance (){
-        if(INSTANCE == null){
+    public synchronized static DrawingsRepositoryImplementation getInstance() {
+        if (INSTANCE == null) {
             INSTANCE = new DrawingsRepositoryImplementation();
         }
         return INSTANCE;
@@ -47,6 +47,7 @@ public class DrawingsRepositoryImplementation implements DrawingsRepository {
                     for (File file : list) {
                         Drawing drawing = new Drawing();
                         drawing.setImagePath(file.getAbsolutePath());
+                        drawing.setLastModified(file.lastModified());
                         drawings.add(drawing);
                         Log.e(TAG, "run: " + file.getAbsolutePath());
                     }
@@ -69,7 +70,7 @@ public class DrawingsRepositoryImplementation implements DrawingsRepository {
     }
 
     @Override
-    public void saveDrawing(final Bitmap bitmap, final  SaveDrawingCallback callback) {
+    public void saveDrawing(final Bitmap bitmap, final SaveDrawingCallback callback) {
         Utilities.looperThread.postRunnable(new Runnable() {
             @Override
             public void run() {

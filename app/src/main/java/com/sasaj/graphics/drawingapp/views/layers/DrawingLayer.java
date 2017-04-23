@@ -44,7 +44,6 @@ public class DrawingLayer extends View {
     }
 
     private void setupLayer(){
-
         mDrawPath = new Path();
         paint = PaintWrapper.getInstance().getPaint();
         mCanvasPaint = new Paint(Paint.DITHER_FLAG);
