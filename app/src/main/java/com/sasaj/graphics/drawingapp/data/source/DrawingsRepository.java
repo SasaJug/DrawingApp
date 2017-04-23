@@ -1,5 +1,7 @@
 package com.sasaj.graphics.drawingapp.data.source;
 
+import android.graphics.Bitmap;
+
 import com.sasaj.graphics.drawingapp.data.Drawing;
 
 import java.util.List;
@@ -25,7 +27,17 @@ public interface DrawingsRepository {
         void onDataNotAvailable();
     }
 
-   void  getDrawings(LoadDrawingsCallback callback);
 
-   void  getDrawing(String id, LoadDrawingCallback callback);
+    interface SaveDrawingCallback {
+
+        void onDrawingSaved(Drawing drawings);
+
+        void onError();
+    }
+
+    void getDrawings(LoadDrawingsCallback callback);
+
+    void getDrawing(String id, LoadDrawingCallback callback);
+
+    void saveDrawing(Bitmap bitmap, SaveDrawingCallback callback);
 }

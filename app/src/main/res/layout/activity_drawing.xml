@@ -5,21 +5,28 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/color_background"
-    tools:context=".DrawingActivity">
+    tools:context=".drawing.DrawingActivity">
 
 
-    <com.sasaj.graphics.drawingapp.views.layers.DrawingLayer
-        android:id="@+id/drawing"
+    <FrameLayout
+        android:id="@+id/container"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent">
+    </FrameLayout>
 
 
     <FrameLayout
         android:id="@+id/dialog_container"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:elevation="8dp">
+        android:layout_height="wrap_content">
 
     </FrameLayout>
+
+    <ProgressBar
+        android:id="@+id/progress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:visibility="gone"/>
 
 </FrameLayout>

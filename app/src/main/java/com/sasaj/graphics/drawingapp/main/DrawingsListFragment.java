@@ -2,7 +2,6 @@ package com.sasaj.graphics.drawingapp.main;
 
 import android.content.Context;
 import android.content.res.Configuration;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
@@ -10,13 +9,10 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
-import android.widget.ProgressBar;
 
 import com.sasaj.graphics.drawingapp.R;
 import com.sasaj.graphics.drawingapp.adapter.DrawingsListAdapter;
 import com.sasaj.graphics.drawingapp.data.Drawing;
-import com.sasaj.graphics.drawingapp.data.source.DrawingsRepositoryImplementation;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,7 +25,7 @@ import java.util.List;
  * Use the {@link DrawingsListFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class DrawingsListFragment extends Fragment implements DrawingsListContract.View {
+public class DrawingsListFragment extends Fragment{
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
@@ -39,10 +35,9 @@ public class DrawingsListFragment extends Fragment implements DrawingsListContra
     private String mParam1;
     private String mParam2;
 
-    private OnFragmentInteractionListener mListener;
-    private DrawingsListPresenter actionsListener;
+    private OnFragmentInteractionListener listener;
     private RecyclerView drawingsList;
-    private ProgressBar progressBar;
+
 
 
     DrawingItemListener drawingItemListener = new DrawingItemListener() {
@@ -78,7 +73,7 @@ public class DrawingsListFragment extends Fragment implements DrawingsListContra
     public void onAttach(Context context) {
         super.onAttach(context);
         if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
+           listener = (OnFragmentInteractionListener) context;
         } else {
             throw new RuntimeException(context.toString()
                     + " must implement OnFragmentInteractionListener");
@@ -107,11 +102,8 @@ public class DrawingsListFragment extends Fragment implements DrawingsListContra
         View root = inflater.inflate(R.layout.fragment_drawings_list, container, false);
 
         drawingsList = (RecyclerView) root.findViewById(R.id.drawings_grid);
-        progressBar = (ProgressBar) root.findViewById(R.id.progress_bar);
 
-        actionsListener = new DrawingsListPresenter(this, new DrawingsRepositoryImplementation(getActivity()));
-
-        int orientation=this.getResources().getConfiguration().orientation;
+        int orientation = getActivity().getResources().getConfiguration().orientation;
         if(orientation== Configuration.ORIENTATION_PORTRAIT){
             drawingsList.setLayoutManager(new GridLayoutManager(getActivity(), NUMBER_OF_COLUMNS_PORTRAIT));
         }
@@ -127,34 +119,25 @@ public class DrawingsListFragment extends Fragment implements DrawingsListContra
     @Override
     public void onDetach() {
         super.onDetach();
-        mListener = null;
+       listener = null;
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        actionsListener.getDrawings();
+        if(listener != null){
+           listener.getDrawings();
+        }
     }
 
-    @Override
-    public void showProgress() {
-
+    public void setDrawingsList(List<Drawing>list){
+        if (adapter != null) {
+            adapter.setDrawings(list);
+        }
     }
-
-    @Override
-    public void hideProgress() {
-
-    }
-
-    @Override
-    public void setDrawingsData(List<Drawing> drawings) {
-        adapter.setDrawings(drawings);
-    }
-
 
     public interface OnFragmentInteractionListener {
-
-        void onFragmentInteraction(Uri uri);
+        void getDrawings();
     }
 
     public interface DrawingItemListener {

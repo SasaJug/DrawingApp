@@ -3,7 +3,6 @@ package com.sasaj.graphics.drawingapp.main;
 import android.animation.ObjectAnimator;
 import android.animation.PropertyValuesHolder;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -12,22 +11,32 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 
 import com.oguzdev.circularfloatingactionmenu.library.FloatingActionButton;
 import com.oguzdev.circularfloatingactionmenu.library.FloatingActionMenu;
 import com.oguzdev.circularfloatingactionmenu.library.SubActionButton;
-import com.sasaj.graphics.drawingapp.DrawingActivity;
 import com.sasaj.graphics.drawingapp.R;
+import com.sasaj.graphics.drawingapp.data.Drawing;
+import com.sasaj.graphics.drawingapp.data.source.DrawingsRepositoryImplementation;
+import com.sasaj.graphics.drawingapp.drawing.DrawingActivity;
 
-public class DrawingListActivity extends AppCompatActivity implements DrawingsListFragment.OnFragmentInteractionListener {
+import java.util.List;
 
-    private static final String TAG = "Main Activity";
-    private static final int MY_PERMISSIONS_REQUEST_STORAGE = 10;
+public class DrawingListActivity extends AppCompatActivity implements DrawingsListFragment.OnFragmentInteractionListener, DrawingsListContract.View {
+
+    private static final String TAG = DrawingListActivity.class.getSimpleName();
+
+    private DrawingsListPresenter actionsListener;
+    private DrawingsListFragment drawingsListFragment;
+    private ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        actionsListener = new DrawingsListPresenter(this, DrawingsRepositoryImplementation.getInstance());
 
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
@@ -37,17 +46,22 @@ public class DrawingListActivity extends AppCompatActivity implements DrawingsLi
         }
 
         setFabButton();
+        progressBar = (ProgressBar) findViewById(R.id.progress_bar);
 
-        if (null == savedInstanceState) {
-            initFragment(DrawingsListFragment.newInstance(null, null));
+
+        drawingsListFragment = (DrawingsListFragment) getSupportFragmentManager().findFragmentById(R.id.container);
+        if (drawingsListFragment == null) {
+            // Create the fragment
+            drawingsListFragment = DrawingsListFragment.newInstance(null, null);
+            initFragment(drawingsListFragment);
         }
 
     }
 
-    private void initFragment(Fragment drawingListFragment) {
+    private void initFragment(Fragment drawingsListFragment) {
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
-        transaction.add(R.id.container, drawingListFragment);
+        transaction.add(R.id.container, drawingsListFragment);
         transaction.commit();
     }
 
@@ -117,8 +131,24 @@ public class DrawingListActivity extends AppCompatActivity implements DrawingsLi
 
     }
 
-    @Override
-    public void onFragmentInteraction(Uri uri) {
 
+    @Override
+    public void showProgress() {
+        progressBar.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void hideProgress() {
+        progressBar.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void setDrawingsData(List<Drawing> drawings) {
+        drawingsListFragment.setDrawingsList(drawings);
+    }
+
+    @Override
+    public void getDrawings() {
+        actionsListener.getDrawings();
     }
 }

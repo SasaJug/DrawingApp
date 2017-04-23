@@ -1,4 +1,4 @@
-package com.sasaj.graphics.drawingapp;
+package com.sasaj.graphics.drawingapp.drawing;
 
 import android.app.AlertDialog;
 import android.app.DialogFragment;
@@ -8,33 +8,35 @@ import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
 import android.graphics.Paint;
-import android.os.AsyncTask;
+import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ProgressBar;
 
-import com.sasaj.graphics.drawingapp.Utilities.FileUtilities;
+import com.sasaj.graphics.drawingapp.R;
+import com.sasaj.graphics.drawingapp.data.source.DrawingsRepositoryImplementation;
 import com.sasaj.graphics.drawingapp.views.CustomActionBar;
 import com.sasaj.graphics.drawingapp.views.fragments.SelectPaintDialogFragment;
-import com.sasaj.graphics.drawingapp.views.layers.DrawingLayer;
-import com.sasaj.graphics.paintselector.SelectPaintView;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-
-public class DrawingActivity extends AppCompatActivity{
+public class DrawingActivity extends AppCompatActivity implements DrawingFragment.OnFragmentInteractionListener, DrawingContract.View {
 
     public static final String ORIENTATION = "ORIENTATION";
     public static final int LANDSCAPE = 0;
     public static final int PORTRAIT = 1;
 
     public Paint currentPaint;
-    private com.sasaj.graphics.drawingapp.views.layers.DrawingLayer drawing;
+    private DrawingFragment drawingFragment;
+    private DrawingPresenter actionsListener;
+    private ProgressBar progress;
 
-    public static Intent createIntent (Context context, int orientation){
+    public static Intent createIntent(Context context, int orientation) {
         Intent intent = new Intent(context, DrawingActivity.class);
         intent.putExtra(ORIENTATION, orientation);
         return intent;
@@ -47,7 +49,7 @@ public class DrawingActivity extends AppCompatActivity{
         setScreenOrientation(getIntent().getIntExtra(ORIENTATION, PORTRAIT));
 
         setContentView(R.layout.activity_drawing);
-        drawing = (DrawingLayer) findViewById(R.id.drawing);
+        progress = (ProgressBar) findViewById(R.id.progress);
 
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayShowHomeEnabled(false);
@@ -55,68 +57,69 @@ public class DrawingActivity extends AppCompatActivity{
         actionBar.setDisplayShowTitleEnabled(false);
         actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
         CustomActionBar customActionBar = new com.sasaj.graphics.drawingapp.views.CustomActionBar(this);
+        ActionBar.LayoutParams params = new ActionBar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        customActionBar.setLayoutParams(params);
         getSupportActionBar().setCustomView(customActionBar);
         customActionBar.setDelegate(mDelegate);
         Toolbar parent = (Toolbar) customActionBar.getParent();
         parent.setContentInsetsAbsolute(0, 0);
+
+        actionsListener = new DrawingPresenter(this, DrawingsRepositoryImplementation.getInstance());
+
+
+        drawingFragment = (DrawingFragment) getSupportFragmentManager().findFragmentById(R.id.container);
+        if (drawingFragment == null) {
+            // Create the fragment
+            drawingFragment = DrawingFragment.newInstance(null, null);
+            initFragment(drawingFragment);
+        }
+    }
+
+
+    private void initFragment(Fragment drawingFragment) {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        transaction.add(R.id.container, drawingFragment);
+        transaction.commit();
     }
 
     public void saveImageToMemory(Bitmap bitmap) {
-        SaveDrawing saveDrawingTask = new SaveDrawing();
-        saveDrawingTask.execute(bitmap);
+        actionsListener.saveDrawing(bitmap);
     }
 
-
-    private SelectPaintView selectToolDialog;
     CustomActionBar.Delegate mDelegate = new CustomActionBar.Delegate() {
 
         @Override
-        public void startDialog(int option) {
-
-            switch (option) {
-                case CustomActionBar.SELECT_TOOL_OPTION:
-//                    selectToolDialog = new SelectPaintView(DrawingActivity.this);
-//                    mDialogContainer.addView(selectToolDialog);
-//
-//                    FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(
-//                            ViewGroup.LayoutParams.MATCH_PARENT,
-//                            ViewGroup.LayoutParams.WRAP_CONTENT);
-//                    selectToolDialog.setLayoutParams(layoutParams);
-                    DialogFragment newFragment = SelectPaintDialogFragment.newInstance(new Bundle());
-                    newFragment.show(getFragmentManager(), "com.sasaj.graphics.drawingapp.dialog");
-
-                    break;
-
-                default:
-
-            }
+        public void startToolsDialog() {
+            DialogFragment newFragment = SelectPaintDialogFragment.newInstance(new Bundle());
+            newFragment.show(getFragmentManager(), "com.sasaj.graphics.drawingapp.dialog");
         }
-
 
         @Override
         public void setPaint(Paint paint) {
             DrawingActivity.this.currentPaint = paint;
         }
 
-
         @Override
         public void startSaveDialog() {
             AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(DrawingActivity.this);
 
             // set title
-            alertDialogBuilder.setTitle("DrawingApp");
+            alertDialogBuilder.setTitle(R.string.app_title);
 
             // set dialog message
             alertDialogBuilder
-                    .setMessage("Save image?")
+                    .setMessage(R.string.save_mage_question)
                     .setCancelable(false)
-                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
-                            saveImageToMemory(drawing.getBitmapFromView());
+                            if (drawingFragment != null) {
+                                saveImageToMemory(drawingFragment.getBitmap());
+                            }
                             dialog.cancel();
                         }
                     })
-                    .setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
+                    .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
                             // if this button is clicked, just close
                             // the dialog box and do nothing
@@ -132,36 +135,30 @@ public class DrawingActivity extends AppCompatActivity{
         }
     };
 
-    private void setScreenOrientation(int orientation){
-        if(orientation == PORTRAIT){
+    private void setScreenOrientation(int orientation) {
+        if (orientation == PORTRAIT) {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        }else{
+        } else {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
         }
     }
 
-    private class SaveDrawing extends AsyncTask<Bitmap, Void, String> {
-        @Override
-        protected String doInBackground(Bitmap... params) {
-            Bitmap bitmap = params[0];
-            File imageFile;
-            try {
-                imageFile = FileUtilities.getImageFile();
-                FileOutputStream fos = new FileOutputStream(imageFile);
-                bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos);
-                fos.flush();
-                fos.close();
-            } catch (IOException e) {
-                Log.e("error", e.getMessage());
-                e.printStackTrace();
-            }
-
-            return null;
+    @Override
+    public void showProgress() {
+        if (progress != null) {
+            progress.setVisibility(View.VISIBLE);
         }
+    }
 
-        @Override
-        protected void onPostExecute(String result) {
+    @Override
+    public void hideProgress() {
+        if (progress != null) {
+            progress.setVisibility(View.GONE);
         }
+    }
+
+    @Override
+    public void onFragmentInteraction(Uri uri) {
 
     }
 }

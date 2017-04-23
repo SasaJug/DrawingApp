@@ -18,18 +18,16 @@ import com.sasaj.graphics.drawingapp.R;
  * Created by User on 6/25/2016.
  */
 public class CustomActionBar extends LinearLayout {
-
-    public static final int NONE = 0;
-    public static final int SELECT_TOOL_OPTION = 1;
-    public static final int SELECT_BACKGROUND_OPTION = 2;
-    public static final int SELECT_LAYER_OPTION = 3;
-    public static final int SAVE_OPTION = 4;
-
-    public int mCurrentOption = NONE;
+//
+//    public static final int NONE = 0;
+//    public static final int SELECT_TOOL_OPTION = 1;
+//    public static final int SELECT_BACKGROUND_OPTION = 2;
+//    public static final int SELECT_LAYER_OPTION = 3;
+//    public static final int SAVE_OPTION = 4;
+//
+//    public int mCurrentOption = NONE;
 
     private ImageButton mSelectTool;
-//    private ImageButton mSelectBackground;
-//    private ImageButton mSelectLayer;
     private ImageButton mSave;
 
     private Delegate mDelegate;
@@ -53,16 +51,10 @@ public class CustomActionBar extends LinearLayout {
         LayoutInflater lif = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         lif.inflate(R.layout.action_bar_layout, this);
 
-        this.setBackgroundColor(Color.WHITE);
+        this.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
 
         mSelectTool = (ImageButton) findViewById(R.id.select_tool);
         mSelectTool.setOnClickListener(buttonClick);
-
-//        mSelectBackground = (ImageButton) findViewById(R.id.select_background);
-//        mSelectBackground.setOnClickListener(buttonClick);
-//
-//        mSelectLayer = (ImageButton) findViewById(R.id.select_layer);
-//        mSelectLayer.setOnClickListener(buttonClick);
 
         mSave = (ImageButton) findViewById(R.id.save);
         mSave.setOnClickListener(buttonClick);
@@ -79,7 +71,7 @@ public class CustomActionBar extends LinearLayout {
         public void onClick(View v) {
 
             if(v == mSelectTool){
-                    mDelegate.startDialog(SELECT_TOOL_OPTION);
+                    mDelegate.startToolsDialog();
             }else if (v == mSave){
                     mDelegate.startSaveDialog();
             }
@@ -87,7 +79,7 @@ public class CustomActionBar extends LinearLayout {
     };
 
     public static interface Delegate{
-        public void startDialog(int option);
+        public void startToolsDialog();
         public void setPaint(Paint paint);
         public void startSaveDialog();
     }

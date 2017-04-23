@@ -21,7 +21,7 @@
         <activity android:name=".main.DrawingListActivity">
 
         </activity>
-        <activity android:name=".DrawingActivity"
+        <activity android:name=".drawing.DrawingActivity"
                   android:hardwareAccelerated="false" >
         </activity>
     </application>
