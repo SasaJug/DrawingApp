@@ -9,15 +9,14 @@
 
 * On configuration change persistence
 * Responsiveness to different screen sizes and orientations
-* Customizable design (so it can blend into various environments)
 
 ### To implement in DrawingApp ###
 
 * More efficient drawing surface
 * Photoshop-like layers
-* Overall layout and design
-* Grid list of previous works
+* Editing existing drawings capabilitiy
 
-* Screenshot - present look:
+* Screenshots - present look:
 
-![Screenshot_2016-09-11-21-35-25.png](https://bitbucket.org/repo/9a9649/images/1957258725-Screenshot_2016-09-11-21-35-25.png)
+![Screenshot_2017-04-23-19-05-03.png](https://bitbucket.org/repo/9a9649/images/2483177284-Screenshot_2017-04-23-19-05-03.png)
+![Screenshot_2017-04-23-19-06-01.png](https://bitbucket.org/repo/9a9649/images/3447355535-Screenshot_2017-04-23-19-06-01.png)
