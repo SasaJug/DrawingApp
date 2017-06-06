@@ -2,14 +2,20 @@ package com.sasaj.graphics.drawingapp.drawing;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.Paint;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.sasaj.graphics.drawingapp.DrawingApplication;
 import com.sasaj.graphics.drawingapp.R;
+import com.sasaj.graphics.drawingapp.drawing.di.PaintComponent;
+
+import javax.inject.Inject;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -20,7 +26,7 @@ import com.sasaj.graphics.drawingapp.R;
  * create an instance of this fragment.
  */
 public class DrawingFragment extends Fragment {
-
+    private static final String TAG = DrawingFragment.class.getSimpleName();
     private com.sasaj.graphics.drawingapp.views.layers.DrawingLayer drawing;
 
     private static final String ARG_PARAM1 = "param1";
@@ -30,6 +36,10 @@ public class DrawingFragment extends Fragment {
     private String mParam2;
 
     private OnFragmentInteractionListener mListener;
+
+
+    @Inject
+    Paint paint;
 
     public DrawingFragment() {
         // Required empty public constructor
@@ -69,6 +79,7 @@ public class DrawingFragment extends Fragment {
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
+            setupInjection();
         }
     }
 
@@ -77,7 +88,7 @@ public class DrawingFragment extends Fragment {
                              Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_drawing, container, false);
         drawing = (com.sasaj.graphics.drawingapp.views.layers.DrawingLayer) root.findViewById(R.id.drawing);
-
+        drawing.setPaint(paint);
         return root;
     }
 
@@ -87,8 +98,17 @@ public class DrawingFragment extends Fragment {
         mListener = null;
     }
 
-    public Bitmap getBitmap(){
+    public Bitmap getBitmap() {
         return drawing.getBitmapFromView();
+    }
+
+
+    private void setupInjection() {
+        Log.e(TAG, "setupInjection: ");
+        DrawingApplication app = (DrawingApplication) getActivity().getApplication();
+        PaintComponent paintComponent = app.getPaintComponent();
+        //presenter = imagesComponent.getPresenter();
+        paintComponent.inject(this);
     }
 
     public interface OnFragmentInteractionListener {

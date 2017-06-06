@@ -1,14 +1,9 @@
 package com.sasaj.graphics.drawingapp.views;
 
 import android.content.Context;
-import android.graphics.Color;
-import android.graphics.ColorFilter;
-import android.graphics.Paint;
-import android.graphics.PorterDuff;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 
@@ -18,14 +13,6 @@ import com.sasaj.graphics.drawingapp.R;
  * Created by User on 6/25/2016.
  */
 public class CustomActionBar extends LinearLayout {
-//
-//    public static final int NONE = 0;
-//    public static final int SELECT_TOOL_OPTION = 1;
-//    public static final int SELECT_BACKGROUND_OPTION = 2;
-//    public static final int SELECT_LAYER_OPTION = 3;
-//    public static final int SAVE_OPTION = 4;
-//
-//    public int mCurrentOption = NONE;
 
     private ImageButton mSelectTool;
     private ImageButton mSave;
@@ -78,10 +65,9 @@ public class CustomActionBar extends LinearLayout {
         }
     };
 
-    public static interface Delegate{
-        public void startToolsDialog();
-        public void setPaint(Paint paint);
-        public void startSaveDialog();
+    public interface Delegate{
+        void startToolsDialog();
+        void startSaveDialog();
     }
 
 }

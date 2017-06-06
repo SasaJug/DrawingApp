@@ -8,6 +8,7 @@ import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
@@ -17,6 +18,8 @@ import com.sasaj.graphics.paintselector.com.sasaj.graphics.paintselector.utils.P
  * Created by User on 6/25/2016.
  */
 public class DrawingLayer extends View {
+
+    private static final String TAG = DrawingLayer.class.getSimpleName();
 
     private Context mContext;
     private Path mDrawPath;
@@ -43,10 +46,15 @@ public class DrawingLayer extends View {
         setupLayer();
     }
 
-    private void setupLayer(){
+    private void setupLayer() {
         mDrawPath = new Path();
-        paint = PaintWrapper.getInstance().getPaint();
+//        paint = PaintWrapper.getInstance().getPaint();
         mCanvasPaint = new Paint(Paint.DITHER_FLAG);
+    }
+
+    public void setPaint(Paint paint) {
+        Log.e(TAG, "setPaint: ");
+        this.paint = paint;
     }
 
     @Override
@@ -105,7 +113,7 @@ public class DrawingLayer extends View {
         Canvas canvas = new Canvas(returnedBitmap);
         //Get the view's background
         Drawable bgDrawable = getBackground();
-        if (bgDrawable!=null)
+        if (bgDrawable != null)
             //has background drawable, then draw it on the canvas
             bgDrawable.draw(canvas);
         else

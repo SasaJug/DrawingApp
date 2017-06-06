@@ -20,7 +20,7 @@ import com.sasaj.graphics.paintselector.com.sasaj.graphics.paintselector.utils.S
  */
 public class SelectPaintView extends LinearLayout implements PaintSelector {
 
-    private static final String TAG = "SelectPaintView";
+    private static final String TAG = SelectPaintView.class.getSimpleName();
 
     private static final int SIZE = 1;
     private static final int BLUR = 2;

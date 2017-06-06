@@ -31,7 +31,6 @@ public class DrawingActivity extends AppCompatActivity implements DrawingFragmen
     public static final int LANDSCAPE = 0;
     public static final int PORTRAIT = 1;
 
-    public Paint currentPaint;
     private DrawingFragment drawingFragment;
     private DrawingPresenter actionsListener;
     private ProgressBar progress;
@@ -95,10 +94,10 @@ public class DrawingActivity extends AppCompatActivity implements DrawingFragmen
             newFragment.show(getFragmentManager(), "com.sasaj.graphics.drawingapp.dialog");
         }
 
-        @Override
-        public void setPaint(Paint paint) {
-            DrawingActivity.this.currentPaint = paint;
-        }
+//        @Override
+//        public void setPaint(Paint paint) {
+//            DrawingActivity.this.currentPaint = paint;
+//        }
 
         @Override
         public void startSaveDialog() {

@@ -16,7 +16,7 @@ import android.view.ViewGroup;
 
 import com.sasaj.graphics.drawingapp.BuildConfig;
 import com.sasaj.graphics.drawingapp.R;
-import com.sasaj.graphics.drawingapp.adapter.DrawingsListAdapter;
+import com.sasaj.graphics.drawingapp.main.adapter.DrawingsListAdapter;
 import com.sasaj.graphics.drawingapp.data.Drawing;
 
 import java.io.File;

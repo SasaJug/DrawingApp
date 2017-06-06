@@ -1,4 +1,4 @@
-package com.sasaj.graphics.drawingapp.adapter;
+package com.sasaj.graphics.drawingapp.main.adapter;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -10,7 +10,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.sasaj.graphics.drawingapp.R;
-import com.sasaj.graphics.drawingapp.Utilities.Utilities;
 import com.sasaj.graphics.drawingapp.data.Drawing;
 import com.sasaj.graphics.drawingapp.main.DrawingsListFragment;
 import com.squareup.picasso.Picasso;

@@ -15,7 +15,7 @@ import com.sasaj.graphics.drawingapp.R;
  */
 public class SelectPaintDialogFragment extends DialogFragment {
 
-    private static final String TAG = "SelectPaintDialogFragment";
+    private static final String TAG = SelectPaintDialogFragment.class.getSimpleName();
 
 
     public static SelectPaintDialogFragment newInstance(int index) {

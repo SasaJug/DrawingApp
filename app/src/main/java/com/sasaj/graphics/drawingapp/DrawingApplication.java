@@ -4,6 +4,9 @@ import android.app.Application;
 import android.content.Context;
 import android.os.Handler;
 
+import com.sasaj.graphics.drawingapp.drawing.di.DaggerPaintComponent;
+import com.sasaj.graphics.drawingapp.drawing.di.PaintComponent;
+import com.sasaj.graphics.drawingapp.drawing.di.PaintModule;
 import com.squareup.leakcanary.LeakCanary;
 
 /**
@@ -11,7 +14,6 @@ import com.squareup.leakcanary.LeakCanary;
  */
 
 public class DrawingApplication extends Application {
-
 
     private static Context appContext;
     private static Handler applicationHandler;
@@ -36,6 +38,14 @@ public class DrawingApplication extends Application {
 
     public static Handler getApplicationHandler() {
         return applicationHandler;
+    }
+
+
+    public PaintComponent getPaintComponent(){
+        return DaggerPaintComponent
+                .builder()
+                .paintModule(new PaintModule())
+                .build();
     }
 
 
