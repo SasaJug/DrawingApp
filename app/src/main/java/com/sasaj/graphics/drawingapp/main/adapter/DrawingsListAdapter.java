@@ -50,9 +50,9 @@ public class DrawingsListAdapter extends RecyclerView.Adapter<DrawingsListAdapte
 
         final Drawing drawing = data.get(position);
 
-        Picasso.with(context)
+        Picasso.get()
                 .load(new File(drawing.getImagePath()))
-                .resize(100,100)
+                .resize(100, 100)
                 .centerCrop()
                 .placeholder(R.drawable.ic_no_image)
                 .error(R.drawable.ic_no_image)
@@ -66,7 +66,7 @@ public class DrawingsListAdapter extends RecyclerView.Adapter<DrawingsListAdapte
         });
     }
 
-    public void setDrawings(List<Drawing> list){
+    public void setDrawings(List<Drawing> list) {
         data = list;
         Collections.sort(data);
         notifyDataSetChanged();
