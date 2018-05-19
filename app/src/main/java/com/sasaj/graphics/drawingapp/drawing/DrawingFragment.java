@@ -27,7 +27,7 @@ import javax.inject.Inject;
  */
 public class DrawingFragment extends Fragment {
     private static final String TAG = DrawingFragment.class.getSimpleName();
-    private com.sasaj.graphics.drawingapp.views.layers.DrawingLayer drawing;
+    private com.sasaj.graphics.drawingapp.views.layers.DrawingView drawing;
 
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
@@ -87,7 +87,7 @@ public class DrawingFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_drawing, container, false);
-        drawing = (com.sasaj.graphics.drawingapp.views.layers.DrawingLayer) root.findViewById(R.id.drawing);
+        drawing = (com.sasaj.graphics.drawingapp.views.layers.DrawingView) root.findViewById(R.id.drawing);
         drawing.setPaint(paint);
         return root;
     }

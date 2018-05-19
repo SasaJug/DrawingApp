@@ -6,7 +6,7 @@
 
 
 
-    <com.sasaj.graphics.drawingapp.views.layers.DrawingLayer
+    <com.sasaj.graphics.drawingapp.views.layers.DrawingView
         android:id="@+id/drawing"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
