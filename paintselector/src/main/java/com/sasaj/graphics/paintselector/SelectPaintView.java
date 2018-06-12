@@ -58,14 +58,14 @@ public class SelectPaintView extends LinearLayout implements PaintSelector {
 
         paintWrapper = PaintWrapper.getInstance();
 
-        brushSample = (BrushSample) findViewById(R.id.brush_sample);
-        sbSelector = (SaturationBrightnessSelector) findViewById(R.id.sb_selector);
+        brushSample = findViewById(R.id.brush_sample);
+        sbSelector = findViewById(R.id.sb_selector);
         sbSelector.setColorPicker(this);
 
-        brushSizeSeekBar = (SeekBar) findViewById(R.id.brush_size_seekbar);
-        brushBlurSeekBar = (SeekBar) findViewById(R.id.brush_blur_seekbar);
-        brushAlphaSeekBar = (SeekBar) findViewById(R.id.brush_alpha_seekbar);
-        brushColorSeekBar = (SeekBar) findViewById(R.id.brush_color_seekbar);
+        brushSizeSeekBar = findViewById(R.id.brush_size_seekbar);
+        brushBlurSeekBar = findViewById(R.id.brush_blur_seekbar);
+        brushAlphaSeekBar = findViewById(R.id.brush_alpha_seekbar);
+        brushColorSeekBar = findViewById(R.id.brush_color_seekbar);
 
 
         brushSizeSeekBar.setOnSeekBarChangeListener(new SimpleOnSeekBarChangeListener() {
@@ -124,9 +124,9 @@ public class SelectPaintView extends LinearLayout implements PaintSelector {
         brushColorSeekBar.setProgress((int) paintWrapper.getHsv()[0]);
     }
 
-    private void setProgressBar(int which, int value){
+    private void setProgressBar(int which, int value) {
 
-        switch(which){
+        switch (which) {
 
             case SIZE:
                 paintWrapper.setSize(value);
