@@ -9,14 +9,13 @@ import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.Shader;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
 import com.sasaj.graphics.paintselector.com.sasaj.graphics.paintselector.interfaces.PaintSelector;
 
 /**
- * Created by User on 7/17/2016.
+ * Created by sjugurdzija on 7/17/2016.
  */
 public class SaturationBrightnessSelector extends View{
 
@@ -34,7 +33,7 @@ public class SaturationBrightnessSelector extends View{
     private Paint circlePaint;
     private float factor;
 
-    final float[] hsv = { 1f, 1f, 1f };
+    final float[] globalHsv = { 1f, 1f, 1f };
     private Shader brightnessGradient;
     private Shader saturationGradient;
 
@@ -57,6 +56,8 @@ public class SaturationBrightnessSelector extends View{
 
         setLayerType(View.LAYER_TYPE_SOFTWARE, null);
         factor = 0;
+
+        backgroundPaint = new Paint();
 
         circlePaint = new Paint();
         circlePaint.setStrokeWidth(5);
@@ -85,6 +86,8 @@ public class SaturationBrightnessSelector extends View{
         factor = 1/(float)w;
         cx = saturation/factor;
         cy = (1 - brightness)/factor;
+
+        updateView();
     }
 
     @Override
@@ -97,29 +100,17 @@ public class SaturationBrightnessSelector extends View{
     public void setHue(float hue){
         this.hue = hue;
 
-        hsv[0] = hue;
+        globalHsv[0] = hue;
         picker.setColor(getColorFromHsv());
 
-        invalidate();
+        updateView();
     }
 
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        if (backgroundPaint == null) {
-            backgroundPaint = new Paint();
-            brightnessGradient = new LinearGradient(0f, 0f, 0f, sourceHeight, 0xffffffff, 0xff000000, Shader.TileMode.CLAMP);
-        }
-        int rgb = Color.HSVToColor(hsv);
-        saturationGradient = new LinearGradient(0f, 0f, sourceWidth, 0f, 0xffffffff, rgb, Shader.TileMode.CLAMP);
-        ComposeShader shader = new ComposeShader(brightnessGradient, saturationGradient, PorterDuff.Mode.MULTIPLY);
-        backgroundPaint.setShader(shader);
-        canvas.drawRect(0f, 0f, this.getMeasuredWidth(), this.getMeasuredHeight(), backgroundPaint);
 
-        float circleHue = hue + 180; if(circleHue > 360) circleHue = circleHue - 360;
-        int circleColor = Color.HSVToColor(new float []{circleHue, 1- cx * factor, cy*factor});
-        circlePaint.setColor(circleColor);
-        if(cx<0) cx=0; if(cx > sourceWidth) cx = sourceWidth; if (cy < 0) cy = 0; if(cy > sourceHeight) cy = sourceHeight;
+        canvas.drawRect(0f, 0f, this.getMeasuredWidth(), this.getMeasuredHeight(), backgroundPaint);
         canvas.drawCircle(cx, cy, 10, circlePaint);
     }
 
@@ -132,7 +123,9 @@ public class SaturationBrightnessSelector extends View{
 
         int color = getColorFromHsv();
         picker.setColor(color);
-        invalidate();
+
+        updateView();
+
         return true;
     }
 
@@ -146,6 +139,25 @@ public class SaturationBrightnessSelector extends View{
         float[] hsv;
         hsv = new float[]{hue, saturation, brightness};
         return Color.HSVToColor(hsv);
+    }
+
+    private void updateView(){
+
+        int rgb = Color.HSVToColor(globalHsv);
+
+        //Update view's background parameters
+        brightnessGradient = new LinearGradient(0f, 0f, 0f, sourceHeight, 0xffffffff, 0xff000000, Shader.TileMode.CLAMP);
+        saturationGradient = new LinearGradient(0f, 0f, sourceWidth, 0f, 0xffffffff, rgb, Shader.TileMode.CLAMP);
+        ComposeShader shader = new ComposeShader(brightnessGradient, saturationGradient, PorterDuff.Mode.MULTIPLY);
+        backgroundPaint.setShader(shader);
+
+        //Update indicator's parameters
+        float circleHue = hue + 180; if(circleHue > 360) circleHue = circleHue - 360;
+        int circleColor = Color.HSVToColor(new float []{circleHue, 1- cx * factor, cy*factor});
+        circlePaint.setColor(circleColor);
+        if(cx<0) cx=0; if(cx > sourceWidth) cx = sourceWidth; if (cy < 0) cy = 0; if(cy > sourceHeight) cy = sourceHeight;
+
+        invalidate();
     }
 }
 
