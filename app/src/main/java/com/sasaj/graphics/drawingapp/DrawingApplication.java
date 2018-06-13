@@ -4,9 +4,9 @@ import android.app.Application;
 import android.content.Context;
 import android.os.Handler;
 
-import com.sasaj.graphics.drawingapp.drawing.di.DaggerPaintComponent;
-import com.sasaj.graphics.drawingapp.drawing.di.PaintComponent;
-import com.sasaj.graphics.drawingapp.drawing.di.PaintModule;
+import com.sasaj.graphics.drawingapp.ui.drawing.di.DaggerPaintComponent;
+import com.sasaj.graphics.drawingapp.ui.drawing.di.PaintComponent;
+import com.sasaj.graphics.drawingapp.ui.drawing.di.PaintModule;
 import com.squareup.leakcanary.LeakCanary;
 
 /**

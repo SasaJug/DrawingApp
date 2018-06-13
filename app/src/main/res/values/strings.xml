@@ -7,4 +7,6 @@
     <string name="save_mage_question">Save image?</string>
     <string name="ok">OK</string>
     <string name="cancel">CANCEL</string>
+    <string name="title_activity_start">StartActivity</string>
+    <string name="action_settings">Settings</string>
 </resources>
