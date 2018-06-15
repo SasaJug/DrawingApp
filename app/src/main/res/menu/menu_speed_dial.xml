@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/portrait_option"
+        android:title="@string/portrait"
+        android:icon="@drawable/ic_portrait_24dp" />
+    <item
+        android:id="@+id/landscape_option"
+        android:title="@string/landscape"
+        android:icon="@drawable/ic_landscape_24dp" />
+</menu>
