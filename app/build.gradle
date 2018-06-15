@@ -25,16 +25,18 @@ dependencies {
     implementation "com.android.support:design:$rootProject.supportLibraryVersion"
     implementation "com.android.support:recyclerview-v7:$rootProject.supportLibraryVersion"
     implementation "com.android.support:support-v4:$rootProject.supportLibraryVersion"
+    implementation "com.android.support:exifinterface:$rootProject.supportLibraryVersion"
+    implementation "com.android.support.constraint:constraint-layout:$rootProject.constraintLayoutVersion"
+
     implementation project(path: ':paintselector', configuration: 'default')
 
-    //CircularFloatingActionMenu
-    implementation 'com.oguzdev:CircularFloatingActionMenu:1.0.2'
+    //FloatingActionMenu
+    implementation "com.leinardi.android:speed-dial:1.0.0"
 
     //Picasso
     implementation 'com.squareup.picasso:picasso:2.71828'
 
     //Butterknife
-    implementation 'com.android.support.constraint:constraint-layout:1.1.1'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
 
     //Dagger

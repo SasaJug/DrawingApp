@@ -9,7 +9,7 @@ import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
 
-import com.sasaj.graphics.drawingapp.ui.main.DrawingListActivity
+import com.sasaj.graphics.drawingapp.ui.main.MainActivity
 
 /**
  * Created by sjugurdzija on 4/22/2017
@@ -38,7 +38,7 @@ class SplashActivity : AppCompatActivity() {
     }
 
     private fun startApp() {
-        val intent = Intent(this@SplashActivity, DrawingListActivity::class.java)
+        val intent = Intent(this@SplashActivity, MainActivity::class.java)
         startActivity(intent)
         finish()
     }
