@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by DS on 4/21/2017.
+ * Created by sjugurdzija on 4/21/2017.
  */
 
 public class DrawingsRepositoryImplementation implements DrawingsRepository {
@@ -32,31 +32,20 @@ public class DrawingsRepositoryImplementation implements DrawingsRepository {
         return INSTANCE;
     }
 
-    @Override
-    public void getDrawings(final LoadDrawingsCallback callback) {
-        Utilities.looperThread.postRunnable(new Runnable() {
-            @Override
-            public void run() {
-                File dir = FileUtilities.getAlbumStorageDir();
-                final List<Drawing> drawings = new ArrayList<>();
-                File[] list = dir.listFiles();
-                if (list != null && list.length > 0) {
-                    for (File file : list) {
-                        Drawing drawing = new Drawing(file.getAbsolutePath(), file.lastModified());
-                        drawings.add(drawing);
-                        Log.e(TAG, "run: " + file.getAbsolutePath());
-                    }
-                    Utilities.runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            callback.onDrawingsLoaded(drawings);
-                        }
-                    });
-                } else {
-                    callback.onDataNotAvailable();
-                }
+
+    public List<Drawing> getDrawings() {
+        File dir = FileUtilities.getAlbumStorageDir();
+        final List<Drawing> drawings = new ArrayList<>();
+        File[] list = dir.listFiles();
+        if (list != null && list.length > 0) {
+            for (File file : list) {
+                Drawing drawing = new Drawing(file.getAbsolutePath(), file.lastModified());
+                drawings.add(drawing);
+                Log.e(TAG, "run: " + file.getAbsolutePath());
             }
-        });
+
+        }
+        return drawings;
     }
 
     @Override
@@ -77,7 +66,7 @@ public class DrawingsRepositoryImplementation implements DrawingsRepository {
                     fos.flush();
                     fos.close();
 
-                    final Drawing drawing = new Drawing(imageFile.getAbsolutePath(),imageFile.lastModified());
+                    final Drawing drawing = new Drawing(imageFile.getAbsolutePath(), imageFile.lastModified());
                     Utilities.runOnUiThread(new Runnable() {
                         @Override
                         public void run() {

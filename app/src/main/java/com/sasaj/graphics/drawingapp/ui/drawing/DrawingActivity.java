@@ -93,10 +93,6 @@ public class DrawingActivity extends AppCompatActivity implements DrawingFragmen
             newFragment.show(getFragmentManager(), "com.sasaj.graphics.drawingapp.dialog");
         }
 
-//        @Override
-//        public void setPaint(Paint paint) {
-//            DrawingActivity.this.currentPaint = paint;
-//        }
 
         @Override
         public void startSaveDialog() {

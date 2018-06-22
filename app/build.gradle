@@ -28,7 +28,7 @@ dependencies {
     implementation "com.android.support:exifinterface:$rootProject.supportLibraryVersion"
     implementation "com.android.support.constraint:constraint-layout:$rootProject.constraintLayoutVersion"
 
-    implementation project(path: ':paintselector', configuration: 'default')
+    implementation project(path: ':paintselector')
 
     //FloatingActionMenu
     implementation "com.leinardi.android:speed-dial:1.0.0"
@@ -38,6 +38,16 @@ dependencies {
 
     //Butterknife
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
+
+
+    //Lifecycle
+    implementation "android.arch.lifecycle:extensions:$rootProject.archLifecycleVersion"
+    annotationProcessor "android.arch.lifecycle:compiler:$rootProject.archLifecycleVersion"
+
+    //Room
+    implementation "android.arch.persistence.room:runtime:1.1.1-rc1"
+    annotationProcessor "android.arch.persistence.room:compiler:1.1.1-rc1"
+
 
     //Dagger
     implementation "com.google.dagger:dagger:$rootProject.ext.daggerVersion"
@@ -51,11 +61,11 @@ dependencies {
 
     //Mockito
     testImplementation 'org.mockito:mockito-core:2.15.0'
-    androidTestImplementation 'org.mockito:mockito-android:2.7.22'
+    androidTestImplementation 'org.mockito:mockito-android:2.15.0'
 
     //JUnit
     testImplementation 'junit:junit:4.12'
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 }
 
 apply plugin: 'kotlin-android'

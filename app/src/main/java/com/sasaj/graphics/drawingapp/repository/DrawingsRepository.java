@@ -7,7 +7,7 @@ import com.sasaj.graphics.drawingapp.domain.Drawing;
 import java.util.List;
 
 /**
- * Created by DS on 4/21/2017.
+ * Created by sjugurdzija on 4/21/2017.
  */
 
 public interface DrawingsRepository {
@@ -35,7 +35,7 @@ public interface DrawingsRepository {
         void onError();
     }
 
-    void getDrawings(LoadDrawingsCallback callback);
+    List<Drawing> getDrawings();
 
     void getDrawing(String id, LoadDrawingCallback callback);
 
