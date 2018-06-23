@@ -11,5 +11,5 @@ import com.sasaj.graphics.drawingapp.domain.Drawing
 interface DrawingsRepository {
 
     val drawings: List<Drawing>
-    fun saveDrawing(bitmap: Bitmap)
+    fun saveDrawing(bitmap: Bitmap?)
 }

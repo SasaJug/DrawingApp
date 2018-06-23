@@ -19,7 +19,7 @@ class DrawingFragment : Fragment() {
     @Inject lateinit var paint: Paint
 
 
-    private val bitmap: Bitmap
+    private val bitmap: Bitmap?
         get() = drawing!!.bitmapFromView
 
     override fun onCreate(savedInstanceState: Bundle?) {

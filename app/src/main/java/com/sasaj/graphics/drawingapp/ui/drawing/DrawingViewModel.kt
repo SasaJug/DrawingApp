@@ -5,9 +5,9 @@ import android.graphics.Bitmap
 import com.sasaj.graphics.drawingapp.repository.DrawingsRepositoryImplementation
 
 class DrawingViewModel : ViewModel() {
-    private val repo: DrawingsRepositoryImplementation? = DrawingsRepositoryImplementation.getInstance()
+    private val repo: DrawingsRepositoryImplementation? = DrawingsRepositoryImplementation
 
-    fun saveDrawing(bitmap: Bitmap) {
+    fun saveDrawing(bitmap: Bitmap?) {
         repo?.saveDrawing(bitmap)
     }
 }

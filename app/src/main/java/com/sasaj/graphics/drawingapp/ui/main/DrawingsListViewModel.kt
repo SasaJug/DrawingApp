@@ -8,7 +8,7 @@ import com.sasaj.graphics.drawingapp.repository.DrawingsRepositoryImplementation
 class DrawingsListViewModel : ViewModel(){
     val drawings = MutableLiveData<List<Drawing>>()
 
-    private val repo: DrawingsRepositoryImplementation? = DrawingsRepositoryImplementation.getInstance()
+    private val repo: DrawingsRepositoryImplementation? = DrawingsRepositoryImplementation
 
     fun getDrawings(){
         drawings.postValue(repo?.drawings)
