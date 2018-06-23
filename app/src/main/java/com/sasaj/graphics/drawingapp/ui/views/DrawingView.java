@@ -1,4 +1,4 @@
-package com.sasaj.graphics.drawingapp.ui.views.layers;
+package com.sasaj.graphics.drawingapp.ui.views;
 
 import android.content.Context;
 import android.graphics.Bitmap;
