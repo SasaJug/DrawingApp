@@ -1,5 +1,5 @@
 buildscript { 
-    ext.kotlin_version = '1.2.50'
+    ext.kotlin_version = '1.2.10'
 
     repositories {
         jcenter()
@@ -30,9 +30,10 @@ ext {
 
     // App dependencies
     supportLibraryVersion = '27.1.1'
-    daggerVersion = '2.0.1'
+    daggerVersion = '2.15'
     jsr250Version = '1.0'
     constraintLayoutVersion = '1.1.2'
 
-    archLifecycleVersion = "1.1.0"
+    arch_runtime_version = "1.1.1"
+    arch_version = "1.1.1"
 }

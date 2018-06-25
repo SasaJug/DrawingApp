@@ -1,4 +1,4 @@
-package com.sasaj.graphics.paintselector.com.sasaj.graphics.paintselector.interfaces;
+package com.sasaj.graphics.paintselector.interfaces;
 
 /**
  * Created by User on 8/27/2016.

@@ -16,9 +16,9 @@ class DrawingActivity : AppCompatActivity(){
 
     companion object {
 
-        val ORIENTATION = "ORIENTATION"
-        val LANDSCAPE = 0
-        val PORTRAIT = 1
+        const val ORIENTATION = "ORIENTATION"
+        const val LANDSCAPE = 0
+        const val PORTRAIT = 1
 
         fun createIntent(context: Context, orientation: Int): Intent {
             val intent = Intent(context, DrawingActivity::class.java)

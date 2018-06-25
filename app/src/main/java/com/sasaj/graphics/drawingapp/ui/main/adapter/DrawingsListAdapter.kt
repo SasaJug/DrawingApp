@@ -6,26 +6,23 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-
 import com.sasaj.graphics.drawingapp.R
 import com.sasaj.graphics.drawingapp.domain.Drawing
 import com.sasaj.graphics.drawingapp.ui.main.DrawingsListFragment
 import com.squareup.picasso.Picasso
-
 import java.io.File
-import java.util.ArrayList
-import java.util.Collections
+import java.util.*
 
 /**
  * Created by sjugurdzija on 4/22/2017.
  */
 
 class DrawingsListAdapter(context: Context, list: List<Drawing>, private val listener: DrawingsListFragment.DrawingItemListener) : RecyclerView.Adapter<DrawingsListAdapter.ViewHolder>() {
-    private var data: List<Drawing> = ArrayList()
+    private var data: MutableList<Drawing> = ArrayList()
     private val inflater: LayoutInflater = LayoutInflater.from(context)
 
     init {
-        this.data = list
+        this.data = list.toMutableList()
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -49,8 +46,8 @@ class DrawingsListAdapter(context: Context, list: List<Drawing>, private val lis
     }
 
     fun setDrawings(list: List<Drawing>) {
-        data = list
-        Collections.sort(data)
+        data = list.toMutableList()
+        data.sort()
         notifyDataSetChanged()
     }
 

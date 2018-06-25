@@ -1,6 +1,7 @@
 package com.sasaj.graphics.drawingapp.ui.main
 
 import android.arch.lifecycle.Observer
+import android.arch.lifecycle.ViewModelProvider
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.content.res.Configuration
@@ -18,8 +19,12 @@ import com.sasaj.graphics.drawingapp.BuildConfig
 import com.sasaj.graphics.drawingapp.R
 import com.sasaj.graphics.drawingapp.domain.Drawing
 import com.sasaj.graphics.drawingapp.ui.main.adapter.DrawingsListAdapter
+import com.sasaj.graphics.drawingapp.viewmodel.DrawingListViewModel
 import java.io.File
 import java.util.*
+import javax.inject.Inject
+
+
 
 class DrawingsListFragment : Fragment() {
 
@@ -28,7 +33,7 @@ class DrawingsListFragment : Fragment() {
         private const val NUMBER_OF_COLUMNS_LANDSCAPE = 5
     }
 
-    private lateinit var vm: DrawingsListViewModel
+    private lateinit var vm: DrawingListViewModel
     private lateinit var drawingsList: RecyclerView
     private lateinit var adapter: DrawingsListAdapter
 
@@ -67,15 +72,18 @@ class DrawingsListFragment : Fragment() {
         adapter = DrawingsListAdapter(activity!!, ArrayList(0), drawingItemListener)
         drawingsList.adapter = adapter
 
-        vm = ViewModelProviders.of(this)[DrawingsListViewModel::class.java]
+        return root
+    }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        vm = ViewModelProviders.of(this)[DrawingListViewModel::class.java]
 
         val observer = Observer<List<Drawing>> { value ->
             if (value != null)
-                adapter?.setDrawings(value)
+                adapter.setDrawings(value)
         }
         vm.drawings.observe(activity!!, observer)
-
-        return root
     }
 
     override fun onResume() {

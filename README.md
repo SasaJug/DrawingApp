@@ -3,20 +3,13 @@
 ### Drawing Application  ###
 
 * Android app for on-screen drawing
-* Created for purpose of development of "paint selector", widget for choosing Android Paint Object's size, blur, alpha and color. The widget will be developed as standalone library. 
 
-### To implement in PaintSelector: ###
+* Kotlin
+* Clean architecture
+* Android Architecture Components (ViewModel and LiveData)
+* Dagger2 dependency injection
 
-* On configuration change persistence
-* Responsiveness to different screen sizes and orientations
+* Screenshots:
 
-### To implement in DrawingApp ###
-
-* More efficient drawing surface
-* Photoshop-like layers
-* Editing existing drawings capability
-
-* Screenshots - present look:
-
-![Screenshot_2017-04-23-19-05-03.png](https://bitbucket.org/repo/9a9649/images/2483177284-Screenshot_2017-04-23-19-05-03.png)
-![Screenshot_2017-04-23-19-06-01.png](https://bitbucket.org/repo/9a9649/images/3447355535-Screenshot_2017-04-23-19-06-01.png)
+![Screenshot_1](https://imgur.com/YSii38q)
+![Screenshot_2](https://imgur.com/uSe0C6B)

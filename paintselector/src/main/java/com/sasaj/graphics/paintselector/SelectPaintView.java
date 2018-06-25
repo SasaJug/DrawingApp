@@ -1,19 +1,14 @@
 package com.sasaj.graphics.paintselector;
 
 import android.content.Context;
-import android.graphics.Color;
-import android.graphics.Paint;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.ViewGroup;
-import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
 
-import com.sasaj.graphics.paintselector.com.sasaj.graphics.paintselector.interfaces.PaintSelector;
-import com.sasaj.graphics.paintselector.com.sasaj.graphics.paintselector.utils.PaintWrapper;
-import com.sasaj.graphics.paintselector.com.sasaj.graphics.paintselector.utils.SimpleOnSeekBarChangeListener;
+import com.sasaj.graphics.paintselector.interfaces.PaintSelector;
+import com.sasaj.graphics.paintselector.utils.PaintWrapper;
+import com.sasaj.graphics.paintselector.utils.SimpleOnSeekBarChangeListener;
 
 /**
  * Created by User on 6/25/2016.

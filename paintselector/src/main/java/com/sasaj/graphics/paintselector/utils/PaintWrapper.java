@@ -1,4 +1,4 @@
-package com.sasaj.graphics.paintselector.com.sasaj.graphics.paintselector.utils;
+package com.sasaj.graphics.paintselector.utils;
 
 import android.graphics.BlurMaskFilter;
 import android.graphics.Color;

@@ -1,4 +1,8 @@
 apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
+
 android {
     compileSdkVersion rootProject.compileSdkVersion
     buildToolsVersion rootProject.buildToolsVersion
@@ -36,26 +40,22 @@ dependencies {
     //Picasso
     implementation 'com.squareup.picasso:picasso:2.71828'
 
-    //Butterknife
-    annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
-
-
-    //Lifecycle
-    implementation "android.arch.lifecycle:extensions:$rootProject.archLifecycleVersion"
-    annotationProcessor "android.arch.lifecycle:compiler:$rootProject.archLifecycleVersion"
-
-    //Room
-    implementation "android.arch.persistence.room:runtime:1.1.1-rc1"
-    annotationProcessor "android.arch.persistence.room:compiler:1.1.1-rc1"
-
+    // architecture components
+    implementation "android.arch.lifecycle:runtime:$rootProject.ext.arch_runtime_version"
+    implementation "android.arch.lifecycle:extensions:$rootProject.ext.arch_version"
+    implementation "android.arch.lifecycle:reactivestreams:$rootProject.ext.arch_version"
+    kapt "android.arch.lifecycle:compiler:$rootProject.ext.arch_version"
 
     //Dagger
     implementation "com.google.dagger:dagger:$rootProject.ext.daggerVersion"
+    implementation "com.google.dagger:dagger-android:$rootProject.ext.daggerVersion"
+    implementation "com.google.dagger:dagger-android-support:$rootProject.ext.daggerVersion"
     annotationProcessor "com.google.dagger:dagger-compiler:$rootProject.ext.daggerVersion"
+    kapt "com.google.dagger:dagger-compiler:$rootProject.ext.daggerVersion"
     implementation "javax.annotation:jsr250-api:$rootProject.ext.jsr250Version"
 
     //LeakCanary
-    debugImplementation 'com.squareup.leakcanary:leakcanary-android:1.5'
+//    debugImplementation 'com.squareup.leakcanary:leakcanary-android:1.5'
     releaseImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:1.5'
     testImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:1.5'
 
@@ -68,5 +68,3 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 }
 
-apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-android-extensions'

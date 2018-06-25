@@ -1,4 +1,4 @@
-package com.sasaj.graphics.drawingapp.repository
+package com.sasaj.graphics.drawingapp.viewmodel.dependencies
 
 import android.graphics.Bitmap
 

@@ -101,7 +101,6 @@ class DrawingView : View {
     }
 
     companion object {
-
         private val TAG = DrawingView::class.java.simpleName
         private val TOUCH_TOLERANCE = 4f
     }

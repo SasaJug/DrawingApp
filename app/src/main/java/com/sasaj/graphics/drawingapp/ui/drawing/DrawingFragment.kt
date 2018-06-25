@@ -10,13 +10,14 @@ import android.view.*
 import com.sasaj.graphics.drawingapp.DrawingApplication
 import com.sasaj.graphics.drawingapp.R
 import com.sasaj.graphics.drawingapp.ui.views.DrawingView
+import com.sasaj.graphics.paintselector.utils.PaintWrapper
 import javax.inject.Inject
 
 class DrawingFragment : Fragment() {
     private var drawing: DrawingView? = null
     private var vm: DrawingViewModel? = null
 
-    @Inject lateinit var paint: Paint
+    val paint: Paint = PaintWrapper.getInstance().getPaint()
 
 
     private val bitmap: Bitmap?
@@ -24,7 +25,6 @@ class DrawingFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setupInjection()
         setHasOptionsMenu(true)
         vm = ViewModelProviders.of(this).get(DrawingViewModel::class.java)
     }
@@ -82,10 +82,4 @@ class DrawingFragment : Fragment() {
         vm!!.saveDrawing(bitmap)
     }
 
-
-    private fun setupInjection() {
-        val app = activity!!.application as DrawingApplication
-        val paintComponent = app.paintComponent
-        paintComponent.inject(this)
-    }
 }

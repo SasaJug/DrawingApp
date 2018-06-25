@@ -12,7 +12,7 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 
-import com.sasaj.graphics.paintselector.com.sasaj.graphics.paintselector.interfaces.PaintSelector;
+import com.sasaj.graphics.paintselector.interfaces.PaintSelector;
 
 /**
  * Created by sjugurdzija on 7/17/2016.
