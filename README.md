@@ -11,5 +11,5 @@
 
 * Screenshots:
 
-![Screenshot_1](https://i.imgur.com/YSii38q.png)
-![Screenshot_2](https://i.imgur.com/uSe0C6B.png)
+![Screenshot_1](https://i.imgur.com/YSii38qh.png)
+![Screenshot_2](https://i.imgur.com/uSe0C6Bh.png)
