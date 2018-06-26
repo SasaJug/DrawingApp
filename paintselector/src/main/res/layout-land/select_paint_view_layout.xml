@@ -17,7 +17,6 @@
                 android:id="@+id/brush_sample"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/bg_contour"
                 />
 
             <com.sasaj.graphics.paintselector.SaturationBrightnessSelector
