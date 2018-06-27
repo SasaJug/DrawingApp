@@ -1,6 +1,6 @@
 package com.sasaj.graphics.drawingapp.di
 
-import com.sasaj.graphics.drawingapp.ui.drawing.DrawingViewModel
+import com.sasaj.graphics.drawingapp.viewmodel.DrawingViewModel
 import com.sasaj.graphics.drawingapp.viewmodel.DrawingListViewModel
 import dagger.Component
 import javax.inject.Singleton

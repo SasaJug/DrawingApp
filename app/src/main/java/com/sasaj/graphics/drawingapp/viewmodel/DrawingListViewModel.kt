@@ -14,7 +14,8 @@ class DrawingListViewModel : BaseViewModel() {
 
 
     fun getDrawings(){
-        drawings.postValue(drawingsRepository?.drawings)
+        val thread = Thread(Runnable {  drawings.postValue(drawingsRepository.drawings) })
+        thread.start()
     }
 
 

@@ -3,9 +3,9 @@
              android:layout_width="match_parent"
              android:layout_height="match_parent">
 
-    <com.sasaj.graphics.paintselector.SelectPaintView
+    <com.sasaj.graphics.drawingapp.ui.brushselector.views.SelectPaintView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-    </com.sasaj.graphics.paintselector.SelectPaintView>
+    </com.sasaj.graphics.drawingapp.ui.brushselector.views.SelectPaintView>
 
 </FrameLayout>

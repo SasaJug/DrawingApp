@@ -1,4 +1,4 @@
-package com.sasaj.graphics.drawingapp.ui.drawing
+package com.sasaj.graphics.drawingapp.viewmodel
 
 import android.graphics.Bitmap
 import com.sasaj.graphics.drawingapp.viewmodel.BaseViewModel
@@ -11,6 +11,7 @@ class DrawingViewModel : BaseViewModel() {
     lateinit var drawingsRepository: DrawingsRepository
 
     fun saveDrawing(bitmap: Bitmap?) {
-        drawingsRepository.saveDrawing(bitmap)
+        val thread = Thread(Runnable { drawingsRepository.saveDrawing(bitmap) })
+        thread.start()
     }
 }

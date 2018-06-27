@@ -26,7 +26,7 @@ class SelectPaintDialogFragment : DialogFragment() {
         private val TAG = SelectPaintDialogFragment::class.java.simpleName
 
 
-        fun newInstance(index: Int): SelectPaintDialogFragment {
+        private fun newInstance(index: Int): SelectPaintDialogFragment {
 
             val df = SelectPaintDialogFragment()
             val args = Bundle()

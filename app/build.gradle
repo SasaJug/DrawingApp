@@ -32,7 +32,7 @@ dependencies {
     implementation "com.android.support:exifinterface:$rootProject.supportLibraryVersion"
     implementation "com.android.support.constraint:constraint-layout:$rootProject.constraintLayoutVersion"
 
-    implementation project(path: ':paintselector')
+//    implementation project(path: ':paintselector')
 
     //FloatingActionMenu
     implementation "com.leinardi.android:speed-dial:1.0.0"

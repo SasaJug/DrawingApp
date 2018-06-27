@@ -4,7 +4,6 @@ import android.arch.lifecycle.ViewModel
 import com.sasaj.graphics.drawingapp.di.ApplicationModule
 import com.sasaj.graphics.drawingapp.di.DaggerViewModelInjector
 import com.sasaj.graphics.drawingapp.di.ViewModelInjector
-import com.sasaj.graphics.drawingapp.ui.drawing.DrawingViewModel
 
 abstract class BaseViewModel:ViewModel(){
     private val injector: ViewModelInjector = DaggerViewModelInjector.builder()

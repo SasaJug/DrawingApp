@@ -7,12 +7,12 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_margin="20dp"
             android:orientation="vertical">
 
 
-            <com.sasaj.graphics.paintselector.BrushSample
+            <com.sasaj.graphics.drawingapp.ui.brushselector.views.BrushSample
                 android:id="@+id/brush_sample"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -39,7 +39,7 @@
                 android:orientation="horizontal">
 
 
-                <com.sasaj.graphics.paintselector.SaturationBrightnessSelector
+                <com.sasaj.graphics.drawingapp.ui.brushselector.views.SaturationBrightnessSelector
                     android:id="@+id/sb_selector"
                     android:layout_width="100dp"
                     android:layout_height="100dp"

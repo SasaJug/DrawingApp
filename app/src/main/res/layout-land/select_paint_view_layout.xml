@@ -13,13 +13,13 @@
             android:layout_gravity="center">
 
 
-            <com.sasaj.graphics.paintselector.BrushSample
+            <com.sasaj.graphics.drawingapp.ui.brushselector.views.BrushSample
                 android:id="@+id/brush_sample"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 />
 
-            <com.sasaj.graphics.paintselector.SaturationBrightnessSelector
+            <com.sasaj.graphics.drawingapp.ui.brushselector.views.SaturationBrightnessSelector
                 android:id="@+id/sb_selector"
                 android:layout_width="150dp"
                 android:layout_height="150dp"

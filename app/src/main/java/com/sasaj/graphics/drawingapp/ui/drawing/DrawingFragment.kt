@@ -7,17 +7,16 @@ import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.app.AlertDialog
 import android.view.*
-import com.sasaj.graphics.drawingapp.DrawingApplication
 import com.sasaj.graphics.drawingapp.R
-import com.sasaj.graphics.drawingapp.ui.views.DrawingView
-import com.sasaj.graphics.paintselector.utils.PaintWrapper
-import javax.inject.Inject
+import com.sasaj.graphics.drawingapp.ui.brushselector.utilities.PaintWrapper
+import com.sasaj.graphics.drawingapp.ui.brushselector.views.DrawingView
+import com.sasaj.graphics.drawingapp.viewmodel.DrawingViewModel
 
 class DrawingFragment : Fragment() {
     private var drawing: DrawingView? = null
     private var vm: DrawingViewModel? = null
 
-    val paint: Paint = PaintWrapper.getInstance().getPaint()
+    val paint: Paint = PaintWrapper.paint
 
 
     private val bitmap: Bitmap?

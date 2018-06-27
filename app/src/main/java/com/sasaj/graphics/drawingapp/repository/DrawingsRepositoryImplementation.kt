@@ -31,7 +31,6 @@ class DrawingsRepositoryImplementation : DrawingsRepository {
                     val drawing = Drawing(file.absolutePath, file.lastModified())
                     drawings.add(drawing)
                 }
-
             }
             return drawings
         }
@@ -77,7 +76,6 @@ class DrawingsRepositoryImplementation : DrawingsRepository {
         } catch (e: IOException) {
             Log.e(TAG, e.message)
         }
-
     }
 
 
