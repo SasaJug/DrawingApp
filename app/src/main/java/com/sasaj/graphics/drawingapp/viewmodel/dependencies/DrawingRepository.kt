@@ -8,8 +8,7 @@ import com.sasaj.graphics.drawingapp.domain.Drawing
  * Created by sjugurdzija on 4/21/2017.
  */
 
-interface DrawingsRepository {
-
-    val drawings: List<Drawing>
+interface DrawingRepository {
+    fun getDrawings(): List<Drawing>
     fun saveDrawing(bitmap: Bitmap?)
 }

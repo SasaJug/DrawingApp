@@ -3,13 +3,9 @@ package com.sasaj.graphics.drawingapp.ui.drawing
 import android.content.Context
 import android.content.Intent
 import android.content.pm.ActivityInfo
-import android.graphics.Bitmap
-import android.net.Uri
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
-import android.view.View
 import com.sasaj.graphics.drawingapp.R
-import com.sasaj.graphics.drawingapp.repository.DrawingsRepositoryImplementation
 import kotlinx.android.synthetic.main.activity_drawing.*
 
 class DrawingActivity : AppCompatActivity(){

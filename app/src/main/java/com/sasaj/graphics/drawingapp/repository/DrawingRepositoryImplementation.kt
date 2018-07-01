@@ -4,7 +4,7 @@ import android.graphics.Bitmap
 import android.os.Environment
 import android.util.Log
 import com.sasaj.graphics.drawingapp.domain.Drawing
-import com.sasaj.graphics.drawingapp.viewmodel.dependencies.DrawingsRepository
+import com.sasaj.graphics.drawingapp.viewmodel.dependencies.DrawingRepository
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
@@ -15,14 +15,13 @@ import java.util.*
  * Created by sjugurdzija on 4/21/2017.
  */
 
-class DrawingsRepositoryImplementation : DrawingsRepository {
+class DrawingRepositoryImplementation : DrawingRepository {
 
     companion object {
-        val  TAG = DrawingsRepositoryImplementation::class.java.simpleName
+        val  TAG = DrawingRepositoryImplementation::class.java.simpleName
     }
 
-    override val drawings: List<Drawing>
-        get() {
+    override fun getDrawings(): List<Drawing> {
             val dir = albumStorageDir()
             val drawings = ArrayList<Drawing>()
             val list = dir.listFiles()
@@ -35,7 +34,19 @@ class DrawingsRepositoryImplementation : DrawingsRepository {
             return drawings
         }
 
-    fun getImageFile(): File {
+    override fun saveDrawing(bitmap: Bitmap?) {
+        try {
+            val imageFile = getImageFile()
+            val fos = FileOutputStream(imageFile)
+            bitmap?.compress(Bitmap.CompressFormat.PNG, 100, fos)
+            fos.flush()
+            fos.close()
+        } catch (e: IOException) {
+            Log.e(TAG, e.message)
+        }
+    }
+
+    private fun getImageFile(): File {
         val filename = createImageFileName()
         val ext = albumStorageDir()
         val extPath = ext.path
@@ -56,7 +67,6 @@ class DrawingsRepositoryImplementation : DrawingsRepository {
         return file
     }
 
-
     private fun albumStorageDir(): File {
         val file = File(Environment.getExternalStoragePublicDirectory(
                 Environment.DIRECTORY_PICTURES), "DrawingApp")
@@ -65,24 +75,9 @@ class DrawingsRepositoryImplementation : DrawingsRepository {
         return file
     }
 
-
-    override fun saveDrawing(bitmap: Bitmap?) {
-        try {
-            val imageFile = getImageFile()
-            val fos = FileOutputStream(imageFile)
-            bitmap?.compress(Bitmap.CompressFormat.PNG, 100, fos)
-            fos.flush()
-            fos.close()
-        } catch (e: IOException) {
-            Log.e(TAG, e.message)
-        }
-    }
-
-
     private fun createImageFileName(): String {
         // Create an image file name
         val timeStamp = SimpleDateFormat("yyyy_MM_dd_HH_mm_ss", Locale.ENGLISH).format(Date())
         return "drawing_$timeStamp.jpg"
     }
-
 }
