@@ -7,6 +7,7 @@ import android.widget.LinearLayout
 import android.widget.SeekBar
 
 import com.sasaj.graphics.drawingapp.R
+import com.sasaj.graphics.drawingapp.domain.Brush
 import com.sasaj.graphics.drawingapp.ui.brushselector.interfaces.PaintSelector
 import com.sasaj.graphics.drawingapp.ui.brushselector.utilities.PaintWrapper
 import com.sasaj.graphics.drawingapp.ui.brushselector.utilities.SimpleOnSeekBarChangeListener
@@ -15,6 +16,8 @@ import com.sasaj.graphics.drawingapp.ui.brushselector.utilities.SimpleOnSeekBarC
  * Created by sjugurdzija on 6/25/2016.
  */
 class SelectPaintView : LinearLayout, PaintSelector {
+
+    private lateinit var brush : Brush
 
     private lateinit var sbSelector: SaturationBrightnessSelector
     private lateinit var brushSample: BrushSample
@@ -135,10 +138,10 @@ class SelectPaintView : LinearLayout, PaintSelector {
 
         private val TAG = SelectPaintView::class.java.simpleName
 
-        private val SIZE = 1
-        private val BLUR = 2
-        private val ALPHA = 3
-        private val HUE = 4
+        private const val SIZE = 1
+        private const val BLUR = 2
+        private const val ALPHA = 3
+        private const val HUE = 4
     }
 }
 
