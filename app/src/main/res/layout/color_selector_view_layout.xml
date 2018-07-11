@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="@layout/select_paint_view_layout">
+
+
+
+    <com.sasaj.graphics.drawingapp.ui.brushselector.views.SaturationBrightnessSelector
+        android:id="@+id/sbSelector"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <SeekBar
+            android:id="@+id/brushAlphaSeekBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:max="255"/>
+
+        <SeekBar
+            android:id="@+id/brushColorSeekBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:thumb="@drawable/thumb_drawable"
+            android:max="359"/>
+
+    </LinearLayout>
+
+
+</merge>

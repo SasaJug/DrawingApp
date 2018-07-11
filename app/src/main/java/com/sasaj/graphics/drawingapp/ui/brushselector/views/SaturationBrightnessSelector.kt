@@ -1,31 +1,34 @@
 package com.sasaj.graphics.drawingapp.ui.brushselector.views
 
 import android.content.Context
-import android.graphics.Canvas
-import android.graphics.Color
-import android.graphics.ComposeShader
-import android.graphics.LinearGradient
-import android.graphics.Paint
-import android.graphics.PorterDuff
-import android.graphics.Shader
+import android.graphics.*
 import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.View
-
-import com.sasaj.graphics.drawingapp.ui.brushselector.interfaces.PaintSelector
-
+import com.sasaj.graphics.drawingapp.ui.brushselector.utilities.OnColorComponentSelectedListener
 
 /**
  * Created by sjugurdzija on 7/17/2016.
  */
 class SaturationBrightnessSelector : View {
+
+    companion object {
+        private val TAG = SaturationBrightnessSelector::class.java.simpleName
+    }
+
+    private var selectionListener: OnColorComponentSelectedListener? = null
     private var sourceWidth = 0
     private var sourceHeight = 0
 
-    var selectedHue: Float = 0.0f
+    var hue: Float = 0.0f
+        set(value) {
+            field = value
+            globalHsv[0] = value
+            updateView()
+        }
     var saturation: Float = 0.0f
-    var brightness: Float =0.0f
-    lateinit var picker: PaintSelector
+    var brightness: Float = 0.0f
+
     private var cx: Float = 0.0f
     private var cy: Float = 0.0f
     private lateinit var backgroundPaint: Paint
@@ -35,12 +38,6 @@ class SaturationBrightnessSelector : View {
     private val globalHsv = floatArrayOf(1f, 1f, 1f)
     private var brightnessGradient: Shader? = null
     private var saturationGradient: Shader? = null
-
-    private val colorFromHsv: Int
-        get() {
-            val hsv: FloatArray = floatArrayOf(selectedHue, saturation, brightness)
-            return Color.HSVToColor(hsv)
-        }
 
     constructor(context: Context) : super(context) {
         init()
@@ -57,7 +54,6 @@ class SaturationBrightnessSelector : View {
     private fun init() {
 
         setLayerType(View.LAYER_TYPE_SOFTWARE, null)
-        factor = 0f
 
         backgroundPaint = Paint()
 
@@ -69,14 +65,11 @@ class SaturationBrightnessSelector : View {
         circlePaint.strokeCap = Paint.Cap.ROUND
     }
 
-    fun setColorPicker(picker: PaintSelector) {
-        this.picker = picker
-
-        val color = picker.color
-        val hsv = getHsvFromColor(color)
-        selectedHue = hsv[0]
+    fun setColor(hsv: FloatArray) {
+        hue = hsv[0]
         saturation = hsv[1]
         brightness = hsv[2]
+        updateView()
     }
 
 
@@ -96,16 +89,6 @@ class SaturationBrightnessSelector : View {
         setMeasuredDimension(width, width)
     }
 
-
-    fun setHue(hue: Float) {
-        this.selectedHue = hue
-
-        globalHsv[0] = hue
-        picker.color = colorFromHsv
-
-        updateView()
-    }
-
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
 
@@ -118,19 +101,12 @@ class SaturationBrightnessSelector : View {
         cy = event.y
         saturation = cx * factor
         brightness = 1 - cy * factor
-
-        val color = colorFromHsv
-        picker.color = color
+        selectionListener?.setSaturation(saturation)
+        selectionListener?.setBrightness(brightness)
 
         updateView()
 
         return true
-    }
-
-    private fun getHsvFromColor(color: Int): FloatArray {
-        val hsv = FloatArray(3)
-        Color.colorToHSV(color, hsv)
-        return hsv
     }
 
     private fun updateView() {
@@ -144,7 +120,7 @@ class SaturationBrightnessSelector : View {
         backgroundPaint.shader = shader
 
         //Update indicator's parameters
-        var circleHue = selectedHue + 180
+        var circleHue = hue + 180
         if (circleHue > 360) circleHue -= 360
         val circleColor = Color.HSVToColor(floatArrayOf(circleHue, 1 - cx * factor, cy * factor))
         circlePaint.color = circleColor
@@ -156,25 +132,7 @@ class SaturationBrightnessSelector : View {
         invalidate()
     }
 
-    companion object {
-
-        private val TAG = "SaturationBrightness"
+    fun setListener(selectionListener: OnColorComponentSelectedListener?) {
+        this.selectionListener = selectionListener
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

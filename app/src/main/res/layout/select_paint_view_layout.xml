@@ -13,62 +13,34 @@
 
 
             <com.sasaj.graphics.drawingapp.ui.brushselector.views.BrushSample
-                android:id="@+id/brush_sample"
+                android:id="@+id/brushSample"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 />
 
             <SeekBar
-                android:id="@+id/brush_size_seekbar"
+                android:id="@+id/brushSizeSeekBar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:max="100"/>
 
             <SeekBar
-                android:id="@+id/brush_blur_seekbar"
+                android:id="@+id/brushBlurSeekBar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:max="50"/>
 
-            <LinearLayout
+            <com.sasaj.graphics.drawingapp.ui.brushselector.views.ColorSelectorView
+                android:id="@+id/colorSelector"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:orientation="horizontal">
+                android:layout_marginTop="10dp">
+            </com.sasaj.graphics.drawingapp.ui.brushselector.views.ColorSelectorView>
 
-
-                <com.sasaj.graphics.drawingapp.ui.brushselector.views.SaturationBrightnessSelector
-                    android:id="@+id/sb_selector"
-                    android:layout_width="100dp"
-                    android:layout_height="100dp"
-                    />
-
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
-
-                    <SeekBar
-                        android:id="@+id/brush_alpha_seekbar"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:max="255"/>
-
-
-                    <SeekBar
-                        android:id="@+id/brush_color_seekbar"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:max="359"/>
-                </LinearLayout>
-            </LinearLayout>
         </LinearLayout>
+
     </ScrollView>
 
 </merge>

@@ -5,13 +5,12 @@ import android.graphics.*
 import android.util.AttributeSet
 import android.view.View
 
-
 /**
  * Created by sjugurdzija on 6/25/2016.
  */
 class BrushSample : View {
     private lateinit var path: Path
-    private lateinit var paint: Paint
+    private var paint: Paint? = null
     private lateinit var bgPaint: Paint
 
     constructor(context: Context) : super(context) {
@@ -30,8 +29,7 @@ class BrushSample : View {
         setLayerType(View.LAYER_TYPE_SOFTWARE, null)
     }
 
-
-    fun setPaint(paint: Paint) {
+    fun setPaint(paint: Paint?) {
         this.paint = paint
         invalidate()
     }

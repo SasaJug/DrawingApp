@@ -32,7 +32,11 @@ dependencies {
     implementation "com.android.support:exifinterface:$rootProject.supportLibraryVersion"
     implementation "com.android.support.constraint:constraint-layout:$rootProject.constraintLayoutVersion"
 
-//    implementation project(path: ':paintselector')
+    //Rx
+    implementation 'io.reactivex.rxjava2:rxjava:2.1.10'
+    implementation 'io.reactivex.rxjava2:rxkotlin:2.2.0'
+    implementation 'com.jakewharton.rxbinding2:rxbinding-support-v4-kotlin:2.1.1'
+    implementation 'com.jakewharton.rxbinding2:rxbinding-appcompat-v7-kotlin:2.1.1'
 
     //FloatingActionMenu
     implementation "com.leinardi.android:speed-dial:1.0.0"

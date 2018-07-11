@@ -3,38 +3,74 @@ package com.sasaj.graphics.drawingapp.ui.brushselector.utilities
 import android.graphics.BlurMaskFilter
 import android.graphics.Color
 import android.graphics.Paint
-import android.util.Log
 
 /**
  * Created by sjugurdzija on 6/28/2016.
  */
 object PaintWrapper {
-
-    private var size: Int = 0
-    private var blur: Float = 0.toFloat()
-    private var alpha: Int = 0
-    private var color: Int = 0
-    var hsv: FloatArray? = null
-        get() {
-            Color.colorToHSV(color, field)
-            Log.e("PaintWrapper", "getHsv() called with: " + field!![0] + field!![1] + field!![2])
-            return field
+    //TODO move to paint extension functions.
+    /**
+     * Brush diameter
+     * range 0-100 Integer
+     */
+    var size: Int = 0
+        set(value) {
+            field = value
+            paint.strokeWidth = value.toFloat()
         }
 
-    var paint: Paint
+    /**
+     * Brush blur
+     * range 0-50 Float
+     */
+    var blur: Float = 0f
+        set(value) {
+            field = if (value == 0f)
+                1f
+            else
+                value
+            paint.maskFilter = BlurMaskFilter(field, BlurMaskFilter.Blur.NORMAL)
+        }
+
+    var alpha: Int = 255
+        set(value) {
+            field = value
+            paint.alpha = value
+        }
+
+    var hue: Float = 0.0f
+        set(value) {
+            field = value
+            hsv[0] = value
+            color = Color.HSVToColor(hsv)
+            paint.color = color
+        }
+
+    var saturation: Float = 0.0f
+        set(value) {
+            field = value
+            hsv[1] = value
+            color = Color.HSVToColor(hsv)
+            paint.color = color
+        }
+
+    var brightness: Float = 0.0f
+        set(value) {
+            field = value
+            hsv[2] = value
+            color = Color.HSVToColor(hsv)
+            paint.color = color
+        }
+
+    var color: Int = 0
+        get() {
+            return Color.HSVToColor(hsv)
+        }
+
+    var hsv: FloatArray = FloatArray(3)
+    var paint: Paint = Paint()
 
     init {
-        size = 10
-        blur = 1f
-        alpha = 255
-        color = -0x1000000
-        this.hsv = FloatArray(3)
-
-        paint = Paint()
-        paint.color = color
-        paint.strokeWidth = size.toFloat()
-        paint.alpha = alpha
-        paint.maskFilter = BlurMaskFilter(blur, BlurMaskFilter.Blur.NORMAL)
 
         paint.isAntiAlias = true
         paint.style = Paint.Style.STROKE
@@ -42,40 +78,4 @@ object PaintWrapper {
         paint.strokeCap = Paint.Cap.ROUND
     }
 
-    fun getSize(): Int {
-        return size
-    }
-
-    fun setSize(size: Int) {
-        this.size = size
-        paint.strokeWidth = size.toFloat()
-    }
-
-    fun getBlur(): Float {
-        return blur
-    }
-
-    fun setBlur(blur: Float) {
-        this.blur = blur
-        paint.maskFilter = BlurMaskFilter(blur, BlurMaskFilter.Blur.NORMAL)
-
-    }
-
-    fun getAlpha(): Int {
-        return alpha
-    }
-
-    fun setAlpha(alpha: Int) {
-        this.alpha = alpha
-        paint.alpha = alpha
-    }
-
-    fun getColor(): Int {
-        return color
-    }
-
-    fun setColor(color: Int) {
-        this.color = color
-        paint.color = color
-    }
 }
