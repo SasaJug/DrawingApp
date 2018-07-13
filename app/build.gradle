@@ -45,10 +45,10 @@ dependencies {
     implementation 'com.squareup.picasso:picasso:2.71828'
 
     // architecture components
-    implementation "android.arch.lifecycle:runtime:$rootProject.ext.arch_runtime_version"
-    implementation "android.arch.lifecycle:extensions:$rootProject.ext.arch_version"
-    implementation "android.arch.lifecycle:reactivestreams:$rootProject.ext.arch_version"
-    kapt "android.arch.lifecycle:compiler:$rootProject.ext.arch_version"
+    implementation "android.arch.lifecycle:runtime:$rootProject.ext.archRuntimeVersion"
+    implementation "android.arch.lifecycle:extensions:$rootProject.ext.archVersion"
+    implementation "android.arch.lifecycle:reactivestreams:$rootProject.ext.archVersion"
+    kapt "android.arch.lifecycle:compiler:$rootProject.ext.archVersion"
 
     //Dagger
     implementation "com.google.dagger:dagger:$rootProject.ext.daggerVersion"
@@ -57,6 +57,12 @@ dependencies {
     annotationProcessor "com.google.dagger:dagger-compiler:$rootProject.ext.daggerVersion"
     kapt "com.google.dagger:dagger-compiler:$rootProject.ext.daggerVersion"
     implementation "javax.annotation:jsr250-api:$rootProject.ext.jsr250Version"
+
+    //Room
+    implementation "android.arch.persistence.room:runtime:$rootProject.archVersion"
+    implementation "android.arch.persistence.room:rxjava2:$rootProject.archVersion"
+    kapt "android.arch.persistence.room:compiler:$rootProject.archVersion"
+    debugImplementation "com.amitshekhar.android:debug-db:$rootProject.DebugDbVersion"
 
     //LeakCanary
 //    debugImplementation 'com.squareup.leakcanary:leakcanary-android:1.5'

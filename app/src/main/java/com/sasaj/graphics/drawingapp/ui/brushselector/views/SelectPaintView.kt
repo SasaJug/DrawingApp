@@ -29,32 +29,32 @@ class SelectPaintView : LinearLayout {
 
         override fun setSize(size: Int) {
             paintWrapper?.size = size
-            brushSample.setPaint(paintWrapper?.paint)
+            brushSample.invalidate()
         }
 
         override fun setBlur(blur: Int) {
             paintWrapper?.blur = blur.toFloat()
-            brushSample.setPaint(paintWrapper?.paint)
+            brushSample.invalidate()
         }
 
         override fun setAlpha(alpha: Int) {
             paintWrapper?.alpha = alpha
-            brushSample.setPaint(paintWrapper?.paint)
+            brushSample.invalidate()
         }
 
         override fun setHue(hue: Int) {
             paintWrapper?.hue = hue.toFloat()
-            brushSample.setPaint(paintWrapper?.paint)
+            brushSample.invalidate()
         }
 
         override fun setSaturation(saturation: Float) {
             paintWrapper?.saturation = saturation
-            brushSample.setPaint(paintWrapper?.paint)
+            brushSample.invalidate()
         }
 
         override fun setBrightness(brightness: Float) {
             paintWrapper?.brightness = brightness
-            brushSample.setPaint(paintWrapper?.paint)
+            brushSample.invalidate()
         }
     }
 

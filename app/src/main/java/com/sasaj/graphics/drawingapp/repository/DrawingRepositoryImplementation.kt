@@ -4,6 +4,7 @@ import android.graphics.Bitmap
 import android.os.Environment
 import android.util.Log
 import com.sasaj.graphics.drawingapp.domain.Drawing
+import com.sasaj.graphics.drawingapp.repository.database.AppDatabase
 import com.sasaj.graphics.drawingapp.viewmodel.dependencies.DrawingRepository
 import java.io.File
 import java.io.FileOutputStream
@@ -15,7 +16,7 @@ import java.util.*
  * Created by sjugurdzija on 4/21/2017.
  */
 
-class DrawingRepositoryImplementation : DrawingRepository {
+class DrawingRepositoryImplementation(val db: AppDatabase): DrawingRepository {
 
     companion object {
         val  TAG = DrawingRepositoryImplementation::class.java.simpleName

@@ -8,7 +8,6 @@ import android.graphics.Paint
  * Created by sjugurdzija on 6/28/2016.
  */
 object PaintWrapper {
-    //TODO move to paint extension functions.
     /**
      * Brush diameter
      * range 0-100 Integer
@@ -71,7 +70,6 @@ object PaintWrapper {
     var paint: Paint = Paint()
 
     init {
-
         paint.isAntiAlias = true
         paint.style = Paint.Style.STROKE
         paint.strokeJoin = Paint.Join.ROUND

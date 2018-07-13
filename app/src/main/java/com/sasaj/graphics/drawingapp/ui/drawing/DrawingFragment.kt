@@ -9,15 +9,13 @@ import android.support.v7.app.AlertDialog
 import android.view.*
 import com.sasaj.graphics.drawingapp.R
 import com.sasaj.graphics.drawingapp.ui.brushselector.utilities.PaintWrapper
-import com.sasaj.graphics.drawingapp.ui.brushselector.views.DrawingView
 import com.sasaj.graphics.drawingapp.viewmodel.DrawingViewModel
+import kotlinx.android.synthetic.main.fragment_drawing.*
 
 class DrawingFragment : Fragment() {
-    private var drawing: DrawingView? = null
+
     private var vm: DrawingViewModel? = null
-
     val paint: Paint = PaintWrapper.paint
-
 
     private val bitmap: Bitmap?
         get() = drawing!!.bitmapFromView
@@ -30,10 +28,12 @@ class DrawingFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        val root = inflater.inflate(R.layout.fragment_drawing, container, false)
-        drawing = root.findViewById<View>(R.id.drawing) as DrawingView
-        drawing!!.setPaint(paint)
-        return root
+        return inflater.inflate(R.layout.fragment_drawing, container, false)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        drawing.setPaint(paint)
     }
 
     override fun onCreateOptionsMenu(
@@ -57,7 +57,7 @@ class DrawingFragment : Fragment() {
 
 
     private fun startToolsDialog() {
-        val newFragment = SelectPaintDialogFragment.newInstance(Bundle())
+        val newFragment = SelectPaintDialogFragment.newInstance()
         newFragment.show(fragmentManager!!, "com.sasaj.graphics.drawingapp.dialog")
     }
 
@@ -78,7 +78,7 @@ class DrawingFragment : Fragment() {
     }
 
     private fun saveDrawing() {
-        vm!!.saveDrawing(bitmap)
+        vm?.saveDrawing(bitmap)
     }
 
 }
