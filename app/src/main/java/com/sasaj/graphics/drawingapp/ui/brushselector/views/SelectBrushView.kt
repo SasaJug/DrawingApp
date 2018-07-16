@@ -7,54 +7,64 @@ import android.widget.LinearLayout
 import com.jakewharton.rxbinding2.widget.RxSeekBar
 import com.sasaj.graphics.drawingapp.R
 import com.sasaj.graphics.drawingapp.domain.Brush
+import com.sasaj.graphics.drawingapp.ui.brushselector.utilities.BrushAdapter
 import com.sasaj.graphics.drawingapp.ui.brushselector.utilities.OnColorComponentSelectedListener
-import com.sasaj.graphics.drawingapp.ui.brushselector.utilities.PaintWrapper
+import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.subjects.PublishSubject
+import io.reactivex.subjects.Subject
 import kotlinx.android.synthetic.main.color_selector_view_layout.view.*
 import kotlinx.android.synthetic.main.select_paint_view_layout.view.*
 
 /**
  * Created by sjugurdzija on 6/25/2016.
  */
-class SelectPaintView : LinearLayout {
+class SelectBrushView : LinearLayout {
 
     companion object {
-        private val TAG = SelectPaintView::class.java.simpleName
+        private val TAG = SelectBrushView::class.java.simpleName
     }
 
-    private lateinit var brush: Brush
-    private var paintWrapper: PaintWrapper? = null
+    private val brushAdapter: BrushAdapter = BrushAdapter
+
+    var brushSelectorObservable: Subject<Brush> = PublishSubject.create<Brush>()
+
 
     private val selectionListener: OnColorComponentSelectedListener = object : OnColorComponentSelectedListener {
 
         override fun setSize(size: Int) {
-            paintWrapper?.size = size
-            brushSample.invalidate()
+            brushAdapter.size = size
+            commonActions()
         }
 
         override fun setBlur(blur: Int) {
-            paintWrapper?.blur = blur.toFloat()
-            brushSample.invalidate()
+            brushAdapter.blur = blur.toFloat()
+            commonActions()
         }
 
         override fun setAlpha(alpha: Int) {
-            paintWrapper?.alpha = alpha
-            brushSample.invalidate()
+            brushAdapter.alpha = alpha
+            commonActions()
         }
 
         override fun setHue(hue: Int) {
-            paintWrapper?.hue = hue.toFloat()
-            brushSample.invalidate()
+            brushAdapter.hue = hue.toFloat()
+            commonActions()
         }
 
         override fun setSaturation(saturation: Float) {
-            paintWrapper?.saturation = saturation
-            brushSample.invalidate()
+            brushAdapter.saturation = saturation
+            commonActions()
         }
 
         override fun setBrightness(brightness: Float) {
-            paintWrapper?.brightness = brightness
-            brushSample.invalidate()
+            brushAdapter.brightness = brightness
+            commonActions()
+        }
+
+        private fun commonActions() {
+            brushSample.setBrush(brushAdapter.brush)
+            brushSelectorObservable.onNext(brushAdapter.brush!!)
         }
     }
 
@@ -87,30 +97,25 @@ class SelectPaintView : LinearLayout {
 
         val colorSelector: com.sasaj.graphics.drawingapp.ui.brushselector.views.ColorSelectorView = findViewById(R.id.colorSelector)
         colorSelector.setListener(selectionListener)
+    }
 
-        setPaintValues()
+    fun getSelectorObservable(): Observable<Brush> {
+        return brushSelectorObservable
+    }
+
+    fun setCurrentBrush(brush: Brush) {
+        brushAdapter.brush = brush
+        brushSample.setBrush(brushAdapter.brush)
         setViews()
     }
 
-    private fun setPaintValues(){
-        paintWrapper = PaintWrapper
-        //Initial dummy values
-        //TODO replace with values from saved brush
-        paintWrapper!!.size  = 20
-        paintWrapper!!.blur  = 5.0f
-        paintWrapper!!.alpha = 250
-        paintWrapper!!.hue = 200.0f
-        paintWrapper!!.saturation= 0.5f
-        paintWrapper!!.brightness= 0.5f
-        brushSample.setPaint(paintWrapper?.paint)
-    }
 
     private fun setViews() {
-        brushSizeSeekBar.progress = paintWrapper!!.size
-        brushBlurSeekBar.progress = paintWrapper!!.blur.toInt()
-        brushAlphaSeekBar.progress = paintWrapper!!.alpha
-        brushColorSeekBar.progress = paintWrapper!!.hue.toInt()
-        sbSelector.setColor(paintWrapper!!.hsv)
+        brushSizeSeekBar.progress = brushAdapter.size
+        brushBlurSeekBar.progress = brushAdapter.blur.toInt()
+        brushAlphaSeekBar.progress = brushAdapter.alpha
+        brushColorSeekBar.progress = brushAdapter.hue.toInt()
+        sbSelector.setColor(brushAdapter.hsv)
     }
 
 }

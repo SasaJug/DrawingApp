@@ -1,13 +1,23 @@
 package com.sasaj.graphics.drawingapp.ui.brushselector.utilities
 
-import android.graphics.BlurMaskFilter
 import android.graphics.Color
-import android.graphics.Paint
+import com.sasaj.graphics.drawingapp.domain.Brush
 
 /**
  * Created by sjugurdzija on 6/28/2016.
  */
-object PaintWrapper {
+object BrushAdapter {
+
+    var brush: Brush? = null
+        set(value) {
+            field = value
+            size = value!!.size
+            blur = value.blur
+            alpha = Color.alpha(value.color)
+            Color.colorToHSV(value.color, hsv)
+
+        }
+
     /**
      * Brush diameter
      * range 0-100 Integer
@@ -15,7 +25,7 @@ object PaintWrapper {
     var size: Int = 0
         set(value) {
             field = value
-            paint.strokeWidth = value.toFloat()
+            brush?.size = value
         }
 
     /**
@@ -28,52 +38,36 @@ object PaintWrapper {
                 1f
             else
                 value
-            paint.maskFilter = BlurMaskFilter(field, BlurMaskFilter.Blur.NORMAL)
+            brush?.blur = field
         }
 
     var alpha: Int = 255
         set(value) {
             field = value
-            paint.alpha = value
+            brush?.color = Color.HSVToColor(value, hsv)
         }
 
     var hue: Float = 0.0f
         set(value) {
             field = value
             hsv[0] = value
-            color = Color.HSVToColor(hsv)
-            paint.color = color
+            brush?.color = Color.HSVToColor(hsv)
         }
 
     var saturation: Float = 0.0f
         set(value) {
             field = value
             hsv[1] = value
-            color = Color.HSVToColor(hsv)
-            paint.color = color
+            brush?.color = Color.HSVToColor(hsv)
         }
 
     var brightness: Float = 0.0f
         set(value) {
             field = value
             hsv[2] = value
-            color = Color.HSVToColor(hsv)
-            paint.color = color
-        }
-
-    var color: Int = 0
-        get() {
-            return Color.HSVToColor(hsv)
+            brush?.color = Color.HSVToColor(hsv)
         }
 
     var hsv: FloatArray = FloatArray(3)
-    var paint: Paint = Paint()
-
-    init {
-        paint.isAntiAlias = true
-        paint.style = Paint.Style.STROKE
-        paint.strokeJoin = Paint.Join.ROUND
-        paint.strokeCap = Paint.Cap.ROUND
-    }
 
 }

@@ -10,7 +10,7 @@ import com.sasaj.graphics.drawingapp.repository.database.SIZE_COLUMN_NAME
 
 @Entity(tableName = BRUSH_TABLE_NAME)
 data class Brush(@PrimaryKey(autoGenerate = true) val id: Long,
-                 @ColumnInfo(name = SIZE_COLUMN_NAME) val size: Int,
-                 @ColumnInfo(name = BLUR_COLUMN_NAME) val blur: Float,
-                 @ColumnInfo(name = COLOR_COLUMN_NAME) val color: Int){
+                 @ColumnInfo(name = SIZE_COLUMN_NAME) var size: Int,
+                 @ColumnInfo(name = BLUR_COLUMN_NAME) var blur: Float,
+                 @ColumnInfo(name = COLOR_COLUMN_NAME) var color: Int){
 }

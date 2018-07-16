@@ -4,13 +4,16 @@ import android.content.Context
 import android.graphics.*
 import android.util.AttributeSet
 import android.view.View
+import com.sasaj.graphics.drawingapp.domain.Brush
+import com.sasaj.graphics.drawingapp.system.init
+import com.sasaj.graphics.drawingapp.system.setBrush
 
 /**
  * Created by sjugurdzija on 6/25/2016.
  */
 class BrushSample : View {
     private lateinit var path: Path
-    private var paint: Paint? = null
+    private lateinit var paint: Paint
     private lateinit var bgPaint: Paint
 
     constructor(context: Context) : super(context) {
@@ -27,10 +30,12 @@ class BrushSample : View {
 
     private fun init() {
         setLayerType(View.LAYER_TYPE_SOFTWARE, null)
+        paint = Paint()
+        paint.init()
     }
 
-    fun setPaint(paint: Paint?) {
-        this.paint = paint
+    fun setBrush(brush : Brush?) {
+        paint.setBrush(brush)
         invalidate()
     }
 

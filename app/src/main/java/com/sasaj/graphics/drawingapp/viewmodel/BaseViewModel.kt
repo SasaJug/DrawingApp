@@ -16,6 +16,7 @@ abstract class BaseViewModel : ViewModel() {
         when (this) {
             is DrawingListViewModel -> injector.inject(this)
             is DrawingViewModel -> injector.inject(this)
+            is SelectBrushViewModel -> injector.inject(this)
         }
     }
 }

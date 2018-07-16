@@ -8,14 +8,20 @@ import android.support.v4.app.Fragment
 import android.support.v7.app.AlertDialog
 import android.view.*
 import com.sasaj.graphics.drawingapp.R
-import com.sasaj.graphics.drawingapp.ui.brushselector.utilities.PaintWrapper
+import com.sasaj.graphics.drawingapp.domain.Brush
+import com.sasaj.graphics.drawingapp.system.init
+import com.sasaj.graphics.drawingapp.system.setBrush
 import com.sasaj.graphics.drawingapp.viewmodel.DrawingViewModel
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.Disposable
 import kotlinx.android.synthetic.main.fragment_drawing.*
 
 class DrawingFragment : Fragment() {
 
     private var vm: DrawingViewModel? = null
-    val paint: Paint = PaintWrapper.paint
+    private val paint: Paint = Paint()
+    private lateinit var disposable : Disposable;
+
 
     private val bitmap: Bitmap?
         get() = drawing!!.bitmapFromView
@@ -33,7 +39,14 @@ class DrawingFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        drawing.setPaint(paint)
+        paint.init()
+       disposable = vm!!.getBrush().observeOn(AndroidSchedulers.mainThread())
+                .subscribe { brush: Brush? ->
+                    paint.setBrush(brush!!)
+                    drawing?.setPaint(paint)
+                }
+
+
     }
 
     override fun onCreateOptionsMenu(
@@ -57,7 +70,7 @@ class DrawingFragment : Fragment() {
 
 
     private fun startToolsDialog() {
-        val newFragment = SelectPaintDialogFragment.newInstance()
+        val newFragment = SelectBrushDialogFragment.newInstance()
         newFragment.show(fragmentManager!!, "com.sasaj.graphics.drawingapp.dialog")
     }
 
@@ -75,6 +88,11 @@ class DrawingFragment : Fragment() {
                 }
                 .setNegativeButton(R.string.cancel) { dialogInterface, i -> dialogInterface.cancel() }.show()
 
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        disposable.dispose()
     }
 
     private fun saveDrawing() {
