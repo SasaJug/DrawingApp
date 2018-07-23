@@ -33,22 +33,26 @@ dependencies {
     implementation "com.android.support.constraint:constraint-layout:$rootProject.constraintLayoutVersion"
 
     //Rx
-    implementation 'io.reactivex.rxjava2:rxjava:2.1.10'
-    implementation 'io.reactivex.rxjava2:rxkotlin:2.2.0'
-    implementation 'com.jakewharton.rxbinding2:rxbinding-support-v4-kotlin:2.1.1'
-    implementation 'com.jakewharton.rxbinding2:rxbinding-appcompat-v7-kotlin:2.1.1'
+    implementation "io.reactivex.rxjava2:rxjava:$rootProject.ext.rxJavaVersion"
+    implementation "io.reactivex.rxjava2:rxkotlin:$rootProject.ext.rxKotlinVersion"
+    implementation "com.jakewharton.rxbinding2:rxbinding-support-v4-kotlin:$rootProject.ext.rxBindingKotlinVersion"
+    implementation "com.jakewharton.rxbinding2:rxbinding-appcompat-v7-kotlin:$rootProject.ext.rxBindingKotlinVersion"
 
     //FloatingActionMenu
-    implementation "com.leinardi.android:speed-dial:1.0.0"
+    implementation "com.leinardi.android:speed-dial:$rootProject.ext.speedDialVersion"
 
     //Picasso
-    implementation 'com.squareup.picasso:picasso:2.71828'
+    implementation "com.squareup.picasso:picasso:$rootProject.ext.picassoVersion"
 
     // architecture components
     implementation "android.arch.lifecycle:runtime:$rootProject.ext.archRuntimeVersion"
     implementation "android.arch.lifecycle:extensions:$rootProject.ext.archVersion"
     implementation "android.arch.lifecycle:reactivestreams:$rootProject.ext.archVersion"
     kapt "android.arch.lifecycle:compiler:$rootProject.ext.archVersion"
+    //Room
+    implementation "android.arch.persistence.room:runtime:$rootProject.archVersion"
+    implementation "android.arch.persistence.room:rxjava2:$rootProject.archVersion"
+    kapt "android.arch.persistence.room:compiler:$rootProject.archVersion"
 
     //Dagger
     implementation "com.google.dagger:dagger:$rootProject.ext.daggerVersion"
@@ -58,14 +62,11 @@ dependencies {
     kapt "com.google.dagger:dagger-compiler:$rootProject.ext.daggerVersion"
     implementation "javax.annotation:jsr250-api:$rootProject.ext.jsr250Version"
 
-    //Room
-    implementation "android.arch.persistence.room:runtime:$rootProject.archVersion"
-    implementation "android.arch.persistence.room:rxjava2:$rootProject.archVersion"
-    kapt "android.arch.persistence.room:compiler:$rootProject.archVersion"
-    debugImplementation "com.amitshekhar.android:debug-db:$rootProject.DebugDbVersion"
+    //DebugDb
+    debugImplementation "com.amitshekhar.android:debug-db:$rootProject.debugDbVersion"
 
     //LeakCanary
-//    debugImplementation 'com.squareup.leakcanary:leakcanary-android:1.5'
+//  debugImplementation 'com.squareup.leakcanary:leakcanary-android:1.5'
     releaseImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:1.5'
     testImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:1.5'
 

@@ -33,7 +33,14 @@ ext {
     daggerVersion = '2.15'
     jsr250Version = '1.0'
     constraintLayoutVersion = '1.1.2'
-    DebugDbVersion = "1.0.3"
+    debugDbVersion = "1.0.3"
     archRuntimeVersion = "1.1.1"
     archVersion = "1.1.1"
+
+    rxJavaVersion = "2.1.10"
+    rxKotlinVersion = "2.2.0"
+    rxBindingKotlinVersion = "2.1.1"
+
+    speedDialVersion = "1.0.0"
+    picassoVersion = "2.71828"
 }
