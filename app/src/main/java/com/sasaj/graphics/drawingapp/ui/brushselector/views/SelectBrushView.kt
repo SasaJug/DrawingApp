@@ -8,6 +8,7 @@ import com.jakewharton.rxbinding2.widget.RxSeekBar
 import com.sasaj.graphics.drawingapp.R
 import com.sasaj.graphics.drawingapp.domain.Brush
 import com.sasaj.graphics.drawingapp.ui.brushselector.utilities.BrushAdapter
+import com.sasaj.graphics.drawingapp.ui.brushselector.utilities.BrushAdapter.brush
 import com.sasaj.graphics.drawingapp.ui.brushselector.utilities.OnColorComponentSelectedListener
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -63,8 +64,11 @@ class SelectBrushView : LinearLayout {
         }
 
         private fun commonActions() {
-            brushSample.setBrush(brushAdapter.brush)
-            brushSelectorObservable.onNext(brushAdapter.brush!!)
+            brushAdapter.brush?.let {
+                brushSample.setBrush(brushAdapter.brush)
+                brushSelectorObservable.onNext(brushAdapter.brush!!)
+            }
+
         }
     }
 

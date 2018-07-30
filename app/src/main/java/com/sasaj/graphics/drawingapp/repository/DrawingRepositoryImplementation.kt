@@ -6,6 +6,7 @@ import android.util.Log
 import com.sasaj.graphics.drawingapp.domain.Drawing
 import com.sasaj.graphics.drawingapp.repository.database.AppDatabase
 import com.sasaj.graphics.drawingapp.viewmodel.dependencies.DrawingRepository
+import io.reactivex.Flowable
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
@@ -22,17 +23,8 @@ class DrawingRepositoryImplementation(val db: AppDatabase): DrawingRepository {
         val  TAG = DrawingRepositoryImplementation::class.java.simpleName
     }
 
-    override fun getDrawings(): List<Drawing> {
-            val dir = albumStorageDir()
-            val drawings = ArrayList<Drawing>()
-            val list = dir.listFiles()
-            if (list != null && list.isNotEmpty()) {
-                for (file in list) {
-                    val drawing = Drawing(file.absolutePath, file.lastModified())
-                    drawings.add(drawing)
-                }
-            }
-            return drawings
+    override fun getDrawings(): Flowable<List<Drawing>> {
+        return db.drawingDao().getAll()
         }
 
     override fun saveDrawing(bitmap: Bitmap?) {
@@ -42,6 +34,8 @@ class DrawingRepositoryImplementation(val db: AppDatabase): DrawingRepository {
             bitmap?.compress(Bitmap.CompressFormat.PNG, 100, fos)
             fos.flush()
             fos.close()
+            val drawing = Drawing(imageFile.absolutePath, System.currentTimeMillis())
+            db.drawingDao().insert(drawing)
         } catch (e: IOException) {
             Log.e(TAG, e.message)
         }

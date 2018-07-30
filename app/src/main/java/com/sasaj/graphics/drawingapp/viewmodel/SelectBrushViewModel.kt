@@ -2,7 +2,6 @@ package com.sasaj.graphics.drawingapp.viewmodel
 
 import com.sasaj.graphics.drawingapp.domain.Brush
 import com.sasaj.graphics.drawingapp.viewmodel.dependencies.BrushRepository
-import io.reactivex.Observable
 import javax.inject.Inject
 
 class SelectBrushViewModel : BaseViewModel() {
@@ -12,8 +11,8 @@ class SelectBrushViewModel : BaseViewModel() {
     lateinit var brushRepository: BrushRepository
 
 
-    fun getBrushObservable() : Observable<Brush> {
-       return  brushRepository.getCurrentBrush()
+    fun getCurrentBrush() : Brush {
+        return brushRepository.getCurrentBrush()
     }
 
     fun setBrush(brush : Brush){

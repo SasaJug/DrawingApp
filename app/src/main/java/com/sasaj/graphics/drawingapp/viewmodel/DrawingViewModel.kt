@@ -4,7 +4,7 @@ import android.graphics.Bitmap
 import com.sasaj.graphics.drawingapp.domain.Brush
 import com.sasaj.graphics.drawingapp.viewmodel.dependencies.BrushRepository
 import com.sasaj.graphics.drawingapp.viewmodel.dependencies.DrawingRepository
-import io.reactivex.Observable
+import io.reactivex.Flowable
 import javax.inject.Inject
 
 class DrawingViewModel : BaseViewModel() {
@@ -20,7 +20,8 @@ class DrawingViewModel : BaseViewModel() {
         thread.start()
     }
 
-    fun getBrush() : Observable<Brush> {
-        return brushRepository.getCurrentBrush()
+    fun getBrush() : Flowable<Brush> {
+        val brush = brushRepository.getBrushFlowable()
+        return brush
     }
 }

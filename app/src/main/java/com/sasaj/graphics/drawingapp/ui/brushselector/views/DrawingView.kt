@@ -60,7 +60,8 @@ class DrawingView : View {
 
     override fun onDraw(canvas: Canvas) {
         canvas.drawBitmap(bitmapFromView!!, 0f, 0f, canvasPaint)
-        canvas.drawPath(drawPath!!, paint!!)
+        paint?.let { canvas.drawPath(drawPath!!, paint!!)  }
+
     }
 
 
@@ -96,8 +97,9 @@ class DrawingView : View {
     }
 
     private fun touchUp() {
-        drawCanvas!!.drawPath(drawPath!!, paint!!)
-        drawPath!!.reset()
+        paint?.let {
+            drawCanvas!!.drawPath(drawPath!!, paint!!)
+            drawPath!!.reset() }
     }
 
     companion object {

@@ -1,7 +1,5 @@
 package com.sasaj.graphics.drawingapp.ui.main
 
-import android.arch.lifecycle.Observer
-import android.arch.lifecycle.ViewModelProvider
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.content.res.Configuration
@@ -20,10 +18,11 @@ import com.sasaj.graphics.drawingapp.R
 import com.sasaj.graphics.drawingapp.domain.Drawing
 import com.sasaj.graphics.drawingapp.ui.main.adapter.DrawingsListAdapter
 import com.sasaj.graphics.drawingapp.viewmodel.DrawingListViewModel
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.Disposable
+import io.reactivex.schedulers.Schedulers
 import java.io.File
 import java.util.*
-import javax.inject.Inject
-
 
 
 class DrawingsListFragment : Fragment() {
@@ -35,7 +34,8 @@ class DrawingsListFragment : Fragment() {
 
     private lateinit var vm: DrawingListViewModel
     private lateinit var drawingsList: RecyclerView
-    private lateinit var adapter: DrawingsListAdapter
+    private var adapter: DrawingsListAdapter? = null
+    private lateinit var disposable: Disposable
 
     private var drawingItemListener: DrawingItemListener = object : DrawingItemListener {
         override fun onItemClicked(clickedItem: Drawing) {
@@ -79,16 +79,15 @@ class DrawingsListFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
         vm = ViewModelProviders.of(this)[DrawingListViewModel::class.java]
 
-        val observer = Observer<List<Drawing>> { value ->
-            if (value != null)
-                adapter.setDrawings(value)
-        }
-        vm.drawings.observe(activity!!, observer)
+       disposable =  vm.getDrawings()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe { list -> adapter?.setDrawings(list)}
     }
 
-    override fun onResume() {
-        super.onResume()
-        vm.getDrawings()
+    override fun onDestroy() {
+        super.onDestroy()
+        disposable.dispose()
     }
 
     interface DrawingItemListener {

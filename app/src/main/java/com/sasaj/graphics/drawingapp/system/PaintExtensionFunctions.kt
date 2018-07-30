@@ -10,10 +10,16 @@ fun Paint.init(){
     this.style = Paint.Style.STROKE
     this.strokeJoin = Paint.Join.ROUND
     this.strokeCap = Paint.Cap.ROUND
+    this.strokeWidth = 5.toFloat()
+    this.maskFilter = BlurMaskFilter(1.0f, BlurMaskFilter.Blur.NORMAL)
+    this.color = 0xff000000.toInt()
 }
 
 fun Paint.setBrush(brush: Brush?) {
-    this.strokeWidth = brush!!.size.toFloat()
-    this.maskFilter = BlurMaskFilter(brush.blur, BlurMaskFilter.Blur.NORMAL)
-    this.color = brush.color
+    brush?.let {
+        this.strokeWidth = brush.size.toFloat()
+        this.maskFilter = BlurMaskFilter(brush.blur, BlurMaskFilter.Blur.NORMAL)
+        this.color = brush.color
+    }
+
 }

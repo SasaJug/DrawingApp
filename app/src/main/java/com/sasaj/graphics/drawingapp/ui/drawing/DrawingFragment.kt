@@ -2,10 +2,12 @@ package com.sasaj.graphics.drawingapp.ui.drawing
 
 import android.arch.lifecycle.ViewModelProviders
 import android.graphics.Bitmap
+import android.graphics.Color
 import android.graphics.Paint
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.app.AlertDialog
+import android.util.Log
 import android.view.*
 import com.sasaj.graphics.drawingapp.R
 import com.sasaj.graphics.drawingapp.domain.Brush
@@ -20,7 +22,7 @@ class DrawingFragment : Fragment() {
 
     private var vm: DrawingViewModel? = null
     private val paint: Paint = Paint()
-    private lateinit var disposable : Disposable;
+    private lateinit var disposable: Disposable
 
 
     private val bitmap: Bitmap?
@@ -40,13 +42,17 @@ class DrawingFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         paint.init()
-       disposable = vm!!.getBrush().observeOn(AndroidSchedulers.mainThread())
+        drawing?.setPaint(paint)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        disposable = vm!!.getBrush()
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe { brush: Brush? ->
                     paint.setBrush(brush!!)
                     drawing?.setPaint(paint)
                 }
-
-
     }
 
     override fun onCreateOptionsMenu(
@@ -87,16 +93,15 @@ class DrawingFragment : Fragment() {
                     dialogInterface.cancel()
                 }
                 .setNegativeButton(R.string.cancel) { dialogInterface, i -> dialogInterface.cancel() }.show()
+    }
 
+
+    private fun saveDrawing() {
+        vm?.saveDrawing(bitmap)
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         disposable.dispose()
     }
-
-    private fun saveDrawing() {
-        vm?.saveDrawing(bitmap)
-    }
-
 }

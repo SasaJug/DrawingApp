@@ -15,7 +15,6 @@ object BrushAdapter {
             blur = value.blur
             alpha = Color.alpha(value.color)
             Color.colorToHSV(value.color, hsv)
-
         }
 
     /**

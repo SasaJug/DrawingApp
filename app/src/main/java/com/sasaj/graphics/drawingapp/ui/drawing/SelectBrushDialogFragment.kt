@@ -11,6 +11,7 @@ import com.sasaj.graphics.drawingapp.R
 import com.sasaj.graphics.drawingapp.domain.Brush
 import com.sasaj.graphics.drawingapp.viewmodel.SelectBrushViewModel
 import io.reactivex.Observable
+import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.select_brush_dialog_fragment_layout.*
 
@@ -35,7 +36,7 @@ class SelectBrushDialogFragment : DialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        selectBrushView.setCurrentBrush(vm.getBrushObservable().blockingFirst())
+        selectBrushView.setCurrentBrush(vm.getCurrentBrush())
         brushSelectorObservable = selectBrushView.getSelectorObservable()
         brushSelectorObservable.subscribeOn(Schedulers.io())
                 .subscribe { brush ->
