@@ -2,20 +2,20 @@ package com.sasaj.graphics.drawingapp.ui.brushselector.views
 
 import android.content.Context
 import android.util.AttributeSet
+import android.util.Log
 import android.view.LayoutInflater
 import android.widget.LinearLayout
 import com.jakewharton.rxbinding2.widget.RxSeekBar
 import com.sasaj.graphics.drawingapp.R
 import com.sasaj.graphics.drawingapp.domain.Brush
 import com.sasaj.graphics.drawingapp.ui.brushselector.utilities.BrushAdapter
-import com.sasaj.graphics.drawingapp.ui.brushselector.utilities.BrushAdapter.brush
 import com.sasaj.graphics.drawingapp.ui.brushselector.utilities.OnColorComponentSelectedListener
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.subjects.PublishSubject
 import io.reactivex.subjects.Subject
 import kotlinx.android.synthetic.main.color_selector_view_layout.view.*
-import kotlinx.android.synthetic.main.select_paint_view_layout.view.*
+import kotlinx.android.synthetic.main.select_brush_view_layout.view.*
 
 /**
  * Created by sjugurdzija on 6/25/2016.
@@ -28,7 +28,7 @@ class SelectBrushView : LinearLayout {
 
     private val brushAdapter: BrushAdapter = BrushAdapter
 
-    var brushSelectorObservable: Subject<Brush> = PublishSubject.create<Brush>()
+    private var brushSelectorObservable: Subject<Brush> = PublishSubject.create<Brush>()
 
 
     private val selectionListener: OnColorComponentSelectedListener = object : OnColorComponentSelectedListener {
@@ -66,9 +66,7 @@ class SelectBrushView : LinearLayout {
         private fun commonActions() {
             brushAdapter.brush?.let {
                 brushSample.setBrush(brushAdapter.brush)
-                brushSelectorObservable.onNext(brushAdapter.brush!!)
             }
-
         }
     }
 
@@ -87,7 +85,7 @@ class SelectBrushView : LinearLayout {
     private fun init(context: Context) {
         this.orientation = LinearLayout.VERTICAL
         val lif = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-        lif.inflate(R.layout.select_paint_view_layout, this)
+        lif.inflate(R.layout.select_brush_view_layout, this)
 
         val sizeObservable = RxSeekBar.changes(brushSizeSeekBar)
         sizeObservable
@@ -101,6 +99,13 @@ class SelectBrushView : LinearLayout {
 
         val colorSelector: com.sasaj.graphics.drawingapp.ui.brushselector.views.ColorSelectorView = findViewById(R.id.colorSelector)
         colorSelector.setListener(selectionListener)
+
+        setButton.setOnClickListener { _ ->
+            brushSelectorObservable.onNext(brushAdapter.brush!!)
+            brushSelectorObservable.onComplete()
+        }
+        cancelButton.setOnClickListener { _ -> brushSelectorObservable.onComplete()}
+
     }
 
     fun getSelectorObservable(): Observable<Brush> {

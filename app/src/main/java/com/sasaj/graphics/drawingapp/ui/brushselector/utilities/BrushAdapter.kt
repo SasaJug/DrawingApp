@@ -1,6 +1,8 @@
 package com.sasaj.graphics.drawingapp.ui.brushselector.utilities
 
 import android.graphics.Color
+import android.support.v4.graphics.ColorUtils
+import android.util.Log
 import com.sasaj.graphics.drawingapp.domain.Brush
 
 /**
@@ -8,13 +10,15 @@ import com.sasaj.graphics.drawingapp.domain.Brush
  */
 object BrushAdapter {
 
+    private val TAG: String = javaClass.simpleName
+
     var brush: Brush? = null
         set(value) {
             field = value
             size = value!!.size
             blur = value.blur
-            alpha = Color.alpha(value.color)
             Color.colorToHSV(value.color, hsv)
+            alpha = Color.alpha(value.color)
         }
 
     /**
@@ -47,24 +51,25 @@ object BrushAdapter {
         }
 
     var hue: Float = 0.0f
+        get() { return hsv[0]}
         set(value) {
             field = value
             hsv[0] = value
-            brush?.color = Color.HSVToColor(hsv)
+            brush?.color = Color.HSVToColor(alpha, hsv)
         }
 
     var saturation: Float = 0.0f
         set(value) {
             field = value
             hsv[1] = value
-            brush?.color = Color.HSVToColor(hsv)
+            brush?.color = Color.HSVToColor(alpha, hsv)
         }
 
     var brightness: Float = 0.0f
         set(value) {
             field = value
             hsv[2] = value
-            brush?.color = Color.HSVToColor(hsv)
+            brush?.color = Color.HSVToColor(alpha, hsv)
         }
 
     var hsv: FloatArray = FloatArray(3)

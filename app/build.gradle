@@ -49,6 +49,7 @@ dependencies {
     implementation "android.arch.lifecycle:extensions:$rootProject.ext.archVersion"
     implementation "android.arch.lifecycle:reactivestreams:$rootProject.ext.archVersion"
     kapt "android.arch.lifecycle:compiler:$rootProject.ext.archVersion"
+
     //Room
     implementation "android.arch.persistence.room:runtime:$rootProject.archVersion"
     implementation "android.arch.persistence.room:rxjava2:$rootProject.archVersion"

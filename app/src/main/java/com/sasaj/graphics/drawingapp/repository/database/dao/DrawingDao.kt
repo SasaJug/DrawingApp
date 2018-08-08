@@ -13,9 +13,6 @@ interface DrawingDao {
     @Query("SELECT * from drawing")
     fun getAll(): Flowable<List<Drawing>>
 
-    @Query("SELECT * from drawing")
-    fun getAllSync(): List<Drawing>
-
     @Query("SELECT * FROM drawing where id = :drawingId")
     fun getById(drawingId: Long): Flowable<List<Drawing>>
 

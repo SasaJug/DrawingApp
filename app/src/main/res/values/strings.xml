@@ -14,4 +14,6 @@
     <string name="portrait">Portrait</string>
     <string name="tool_menu_option">Tool</string>
     <string name="save_menu_option">Save</string>
+    <string name="button_cancel">cancel</string>
+    <string name="button_set">set</string>
 </resources>

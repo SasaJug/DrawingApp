@@ -6,10 +6,8 @@ import javax.inject.Inject
 
 class SelectBrushViewModel : BaseViewModel() {
 
-
     @Inject
     lateinit var brushRepository: BrushRepository
-
 
     fun getCurrentBrush() : Brush {
         return brushRepository.getCurrentBrush()
@@ -18,4 +16,5 @@ class SelectBrushViewModel : BaseViewModel() {
     fun setBrush(brush : Brush){
         brushRepository.setCurrentBrush(brush)
     }
+
 }

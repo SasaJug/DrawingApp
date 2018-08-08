@@ -15,29 +15,49 @@
             <com.sasaj.graphics.drawingapp.ui.brushselector.views.BrushSample
                 android:id="@+id/brushSample"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                />
+                android:layout_height="wrap_content" />
 
             <SeekBar
                 android:id="@+id/brushSizeSeekBar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:max="100"/>
+                android:max="100" />
 
             <SeekBar
                 android:id="@+id/brushBlurSeekBar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:max="50"/>
+                android:max="50" />
 
             <com.sasaj.graphics.drawingapp.ui.brushselector.views.ColorSelectorView
                 android:id="@+id/colorSelector"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp">
-            </com.sasaj.graphics.drawingapp.ui.brushselector.views.ColorSelectorView>
+                android:layout_marginTop="10dp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/setButton"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/button_set" />
+
+
+                <Button
+                    android:id="@+id/cancelButton"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/button_cancel" />
+
+            </LinearLayout>
 
         </LinearLayout>
 
