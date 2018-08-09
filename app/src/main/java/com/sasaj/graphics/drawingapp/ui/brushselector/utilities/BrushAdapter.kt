@@ -44,12 +44,22 @@ object BrushAdapter {
             brush?.blur = field
         }
 
+
+    /**
+     * Brush alpha
+     * range 0-255 Integer
+     */
     var alpha: Int = 255
         set(value) {
             field = value
             brush?.color = Color.HSVToColor(value, hsv)
         }
 
+
+    /**
+     * Brush hue color component
+     * range 0.0 - 359.0 Float
+     */
     var hue: Float = 0.0f
         get() { return hsv[0]}
         set(value) {
@@ -58,14 +68,24 @@ object BrushAdapter {
             brush?.color = Color.HSVToColor(alpha, hsv)
         }
 
+    /**
+     * Brush saturation color component
+     * range 0.0-1.0 Float
+     */
     var saturation: Float = 0.0f
+        get() { return hsv[1]}
         set(value) {
             field = value
             hsv[1] = value
             brush?.color = Color.HSVToColor(alpha, hsv)
         }
 
+    /**
+     * Brush brightness color component
+     * range 0.0-1.0 Float
+     */
     var brightness: Float = 0.0f
+        get() { return hsv[2]}
         set(value) {
             field = value
             hsv[2] = value
