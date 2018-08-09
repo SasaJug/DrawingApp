@@ -9,11 +9,11 @@ class SelectBrushViewModel : BaseViewModel() {
     @Inject
     lateinit var brushRepository: BrushRepository
 
-    fun getCurrentBrush() : Brush {
+    fun getCurrentBrush(): Brush {
         return brushRepository.getCurrentBrush()
     }
 
-    fun setBrush(brush : Brush){
+    fun setBrush(brush: Brush) {
         brushRepository.setCurrentBrush(brush)
     }
 

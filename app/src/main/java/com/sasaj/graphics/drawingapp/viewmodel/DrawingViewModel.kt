@@ -16,12 +16,12 @@ class DrawingViewModel : BaseViewModel() {
     lateinit var brushRepository: BrushRepository
 
     fun saveDrawing(bitmap: Bitmap?) {
+        // ToDo use RxKotlin
         val thread = Thread(Runnable { drawingRepository.saveDrawing(bitmap) })
         thread.start()
     }
 
-    fun getBrush() : Flowable<Brush> {
-        val brush = brushRepository.getBrushFlowable()
-        return brush
+    fun getBrush(): Flowable<Brush> {
+        return brushRepository.getBrushFlowable()
     }
 }

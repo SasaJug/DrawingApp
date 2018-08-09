@@ -34,7 +34,7 @@ class BrushSample : View {
         paint.init()
     }
 
-    fun setBrush(brush : Brush?) {
+    fun setBrush(brush: Brush?) {
         paint.setBrush(brush)
         invalidate()
     }

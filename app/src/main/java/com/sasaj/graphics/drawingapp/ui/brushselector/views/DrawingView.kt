@@ -1,11 +1,7 @@
 package com.sasaj.graphics.drawingapp.ui.brushselector.views
 
 import android.content.Context
-import android.graphics.Bitmap
-import android.graphics.Canvas
-import android.graphics.Color
-import android.graphics.Paint
-import android.graphics.Path
+import android.graphics.*
 import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.View
@@ -60,7 +56,7 @@ class DrawingView : View {
 
     override fun onDraw(canvas: Canvas) {
         canvas.drawBitmap(bitmapFromView!!, 0f, 0f, canvasPaint)
-        paint?.let { canvas.drawPath(drawPath!!, paint!!)  }
+        paint?.let { canvas.drawPath(drawPath!!, paint!!) }
 
     }
 
@@ -99,7 +95,8 @@ class DrawingView : View {
     private fun touchUp() {
         paint?.let {
             drawCanvas!!.drawPath(drawPath!!, paint!!)
-            drawPath!!.reset() }
+            drawPath!!.reset()
+        }
     }
 
     companion object {

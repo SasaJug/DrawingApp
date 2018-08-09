@@ -7,7 +7,7 @@ import com.sasaj.graphics.drawingapp.domain.Drawing
 import com.sasaj.graphics.drawingapp.repository.database.dao.BrushDao
 import com.sasaj.graphics.drawingapp.repository.database.dao.DrawingDao
 
-@Database(entities = arrayOf(Drawing::class, Brush::class), version = 5, exportSchema = false)
+@Database(entities = [(Drawing::class), (Brush::class)], version = 5, exportSchema = false)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun brushDao(): BrushDao
     abstract fun drawingDao(): DrawingDao

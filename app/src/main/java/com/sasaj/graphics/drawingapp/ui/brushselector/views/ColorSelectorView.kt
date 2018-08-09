@@ -38,9 +38,9 @@ class ColorSelectorView : LinearLayout {
         colorObservable
                 .subscribeOn(AndroidSchedulers.mainThread())
                 .subscribe { value ->
-                        sbSelector.hue = value.toFloat()
-                        selectionListener?.setHue(value)
-                    }
+                    sbSelector.hue = value.toFloat()
+                    selectionListener?.setHue(value)
+                }
 
         val alphaObservable = RxSeekBar.changes(brushAlphaSeekBar)
         alphaObservable

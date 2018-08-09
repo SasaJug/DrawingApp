@@ -1,4 +1,5 @@
 @file:JvmName("DbConstants")
+
 package com.sasaj.graphics.drawingapp.repository.database
 
 const val APP_DATABASE_NAME = "DrawingDb"

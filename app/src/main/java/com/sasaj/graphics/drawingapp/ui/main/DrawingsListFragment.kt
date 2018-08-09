@@ -79,10 +79,10 @@ class DrawingsListFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
         vm = ViewModelProviders.of(this)[DrawingListViewModel::class.java]
 
-       disposable =  vm.getDrawings()
+        disposable = vm.getDrawings()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe { list -> adapter?.setDrawings(list)}
+                .subscribe { list -> adapter?.setDrawings(list) }
     }
 
     override fun onDestroy() {

@@ -5,7 +5,7 @@ import io.reactivex.Flowable
 
 interface BrushRepository {
     fun getBrushFlowable(): Flowable<Brush>
-    fun getCurrentBrush():  Brush
-    fun setCurrentBrush(brush : Brush)
+    fun getCurrentBrush(): Brush
+    fun setCurrentBrush(brush: Brush)
     fun saveCurrentBrush()
 }

@@ -17,15 +17,15 @@ import java.util.*
  * Created by sjugurdzija on 4/21/2017.
  */
 
-class DrawingRepositoryImplementation(val db: AppDatabase): DrawingRepository {
+class DrawingRepositoryImplementation(val db: AppDatabase) : DrawingRepository {
 
     companion object {
-        val  TAG = DrawingRepositoryImplementation::class.java.simpleName
+        val TAG = DrawingRepositoryImplementation::class.java.simpleName
     }
 
     override fun getDrawings(): Flowable<List<Drawing>> {
         return db.drawingDao().getAll()
-        }
+    }
 
     override fun saveDrawing(bitmap: Bitmap?) {
         try {

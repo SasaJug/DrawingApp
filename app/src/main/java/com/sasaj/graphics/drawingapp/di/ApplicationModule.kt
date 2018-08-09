@@ -24,7 +24,7 @@ class ApplicationModule(val context: Context) {
     @Provides
     @Reusable
     fun providesDrawingRepository(db: AppDatabase): DrawingRepository {
-       return DrawingRepositoryImplementation(db)
+        return DrawingRepositoryImplementation(db)
     }
 
     @Provides

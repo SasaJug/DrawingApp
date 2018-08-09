@@ -8,7 +8,7 @@ import android.support.v7.app.AppCompatActivity
 import com.sasaj.graphics.drawingapp.R
 import kotlinx.android.synthetic.main.activity_drawing.*
 
-class DrawingActivity : AppCompatActivity(){
+class DrawingActivity : AppCompatActivity() {
 
     companion object {
 

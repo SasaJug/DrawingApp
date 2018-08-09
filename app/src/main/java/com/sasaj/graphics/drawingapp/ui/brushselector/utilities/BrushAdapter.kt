@@ -1,8 +1,6 @@
 package com.sasaj.graphics.drawingapp.ui.brushselector.utilities
 
 import android.graphics.Color
-import android.support.v4.graphics.ColorUtils
-import android.util.Log
 import com.sasaj.graphics.drawingapp.domain.Brush
 
 /**
@@ -61,7 +59,9 @@ object BrushAdapter {
      * range 0.0 - 359.0 Float
      */
     var hue: Float = 0.0f
-        get() { return hsv[0]}
+        get() {
+            return hsv[0]
+        }
         set(value) {
             field = value
             hsv[0] = value
@@ -73,7 +73,9 @@ object BrushAdapter {
      * range 0.0-1.0 Float
      */
     var saturation: Float = 0.0f
-        get() { return hsv[1]}
+        get() {
+            return hsv[1]
+        }
         set(value) {
             field = value
             hsv[1] = value
@@ -85,7 +87,9 @@ object BrushAdapter {
      * range 0.0-1.0 Float
      */
     var brightness: Float = 0.0f
-        get() { return hsv[2]}
+        get() {
+            return hsv[2]
+        }
         set(value) {
             field = value
             hsv[2] = value

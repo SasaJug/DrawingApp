@@ -2,7 +2,6 @@ package com.sasaj.graphics.drawingapp.ui.brushselector.views
 
 import android.content.Context
 import android.util.AttributeSet
-import android.util.Log
 import android.view.LayoutInflater
 import android.widget.LinearLayout
 import com.jakewharton.rxbinding2.widget.RxSeekBar
@@ -104,7 +103,7 @@ class SelectBrushView : LinearLayout {
             brushSelectorObservable.onNext(brushAdapter.brush!!)
             brushSelectorObservable.onComplete()
         }
-        cancelButton.setOnClickListener { _ -> brushSelectorObservable.onComplete()}
+        cancelButton.setOnClickListener { _ -> brushSelectorObservable.onComplete() }
 
     }
 

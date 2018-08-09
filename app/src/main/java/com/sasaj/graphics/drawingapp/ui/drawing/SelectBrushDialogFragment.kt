@@ -10,10 +10,8 @@ import android.view.ViewGroup
 import android.view.Window
 import com.sasaj.graphics.drawingapp.R
 import com.sasaj.graphics.drawingapp.domain.Brush
-import com.sasaj.graphics.drawingapp.ui.brushselector.views.SelectBrushView
 import com.sasaj.graphics.drawingapp.viewmodel.SelectBrushViewModel
 import io.reactivex.Observable
-import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.select_brush_dialog_fragment_layout.*
 
@@ -42,10 +40,10 @@ class SelectBrushDialogFragment : DialogFragment() {
         brushSelectorObservable = selectBrushView.getSelectorObservable()
         brushSelectorObservable
                 .observeOn(Schedulers.io())
-                .subscribe (
-                        {br -> vm.setBrush(br)},
-                        {e -> Log.e(TAG, "Error creating brush.", e)},
-                        {dismiss()}
+                .subscribe(
+                        { br -> vm.setBrush(br) },
+                        { e -> Log.e(TAG, "Error creating brush.", e) },
+                        { dismiss() }
                 )
     }
 

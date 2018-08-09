@@ -4,7 +4,7 @@ import android.graphics.BlurMaskFilter
 import android.graphics.Paint
 import com.sasaj.graphics.drawingapp.domain.Brush
 
-fun Paint.init(){
+fun Paint.init() {
     this.isAntiAlias = true
     this.style = Paint.Style.STROKE
     this.strokeJoin = Paint.Join.ROUND
