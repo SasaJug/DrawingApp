@@ -1,4 +1,4 @@
-package com.sasaj.graphics.drawingapp.ui.brushselector.views
+package com.sasaj.graphics.drawingapp.ui.drawing.brushselector.views
 
 import android.content.Context
 import android.graphics.*

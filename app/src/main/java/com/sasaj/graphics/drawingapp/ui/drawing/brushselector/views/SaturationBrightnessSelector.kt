@@ -1,11 +1,11 @@
-package com.sasaj.graphics.drawingapp.ui.brushselector.views
+package com.sasaj.graphics.drawingapp.ui.drawing.brushselector.views
 
 import android.content.Context
 import android.graphics.*
 import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.View
-import com.sasaj.graphics.drawingapp.ui.brushselector.utilities.OnColorComponentSelectedListener
+import com.sasaj.graphics.drawingapp.ui.drawing.brushselector.utilities.OnColorComponentSelectedListener
 
 /**
  * Created by sjugurdzija on 7/17/2016.

@@ -1,4 +1,4 @@
-package com.sasaj.graphics.drawingapp.ui.brushselector.views
+package com.sasaj.graphics.drawingapp.ui.drawing.brushselector.views
 
 import android.content.Context
 import android.util.AttributeSet
@@ -7,8 +7,8 @@ import android.widget.LinearLayout
 import com.jakewharton.rxbinding2.widget.RxSeekBar
 import com.sasaj.graphics.drawingapp.R
 import com.sasaj.graphics.drawingapp.domain.Brush
-import com.sasaj.graphics.drawingapp.ui.brushselector.utilities.BrushAdapter
-import com.sasaj.graphics.drawingapp.ui.brushselector.utilities.OnColorComponentSelectedListener
+import com.sasaj.graphics.drawingapp.ui.drawing.brushselector.utilities.BrushAdapter
+import com.sasaj.graphics.drawingapp.ui.drawing.brushselector.utilities.OnColorComponentSelectedListener
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.subjects.PublishSubject
@@ -96,7 +96,7 @@ class SelectBrushView : LinearLayout {
                 .subscribeOn(AndroidSchedulers.mainThread())
                 .subscribe { value -> selectionListener.setBlur(value) }
 
-        val colorSelector: com.sasaj.graphics.drawingapp.ui.brushselector.views.ColorSelectorView = findViewById(R.id.colorSelector)
+        val colorSelector: com.sasaj.graphics.drawingapp.ui.drawing.brushselector.views.ColorSelectorView = findViewById(R.id.colorSelector)
         colorSelector.setListener(selectionListener)
 
         setButton.setOnClickListener { _ ->

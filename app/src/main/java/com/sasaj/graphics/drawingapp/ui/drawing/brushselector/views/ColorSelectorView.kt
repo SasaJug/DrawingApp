@@ -1,4 +1,4 @@
-package com.sasaj.graphics.drawingapp.ui.brushselector.views
+package com.sasaj.graphics.drawingapp.ui.drawing.brushselector.views
 
 import android.content.Context
 import android.graphics.Color
@@ -8,7 +8,7 @@ import android.view.LayoutInflater
 import android.widget.LinearLayout
 import com.jakewharton.rxbinding2.widget.RxSeekBar
 import com.sasaj.graphics.drawingapp.R
-import com.sasaj.graphics.drawingapp.ui.brushselector.utilities.OnColorComponentSelectedListener
+import com.sasaj.graphics.drawingapp.ui.drawing.brushselector.utilities.OnColorComponentSelectedListener
 import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.color_selector_view_layout.view.*
 

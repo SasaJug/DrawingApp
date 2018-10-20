@@ -2,17 +2,12 @@ package com.sasaj.graphics.drawingapp.ui.authentication
 
 import android.content.Intent
 import android.os.Bundle
-import android.support.v4.content.ContextCompat.startActivity
-import android.support.v7.app.AppCompatActivity
 import android.util.Log
-import android.view.View
 import android.widget.AutoCompleteTextView
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
-
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.CognitoDevice
-import com.amazonaws.mobileconnectors.cognitoidentityprovider.CognitoUser
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.CognitoUserSession
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.continuations.AuthenticationContinuation
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.continuations.AuthenticationDetails
@@ -20,8 +15,6 @@ import com.amazonaws.mobileconnectors.cognitoidentityprovider.continuations.Chal
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.continuations.MultiFactorAuthenticationContinuation
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.handlers.AuthenticationHandler
 import com.sasaj.graphics.drawingapp.R
-import com.sasaj.graphics.drawingapp.R.id.password
-import com.sasaj.graphics.drawingapp.R.id.username
 import com.sasaj.graphics.drawingapp.cognito.CognitoHelper
 import com.sasaj.graphics.drawingapp.ui.base.BaseActivity
 import com.sasaj.graphics.drawingapp.ui.main.MainActivity

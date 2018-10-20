@@ -1,4 +1,4 @@
-package com.sasaj.graphics.drawingapp.ui.brushselector.utilities
+package com.sasaj.graphics.drawingapp.ui.drawing.brushselector.utilities
 
 import android.graphics.Color
 import com.sasaj.graphics.drawingapp.domain.Brush

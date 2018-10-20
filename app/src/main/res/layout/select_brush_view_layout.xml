@@ -12,7 +12,7 @@
             android:orientation="vertical">
 
 
-            <com.sasaj.graphics.drawingapp.ui.brushselector.views.BrushSample
+            <com.sasaj.graphics.drawingapp.ui.drawing.brushselector.views.BrushSample
                 android:id="@+id/brushSample"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
@@ -31,7 +31,7 @@
                 android:layout_marginTop="10dp"
                 android:max="50" />
 
-            <com.sasaj.graphics.drawingapp.ui.brushselector.views.ColorSelectorView
+            <com.sasaj.graphics.drawingapp.ui.drawing.brushselector.views.ColorSelectorView
                 android:id="@+id/colorSelector"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

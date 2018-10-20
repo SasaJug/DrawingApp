@@ -5,7 +5,7 @@
 
 
 
-    <com.sasaj.graphics.drawingapp.ui.brushselector.views.SaturationBrightnessSelector
+    <com.sasaj.graphics.drawingapp.ui.drawing.brushselector.views.SaturationBrightnessSelector
         android:id="@+id/sbSelector"
         android:layout_width="100dp"
         android:layout_height="100dp"

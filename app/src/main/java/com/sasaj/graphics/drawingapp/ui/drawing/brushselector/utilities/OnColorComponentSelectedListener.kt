@@ -1,4 +1,4 @@
-package com.sasaj.graphics.drawingapp.ui.brushselector.utilities
+package com.sasaj.graphics.drawingapp.ui.drawing.brushselector.utilities
 
 interface OnColorComponentSelectedListener {
 
