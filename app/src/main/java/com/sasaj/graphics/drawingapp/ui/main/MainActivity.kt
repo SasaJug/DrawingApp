@@ -53,7 +53,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun signOut() {
         user?.signOut()
-        val intent = Intent(this, SplashActivity::class.java)
+        val intent = Intent(this, SplashActivity ::class.java)
         startActivity(intent)
         finish()
     }

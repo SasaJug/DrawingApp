@@ -44,7 +44,9 @@
                 android:resource="@xml/provider_paths" />
         </provider>
 
-        <activity android:name=".ui.base.BaseActivity"></activity>
+        <activity android:name=".ui.base.BaseActivity" />
+        <activity android:name=".ui.authentication.ForgotPasswordActivity" />
+        <activity android:name=".ui.authentication.NewPasswordActivity"></activity>
     </application>
 
 </manifest>

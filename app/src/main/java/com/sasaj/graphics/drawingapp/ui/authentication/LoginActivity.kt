@@ -2,6 +2,7 @@ package com.sasaj.graphics.drawingapp.ui.authentication
 
 import android.content.Intent
 import android.os.Bundle
+import android.support.v4.content.ContextCompat.startActivity
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import android.view.View
@@ -19,9 +20,12 @@ import com.amazonaws.mobileconnectors.cognitoidentityprovider.continuations.Chal
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.continuations.MultiFactorAuthenticationContinuation
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.handlers.AuthenticationHandler
 import com.sasaj.graphics.drawingapp.R
+import com.sasaj.graphics.drawingapp.R.id.password
+import com.sasaj.graphics.drawingapp.R.id.username
 import com.sasaj.graphics.drawingapp.cognito.CognitoHelper
 import com.sasaj.graphics.drawingapp.ui.base.BaseActivity
 import com.sasaj.graphics.drawingapp.ui.main.MainActivity
+import kotlinx.android.synthetic.main.activity_login.*
 
 class LoginActivity : BaseActivity() {
     private var username: AutoCompleteTextView? = null
@@ -32,16 +36,10 @@ class LoginActivity : BaseActivity() {
 
     private var authenticationHandler: AuthenticationHandler = object : AuthenticationHandler {
         override fun onSuccess(userSession: CognitoUserSession, newDevice: CognitoDevice?) {
-            Log.e(TAG, "Login success: ")
-            if (userSession.isValid && userSession.idToken.jwtToken.isNotEmpty()) {
-                Log.i(TAG, "onSuccess: " + userSession.idToken.jwtToken)
+            Log.i(TAG, "Login success: ")
                 val intent = Intent(this@LoginActivity, MainActivity::class.java)
                 startActivity(intent)
                 finish()
-            } else {
-                Log.e(TAG, "onSuccess: no session data")
-            }
-
         }
 
         override fun getAuthenticationDetails(authenticationContinuation: AuthenticationContinuation, userId: String) {
@@ -81,6 +79,11 @@ class LoginActivity : BaseActivity() {
 
         goToRegister!!.setOnClickListener {
             val intent = Intent(this@LoginActivity, RegisterActivity::class.java)
+            startActivity(intent)
+        }
+
+        goToForgotPassword!!.setOnClickListener {
+            val intent = Intent(this@LoginActivity, ForgotPasswordActivity::class.java)
             startActivity(intent)
         }
     }
