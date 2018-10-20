@@ -43,4 +43,6 @@ ext {
 
     speedDialVersion = "1.0.0"
     picassoVersion = "2.71828"
+
+    awsVersion = "2.7.3"
 }
