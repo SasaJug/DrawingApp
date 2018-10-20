@@ -12,7 +12,7 @@
 * Screenshots:
 
 ![Screenshot_1](https://i.imgur.com/YSii38qm.png)
-![Screenshot_2](https://i.imgur.com/uSe0C6Bh.png)
+![Screenshot_2](https://i.imgur.com/uSe0C6Bm.png)
 
 ### AWS Configuration ###
 In order to use the app it is needed to:
