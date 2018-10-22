@@ -59,7 +59,7 @@ dependencies {
     implementation "android.arch.lifecycle:extensions:$rootProject.ext.archVersion"
     implementation "android.arch.lifecycle:reactivestreams:$rootProject.ext.archVersion"
     implementation 'com.android.support.constraint:constraint-layout:1.1.3'
-    kapt "android.arch.lifecycle:compiler:$rootProject.ext.archVersion"
+    annotationProcessor "android.arch.lifecycle:compiler:$rootProject.ext.archRuntimeVersion"
 
     //Room
     implementation "android.arch.persistence.room:runtime:$rootProject.archVersion"

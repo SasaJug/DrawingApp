@@ -2,6 +2,7 @@ package com.sasaj.graphics.drawingapp.di
 
 import android.arch.persistence.room.Room
 import android.content.Context
+import com.sasaj.graphics.drawingapp.repository.AwsAuthRepositoryImplementation
 import com.sasaj.graphics.drawingapp.repository.BrushRepositoryImplementation
 import com.sasaj.graphics.drawingapp.repository.DrawingRepositoryImplementation
 import com.sasaj.graphics.drawingapp.repository.database.APP_DATABASE_NAME
@@ -31,5 +32,12 @@ class ApplicationModule(val context: Context) {
     @Reusable
     fun providesBrushRepository(db: AppDatabase): BrushRepository {
         return BrushRepositoryImplementation(db)
+    }
+
+
+    @Provides
+    @Reusable
+    fun providesAwsRepository(): AwsAuthRepositoryImplementation {
+        return AwsAuthRepositoryImplementation(context)
     }
 }
