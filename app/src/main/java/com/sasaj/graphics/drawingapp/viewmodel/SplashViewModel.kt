@@ -22,15 +22,16 @@ class SplashViewModel : BaseViewModel() {
         repo.getAuthenticationSubject()
                 .observeOn(Schedulers.io())
                 .subscribeOn(AndroidSchedulers.mainThread())
+                .doOnSubscribe { response.postValue(Response.loading())}
                 .subscribe(
                         { s: String ->
-                            if (s == "proceed") {
-                                response.value = Response.success("proceed")
+                            if (s != "") {
+                                response.postValue(Response.success(s))
                             } else {
-                                response.value = Response.success("notLoggedIn")
+                                response.postValue(Response.success(""))
                             }
                         },
-                        { e -> {} },
+                        { e -> response.postValue(Response.error(e)) },
                         { {} }
                 )
         repo.isLoggedIn()

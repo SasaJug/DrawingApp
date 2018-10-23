@@ -72,35 +72,33 @@ class SplashActivity : BaseActivity() {
         when (response?.status) {
             LOADING -> renderLoadingState()
             SUCCESS -> renderAlreadyLoggedInState(response.data)
-            ERROR -> renderNotLoggedInState(response.error)
+            ERROR -> renderErrorState(response.error)
         }
     }
 
-
     private fun renderLoadingState() {
-
+        showWaitDialog("wait...")
     }
 
     private fun renderAlreadyLoggedInState(username: String?) {
-        Log.i(SplashActivity.TAG, "Login success: ")
-        if (username == "proceed") {
+        closeWaitDialog()
+        if (username != "") {
+            Log.i(SplashActivity.TAG, "Already logged in: $username")
             val intent = Intent(this@SplashActivity, MainActivity::class.java)
             startActivity(intent)
             finish()
         } else {
-            Log.i(SplashActivity.TAG, "getAuthenticationDetails")
+            Log.i(SplashActivity.TAG, "No login details")
             val intent = Intent(this@SplashActivity, LoginActivity::class.java)
             startActivity(intent)
             finish()
         }
-
     }
 
-    private fun renderNotLoggedInState(throwable: Throwable?) {
-        Log.i(SplashActivity.TAG, "getAuthenticationDetails")
-        val intent = Intent(this@SplashActivity, LoginActivity::class.java)
-        startActivity(intent)
-        finish()
+    private fun renderErrorState(throwable: Throwable?) {
+        closeWaitDialog()
+        Log.e(SplashActivity.TAG, "Error checking login status: ", throwable)
+        showDialogMessage("Error checking login status", throwable.toString())
     }
 
     companion object {

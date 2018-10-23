@@ -24,12 +24,12 @@ class AwsAuthRepositoryImplementation(val context: Context) {
     private var authenticationHandler: AuthenticationHandler? = object : AuthenticationHandler {
         override fun onSuccess(userSession: CognitoUserSession, newDevice: CognitoDevice?) {
             Log.i(TAG, "Login success: ")
-            authSubject.onNext("proceed")
+            authSubject.onNext(userSession.username)
         }
 
         override fun getAuthenticationDetails(authenticationContinuation: AuthenticationContinuation, userId: String) {
             Log.i(TAG, "getAuthenticationDetails")
-            authSubject.onNext("getAuthDetails")
+            authSubject.onNext("")
         }
 
         override fun getMFACode(continuation: MultiFactorAuthenticationContinuation) {
