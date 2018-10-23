@@ -8,11 +8,13 @@ import com.amazonaws.mobileconnectors.cognitoidentityprovider.continuations.Auth
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.continuations.ChallengeContinuation
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.continuations.MultiFactorAuthenticationContinuation
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.handlers.AuthenticationHandler
+import com.amazonaws.regions.RegionUtils.init
 import com.sasaj.graphics.drawingapp.cognito.CognitoHelper
+import com.sasaj.graphics.drawingapp.viewmodel.dependencies.AuthRepository
 import io.reactivex.subjects.BehaviorSubject
 import io.reactivex.subjects.Subject
 
-class AwsAuthRepositoryImplementation(val context: Context) {
+class AwsAuthRepositoryImplementation(val context: Context) : AuthRepository {
 
 
     companion object {
@@ -50,7 +52,7 @@ class AwsAuthRepositoryImplementation(val context: Context) {
         cognitoHelper = CognitoHelper(context)
     }
 
-    fun isLoggedIn() {
+    override fun checkIfLoggedIn() {
         val user = cognitoHelper?.userPool?.currentUser
         val username = user?.userId
         if (username != null) {
@@ -59,7 +61,7 @@ class AwsAuthRepositoryImplementation(val context: Context) {
     }
 
 
-    fun getAuthenticationSubject(): Subject<String> {
+    override fun getAuthenticationSubject(): Subject<String> {
         return authSubject
     }
 

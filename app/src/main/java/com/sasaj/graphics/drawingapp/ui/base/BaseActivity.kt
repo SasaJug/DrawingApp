@@ -14,8 +14,8 @@ open class BaseActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
     }
 
-    fun showWaitDialog(message: String) {
-        closeWaitDialog()
+    fun showProgress(message: String) {
+        hideProgress()
         waitDialog = ProgressDialog(this)
         waitDialog?.setTitle(message)
         waitDialog?.show()
@@ -34,7 +34,7 @@ open class BaseActivity : AppCompatActivity() {
         userDialog?.show()
     }
 
-    fun closeWaitDialog() {
+    fun hideProgress() {
         try {
             waitDialog?.dismiss()
         } catch (e: Exception) {

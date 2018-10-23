@@ -23,7 +23,7 @@ import kotlinx.android.synthetic.main.activity_login.*
 class LoginActivity : BaseActivity() {
     private var username: AutoCompleteTextView? = null
     private var password: EditText? = null
-    private var login: Button? = null
+    private var loginButton: Button? = null
     private var goToRegister: TextView? = null
 
 
@@ -61,10 +61,10 @@ class LoginActivity : BaseActivity() {
 
         username = findViewById(R.id.username)
         password = findViewById(R.id.password)
-        login = findViewById(R.id.sign_in_button)
+        loginButton = findViewById(R.id.sign_in_button)
         goToRegister = findViewById(R.id.go_to_register)
 
-        login!!.setOnClickListener {
+        loginButton!!.setOnClickListener {
             val cognitoHelper = CognitoHelper(this@LoginActivity)
             val user = cognitoHelper.userPool.getUser(username!!.text.toString())
             user.getSessionInBackground(authenticationHandler)

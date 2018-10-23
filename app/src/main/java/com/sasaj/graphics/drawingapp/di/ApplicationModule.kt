@@ -7,6 +7,7 @@ import com.sasaj.graphics.drawingapp.repository.BrushRepositoryImplementation
 import com.sasaj.graphics.drawingapp.repository.DrawingRepositoryImplementation
 import com.sasaj.graphics.drawingapp.repository.database.APP_DATABASE_NAME
 import com.sasaj.graphics.drawingapp.repository.database.AppDatabase
+import com.sasaj.graphics.drawingapp.viewmodel.dependencies.AuthRepository
 import com.sasaj.graphics.drawingapp.viewmodel.dependencies.BrushRepository
 import com.sasaj.graphics.drawingapp.viewmodel.dependencies.DrawingRepository
 import dagger.Module
@@ -37,7 +38,7 @@ class ApplicationModule(val context: Context) {
 
     @Provides
     @Reusable
-    fun providesAwsRepository(): AwsAuthRepositoryImplementation {
+    fun providesAuthRepository(): AuthRepository {
         return AwsAuthRepositoryImplementation(context)
     }
 }

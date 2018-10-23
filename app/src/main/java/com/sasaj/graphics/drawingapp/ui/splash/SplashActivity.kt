@@ -65,7 +65,7 @@ class SplashActivity : BaseActivity() {
     private fun findCurrent() {
         vm = ViewModelProviders.of(this).get(SplashViewModel::class.java)
         vm.response().observe(this, Observer { response -> processResponse(response) })
-        vm.isLoggedIn()
+        vm.checkIfLoggedIn()
     }
 
     private fun processResponse(response: Response?) {
@@ -77,11 +77,11 @@ class SplashActivity : BaseActivity() {
     }
 
     private fun renderLoadingState() {
-        showWaitDialog("wait...")
+        showProgress("wait...")
     }
 
     private fun renderAlreadyLoggedInState(username: String?) {
-        closeWaitDialog()
+        hideProgress()
         if (username != "") {
             Log.i(SplashActivity.TAG, "Already logged in: $username")
             val intent = Intent(this@SplashActivity, MainActivity::class.java)
@@ -96,7 +96,7 @@ class SplashActivity : BaseActivity() {
     }
 
     private fun renderErrorState(throwable: Throwable?) {
-        closeWaitDialog()
+        hideProgress()
         Log.e(SplashActivity.TAG, "Error checking login status: ", throwable)
         showDialogMessage("Error checking login status", throwable.toString())
     }
