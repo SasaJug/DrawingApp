@@ -7,7 +7,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
-class SplashViewModel : BaseViewModel() {
+class LoginViewModel : BaseViewModel() {
 
     @Inject
     lateinit var repo: AuthRepository
@@ -18,11 +18,11 @@ class SplashViewModel : BaseViewModel() {
         return response
     }
 
-    fun checkIfLoggedIn() {
+    fun logIn(username: String, password: String = "") {
         repo.getAuthenticationSubject()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .doOnSubscribe { response.postValue(Response.loading())}
+                .doOnSubscribe { response.postValue(Response.loading()) }
                 .subscribe(
                         { s: String ->
                             if (s != "") {
@@ -34,7 +34,7 @@ class SplashViewModel : BaseViewModel() {
                         { e -> response.setValue(Response.error(e)) },
                         { {} }
                 )
-        repo.checkIfLoggedIn()
+        repo.logIn(username, password)
     }
 
 }

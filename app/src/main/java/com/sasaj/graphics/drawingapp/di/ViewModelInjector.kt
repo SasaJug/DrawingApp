@@ -1,9 +1,6 @@
 package com.sasaj.graphics.drawingapp.di
 
-import com.sasaj.graphics.drawingapp.viewmodel.DrawingListViewModel
-import com.sasaj.graphics.drawingapp.viewmodel.DrawingViewModel
-import com.sasaj.graphics.drawingapp.viewmodel.SelectBrushViewModel
-import com.sasaj.graphics.drawingapp.viewmodel.SplashViewModel
+import com.sasaj.graphics.drawingapp.viewmodel.*
 import dagger.Component
 import javax.inject.Singleton
 
@@ -20,6 +17,7 @@ interface ViewModelInjector {
     fun inject(drawingViewModel: DrawingViewModel)
     fun inject(selectBrushViewModel: SelectBrushViewModel)
     fun inject(splashViewModel: SplashViewModel)
+    fun inject(loginViewModel: LoginViewModel)
 
     @Component.Builder
     interface Builder {

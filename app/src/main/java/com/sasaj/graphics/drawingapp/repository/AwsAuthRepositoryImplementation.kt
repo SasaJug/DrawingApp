@@ -5,6 +5,7 @@ import android.util.Log
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.CognitoDevice
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.CognitoUserSession
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.continuations.AuthenticationContinuation
+import com.amazonaws.mobileconnectors.cognitoidentityprovider.continuations.AuthenticationDetails
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.continuations.ChallengeContinuation
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.continuations.MultiFactorAuthenticationContinuation
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.handlers.AuthenticationHandler
@@ -23,15 +24,26 @@ class AwsAuthRepositoryImplementation(val context: Context) : AuthRepository {
 
     private var cognitoHelper: CognitoHelper? = null
     private var authSubject: Subject<String> = BehaviorSubject.create<String>()
+
+    // ToDo - secure
+    private var password: String? = null
+
     private var authenticationHandler: AuthenticationHandler? = object : AuthenticationHandler {
         override fun onSuccess(userSession: CognitoUserSession, newDevice: CognitoDevice?) {
             Log.i(TAG, "Login success: ")
             authSubject.onNext(userSession.username)
         }
 
-        override fun getAuthenticationDetails(authenticationContinuation: AuthenticationContinuation, userId: String) {
+        override fun getAuthenticationDetails(authenticationContinuation: AuthenticationContinuation, userId: String?) {
             Log.i(TAG, "getAuthenticationDetails")
-            authSubject.onNext("")
+            if(password != null){
+                val authenticationDetails = AuthenticationDetails(userId, password, null)
+                password = null
+                authenticationContinuation.setAuthenticationDetails(authenticationDetails)
+                authenticationContinuation.continueTask()
+            } else {
+                authSubject.onNext("")
+            }
         }
 
         override fun getMFACode(continuation: MultiFactorAuthenticationContinuation) {
@@ -58,6 +70,12 @@ class AwsAuthRepositoryImplementation(val context: Context) : AuthRepository {
         if (username != null) {
             user.getSessionInBackground(authenticationHandler)
         }
+    }
+
+    override fun logIn(username : String?, password : String?){
+        this.password = password
+        val user = cognitoHelper?.userPool?.getUser(username)
+        user?.getSessionInBackground(authenticationHandler)
     }
 
 

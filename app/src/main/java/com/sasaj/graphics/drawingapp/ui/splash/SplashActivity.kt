@@ -88,7 +88,7 @@ class SplashActivity : BaseActivity() {
             startActivity(intent)
             finish()
         } else {
-            Log.i(SplashActivity.TAG, "No login details")
+            Log.i(SplashActivity.TAG, "No logIn details")
             val intent = Intent(this@SplashActivity, LoginActivity::class.java)
             startActivity(intent)
             finish()
@@ -97,8 +97,8 @@ class SplashActivity : BaseActivity() {
 
     private fun renderErrorState(throwable: Throwable?) {
         hideProgress()
-        Log.e(SplashActivity.TAG, "Error checking login status: ", throwable)
-        showDialogMessage("Error checking login status", throwable.toString())
+        Log.e(SplashActivity.TAG, "Error checking logIn status: ", throwable)
+        showDialogMessage("Error checking logIn status", throwable.toString())
     }
 
     companion object {

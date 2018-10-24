@@ -1,73 +1,34 @@
 package com.sasaj.graphics.drawingapp.ui.authentication
 
+import android.arch.lifecycle.Observer
+import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import android.widget.AutoCompleteTextView
-import android.widget.Button
-import android.widget.EditText
-import android.widget.TextView
-import com.amazonaws.mobileconnectors.cognitoidentityprovider.CognitoDevice
-import com.amazonaws.mobileconnectors.cognitoidentityprovider.CognitoUserSession
-import com.amazonaws.mobileconnectors.cognitoidentityprovider.continuations.AuthenticationContinuation
-import com.amazonaws.mobileconnectors.cognitoidentityprovider.continuations.AuthenticationDetails
-import com.amazonaws.mobileconnectors.cognitoidentityprovider.continuations.ChallengeContinuation
-import com.amazonaws.mobileconnectors.cognitoidentityprovider.continuations.MultiFactorAuthenticationContinuation
-import com.amazonaws.mobileconnectors.cognitoidentityprovider.handlers.AuthenticationHandler
 import com.sasaj.graphics.drawingapp.R
-import com.sasaj.graphics.drawingapp.cognito.CognitoHelper
 import com.sasaj.graphics.drawingapp.ui.base.BaseActivity
 import com.sasaj.graphics.drawingapp.ui.main.MainActivity
+import com.sasaj.graphics.drawingapp.viewmodel.LoginViewModel
+import com.sasaj.graphics.drawingapp.viewmodel.common.Response
+import com.sasaj.graphics.drawingapp.viewmodel.common.Status
 import kotlinx.android.synthetic.main.activity_login.*
 
 class LoginActivity : BaseActivity() {
-    private var username: AutoCompleteTextView? = null
-    private var password: EditText? = null
-    private var loginButton: Button? = null
-    private var goToRegister: TextView? = null
 
-
-    private var authenticationHandler: AuthenticationHandler = object : AuthenticationHandler {
-        override fun onSuccess(userSession: CognitoUserSession, newDevice: CognitoDevice?) {
-            Log.i(TAG, "Login success: ")
-                val intent = Intent(this@LoginActivity, MainActivity::class.java)
-                startActivity(intent)
-                finish()
-        }
-
-        override fun getAuthenticationDetails(authenticationContinuation: AuthenticationContinuation, userId: String) {
-            val authenticationDetails = AuthenticationDetails(userId, password!!.text.toString(), null)
-            authenticationContinuation.setAuthenticationDetails(authenticationDetails)
-            authenticationContinuation.continueTask()
-        }
-
-        override fun getMFACode(continuation: MultiFactorAuthenticationContinuation) {
-            Log.i(TAG, "getMFACode: ")
-        }
-
-        override fun authenticationChallenge(continuation: ChallengeContinuation) {
-            Log.i(TAG, "authenticationChallenge: ")
-        }
-
-        override fun onFailure(exception: Exception) {
-            Log.e(TAG, "Login failure: ", exception)
-            showDialogMessage(exception.toString(), exception.message!!)
-        }
-    }
+    private lateinit var vm: LoginViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
-        username = findViewById(R.id.username)
-        password = findViewById(R.id.password)
-        loginButton = findViewById(R.id.sign_in_button)
-        goToRegister = findViewById(R.id.go_to_register)
+        vm = ViewModelProviders.of(this).get(LoginViewModel::class.java)
+        vm.response().observe(this, Observer { response -> processResponse(response) })
 
         loginButton!!.setOnClickListener {
-            val cognitoHelper = CognitoHelper(this@LoginActivity)
-            val user = cognitoHelper.userPool.getUser(username!!.text.toString())
-            user.getSessionInBackground(authenticationHandler)
+            if (username?.text != null && !username.equals("") && password?.text != null && !password.text.toString().equals(""))
+                vm.logIn(username?.text.toString(), password?.text.toString())
+            else
+                showDialogMessage("Error", "Username and password must not be empty!")
         }
 
         goToRegister!!.setOnClickListener {
@@ -80,6 +41,35 @@ class LoginActivity : BaseActivity() {
             startActivity(intent)
         }
     }
+
+    private fun processResponse(response: Response?) {
+        when (response?.status) {
+            Status.LOADING -> renderLoadingState()
+            Status.SUCCESS -> renderSucessLoggingInState(response.data)
+            Status.ERROR -> renderErrorState(response.error)
+        }
+    }
+
+    private fun renderLoadingState() {
+        showProgress("wait...")
+    }
+
+    private fun renderSucessLoggingInState(username: String?) {
+        hideProgress()
+        if (username != "") {
+            Log.i(LoginActivity.TAG, "Succesfully logged in: $username")
+            val intent = Intent(this@LoginActivity, MainActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
+    }
+
+    private fun renderErrorState(throwable: Throwable?) {
+        hideProgress()
+        Log.e(LoginActivity.TAG, "Error logging in ", throwable)
+        showDialogMessage("Error logging in", throwable.toString())
+    }
+
 
     companion object {
 
