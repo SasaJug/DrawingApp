@@ -24,13 +24,10 @@ import com.sasaj.graphics.drawingapp.viewmodel.common.Status.*
 
 class SplashActivity : BaseActivity() {
 
-
     private lateinit var vm: SplashViewModel
 
     public override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (ContextCompat.checkSelfPermission(this,
@@ -64,8 +61,12 @@ class SplashActivity : BaseActivity() {
 
     private fun findCurrent() {
         vm = ViewModelProviders.of(this).get(SplashViewModel::class.java)
-        vm.response().observe(this, Observer { response -> processResponse(response) })
+        vm.getSplashLiveData().observe(this, Observer { response -> processResponse(response) })
         vm.checkIfLoggedIn()
+    }
+
+    override fun resetViewModel() {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
     private fun processResponse(response: Response?) {

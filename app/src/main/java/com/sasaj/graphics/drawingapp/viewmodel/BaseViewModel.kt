@@ -19,6 +19,7 @@ abstract class BaseViewModel : ViewModel() {
             is SelectBrushViewModel -> injector.inject(this)
             is SplashViewModel -> injector.inject(this)
             is LoginViewModel -> injector.inject(this)
+            is RegisterViewModel -> injector.inject(this)
         }
     }
 }

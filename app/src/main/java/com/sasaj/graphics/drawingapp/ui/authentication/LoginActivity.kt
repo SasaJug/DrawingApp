@@ -22,7 +22,7 @@ class LoginActivity : BaseActivity() {
         setContentView(R.layout.activity_login)
 
         vm = ViewModelProviders.of(this).get(LoginViewModel::class.java)
-        vm.response().observe(this, Observer { response -> processResponse(response) })
+        vm.getLoginLiveData().observe(this, Observer { response -> processResponse(response) })
 
         loginButton!!.setOnClickListener {
             if (username?.text != null && !username.equals("") && password?.text != null && !password.text.toString().equals(""))
@@ -50,17 +50,23 @@ class LoginActivity : BaseActivity() {
         }
     }
 
+    override fun resetViewModel() {
+        vm.resetLiveData()
+    }
+
     private fun renderLoadingState() {
         showProgress("wait...")
     }
 
     private fun renderSucessLoggingInState(username: String?) {
         hideProgress()
-        if (username != "") {
-            Log.i(LoginActivity.TAG, "Succesfully logged in: $username")
+        if (username == "success") {
+            Log.i(LoginActivity.TAG, "Succesfully logged in")
             val intent = Intent(this@LoginActivity, MainActivity::class.java)
             startActivity(intent)
             finish()
+        } else {
+            showDialogMessage("Error logging in", username)
         }
     }
 

@@ -12,6 +12,9 @@ import kotlinx.android.synthetic.main.activity_new_password.*
 import java.lang.Exception
 
 class NewPasswordActivity : BaseActivity() {
+    override fun resetViewModel() {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
 
     var forgotPasswordContinuation:  ForgotPasswordContinuation? = null
 

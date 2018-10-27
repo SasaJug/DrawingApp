@@ -11,6 +11,9 @@ import com.sasaj.graphics.drawingapp.ui.main.MainActivity
 import kotlinx.android.synthetic.main.activity_verify.*
 
 class VerifyActivity : BaseActivity() {
+    override fun resetViewModel() {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
 
     private val genericHandler = object : GenericHandler {
         override fun onSuccess() {
