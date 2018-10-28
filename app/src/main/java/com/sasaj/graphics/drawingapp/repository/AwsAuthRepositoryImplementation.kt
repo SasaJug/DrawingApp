@@ -8,10 +8,12 @@ import com.amazonaws.mobileconnectors.cognitoidentityprovider.continuations.Auth
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.continuations.ChallengeContinuation
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.continuations.MultiFactorAuthenticationContinuation
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.handlers.AuthenticationHandler
+import com.amazonaws.mobileconnectors.cognitoidentityprovider.handlers.GenericHandler
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.handlers.SignUpHandler
 import com.sasaj.graphics.drawingapp.cognito.CognitoHelper
 import com.sasaj.graphics.drawingapp.viewmodel.dependencies.AuthRepository
 import io.reactivex.subjects.PublishSubject
+import io.reactivex.subjects.Subject
 
 class AwsAuthRepositoryImplementation(val context: Context) : AuthRepository {
 
@@ -24,6 +26,7 @@ class AwsAuthRepositoryImplementation(val context: Context) : AuthRepository {
     private var loginSubject: PublishSubject<String> = PublishSubject.create<String>()
     private var checkLoggedInSubject: PublishSubject<String> = PublishSubject.create<String>()
     private var registerSubject: PublishSubject<Boolean> = PublishSubject.create<Boolean>()
+    private var verifySubject: PublishSubject<Boolean> = PublishSubject.create<Boolean>()
 
     // ToDo - secure
     private var password: String? = null
@@ -36,7 +39,7 @@ class AwsAuthRepositoryImplementation(val context: Context) : AuthRepository {
 
         override fun getAuthenticationDetails(authenticationContinuation: AuthenticationContinuation, userId: String?) {
             Log.i(TAG, "getAuthenticationDetails")
-            if(password != null){
+            if (password != null) {
                 val authenticationDetails = AuthenticationDetails(userId, password, null)
                 password = null
                 authenticationContinuation.setAuthenticationDetails(authenticationDetails)
@@ -86,11 +89,22 @@ class AwsAuthRepositoryImplementation(val context: Context) : AuthRepository {
     private val signUpHandler = object : SignUpHandler {
         override fun onSuccess(user: CognitoUser, signUpConfirmationState: Boolean, cognitoUserCodeDeliveryDetails: CognitoUserCodeDeliveryDetails) {
             registerSubject.onNext(signUpConfirmationState)
-         }
+        }
 
         override fun onFailure(exception: Exception) {
             Log.e(TAG, "Signup Failure: ", exception)
             registerSubject.onError(exception)
+        }
+    }
+
+    private val genericHandler = object : GenericHandler {
+        override fun onSuccess() {
+            Log.i(TAG, "Verification success!")
+            verifySubject.onNext(true)
+        }
+
+        override fun onFailure(exception: Exception) {
+            verifySubject.onNext(false)
         }
     }
 
@@ -109,7 +123,7 @@ class AwsAuthRepositoryImplementation(val context: Context) : AuthRepository {
         }
     }
 
-    override fun logIn(username : String?, password : String?){
+    override fun logIn(username: String?, password: String?) {
         this.password = password
         val user = cognitoHelper?.userPool?.getUser(username)
         if (user?.userId != null) {
@@ -117,9 +131,9 @@ class AwsAuthRepositoryImplementation(val context: Context) : AuthRepository {
         }
     }
 
-    override fun signUp(username : String?, password : String?, attr : HashMap<String, String>){
+    override fun signUp(username: String?, password: String?, attr: HashMap<String, String>) {
         val attributes = CognitoUserAttributes()
-        attr.forEach { (key, value) -> attributes.addAttribute(key,value)}
+        attr.forEach { (key, value) -> attributes.addAttribute(key, value) }
 
         cognitoHelper?.userPool?.signUpInBackground(username,
                 password,
@@ -127,6 +141,12 @@ class AwsAuthRepositoryImplementation(val context: Context) : AuthRepository {
                 null,
                 signUpHandler)
     }
+
+    override fun verify(username: String?, code: String?) {
+        val user = cognitoHelper?.userPool?.getUser(username)
+        user?.confirmSignUpInBackground(code, false, genericHandler)
+    }
+
 
     override fun getCheckLoggedInSubject(): PublishSubject<String> {
         return checkLoggedInSubject
@@ -140,6 +160,9 @@ class AwsAuthRepositoryImplementation(val context: Context) : AuthRepository {
         return registerSubject
     }
 
+    override fun getVerifySubject(): Subject<Boolean> {
+        return verifySubject
+    }
 
 
 }

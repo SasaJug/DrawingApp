@@ -65,8 +65,8 @@ class RegisterActivity : BaseActivity() {
 
     private fun renderErrorState(throwable: Throwable?) {
         hideProgress()
-        Log.e(TAG, "Error logging in ", throwable)
-        showDialogMessage("Error logging in", throwable.toString())
+        Log.e(TAG, "Error registering ", throwable)
+        showDialogMessage("Error registering. ", throwable.toString())
     }
 
 

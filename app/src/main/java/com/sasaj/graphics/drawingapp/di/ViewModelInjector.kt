@@ -19,6 +19,7 @@ interface ViewModelInjector {
     fun inject(splashViewModel: SplashViewModel)
     fun inject(loginViewModel: LoginViewModel)
     fun inject(registerViewModel: RegisterViewModel)
+    fun inject(verifyViewModel: VerifyViewModel)
 
     @Component.Builder
     interface Builder {
