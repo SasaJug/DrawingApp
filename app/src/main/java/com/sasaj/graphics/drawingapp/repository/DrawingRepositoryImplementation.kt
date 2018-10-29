@@ -3,6 +3,10 @@ package com.sasaj.graphics.drawingapp.repository
 import android.graphics.Bitmap
 import android.os.Environment
 import android.util.Log
+import com.amazonaws.mobileconnectors.s3.transferutility.TransferListener
+import com.amazonaws.mobileconnectors.s3.transferutility.TransferState
+import com.amazonaws.mobileconnectors.s3.transferutility.TransferUtility
+import com.sasaj.graphics.drawingapp.R.id.save
 import com.sasaj.graphics.drawingapp.domain.Drawing
 import com.sasaj.graphics.drawingapp.repository.database.AppDatabase
 import com.sasaj.graphics.drawingapp.viewmodel.dependencies.DrawingRepository
@@ -17,7 +21,7 @@ import java.util.*
  * Created by sjugurdzija on 4/21/2017.
  */
 
-class DrawingRepositoryImplementation(val db: AppDatabase) : DrawingRepository {
+class DrawingRepositoryImplementation(val db: AppDatabase, val transferUtility: TransferUtility) : DrawingRepository {
 
     companion object {
         val TAG = DrawingRepositoryImplementation::class.java.simpleName
@@ -28,17 +32,49 @@ class DrawingRepositoryImplementation(val db: AppDatabase) : DrawingRepository {
     }
 
     override fun saveDrawing(bitmap: Bitmap?) {
-        try {
-            val imageFile = getImageFile()
-            val fos = FileOutputStream(imageFile)
+        val path = saveFileLocally(bitmap)
+        uploadWithTransferUtility(path)
+    }
+
+    private fun saveFileLocally(bitmap: Bitmap?): String? {
+        val imageFile = getImageFile()
+        val fos = FileOutputStream(imageFile)
+        return try {
             bitmap?.compress(Bitmap.CompressFormat.PNG, 100, fos)
-            fos.flush()
-            fos.close()
             val drawing = Drawing(imageFile.absolutePath, System.currentTimeMillis())
             db.drawingDao().insert(drawing)
+            drawing.imagePath
         } catch (e: IOException) {
             Log.e(TAG, e.message)
+            null
+        } finally {
+            fos.flush()
+            fos.close()
         }
+    }
+
+
+    private fun uploadWithTransferUtility(path: String?) {
+
+        val file = File(path)
+        val uploadObserver = transferUtility.upload("s3demo-jugurdzija", path?.substring(path.lastIndexOf("/") + 1), file)
+
+        uploadObserver.setTransferListener(object : TransferListener {
+            override fun onStateChanged(id: Int, state: TransferState) {
+                if (state == TransferState.COMPLETED)
+                    Log.e(TAG, "onStateChanged: ")
+                else if (state == TransferState.FAILED)
+                    Log.e(TAG, "onStateChanged: upload failed")
+            }
+
+            override fun onProgressChanged(id: Int, bytesCurrent: Long, bytesTotal: Long) {
+                Log.e(TAG, "onProgressChanged: $id")
+            }
+
+            override fun onError(id: Int, ex: Exception) {
+                Log.e(TAG, "onError: ", ex)
+            }
+        })
     }
 
     private fun getImageFile(): File {

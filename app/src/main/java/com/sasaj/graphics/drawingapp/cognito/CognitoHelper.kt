@@ -15,8 +15,8 @@ class CognitoHelper(private val context: Context) {
     private val clientId = BuildConfig.CLIENT_ID
     private val clientSecret = BuildConfig.CLIENT_SECRET
 
-    val identityPoolRegion = Regions.US_EAST_2
-    val identityPoolId = BuildConfig.IDENTITY_POOL_ID
+    private val identityPoolRegion = Regions.US_EAST_2
+    private val identityPoolId = BuildConfig.IDENTITY_POOL_ID
 
     // User details from the service
     var currSession: CognitoUserSession? = null

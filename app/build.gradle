@@ -78,6 +78,8 @@ dependencies {
     //aws
     implementation "com.amazonaws:aws-android-sdk-core:$rootProject.ext.awsVersion"
     implementation "com.amazonaws:aws-android-sdk-cognitoidentityprovider:$rootProject.ext.awsVersion"
+    implementation "com.amazonaws:aws-android-sdk-s3:$rootProject.ext.awsVersion"
+    implementation "com.amazonaws:aws-android-sdk-ddb:$rootProject.ext.awsVersion"
 
     //DebugDb
     debugImplementation "com.amitshekhar.android:debug-db:$rootProject.debugDbVersion"

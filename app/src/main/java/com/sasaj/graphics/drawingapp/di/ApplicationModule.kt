@@ -2,6 +2,11 @@ package com.sasaj.graphics.drawingapp.di
 
 import android.arch.persistence.room.Room
 import android.content.Context
+import com.amazonaws.mobileconnectors.s3.transferutility.TransferUtility
+import com.amazonaws.regions.Region
+import com.amazonaws.regions.Regions
+import com.amazonaws.services.s3.AmazonS3Client
+import com.sasaj.graphics.drawingapp.cognito.CognitoHelper
 import com.sasaj.graphics.drawingapp.repository.AwsAuthRepositoryImplementation
 import com.sasaj.graphics.drawingapp.repository.BrushRepositoryImplementation
 import com.sasaj.graphics.drawingapp.repository.DrawingRepositoryImplementation
@@ -25,8 +30,34 @@ class ApplicationModule(val context: Context) {
 
     @Provides
     @Reusable
-    fun providesDrawingRepository(db: AppDatabase): DrawingRepository {
-        return DrawingRepositoryImplementation(db)
+    fun providesCognitoHelper(): CognitoHelper {
+        return CognitoHelper(context)
+    }
+
+    @Provides
+    @Reusable
+    fun providesAmazonS3Client(cognitoHelper: CognitoHelper) : AmazonS3Client {
+        val s3 = AmazonS3Client(cognitoHelper.credentialsProvider)
+        s3.setRegion(Region.getRegion(Regions.US_EAST_2))
+        return s3
+    }
+
+
+    @Provides
+    @Reusable
+    fun providesTransferUtility(s3: AmazonS3Client) :TransferUtility {
+        return TransferUtility.builder()
+                .context(context)
+                .s3Client(s3)
+                .build()
+    }
+
+
+
+    @Provides
+    @Reusable
+    fun providesDrawingRepository(db: AppDatabase, transferUtility: TransferUtility): DrawingRepository {
+        return DrawingRepositoryImplementation(db, transferUtility)
     }
 
     @Provides

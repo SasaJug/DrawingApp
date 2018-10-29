@@ -47,7 +47,6 @@ class SplashViewModel : BaseViewModel() {
     }
 
     companion object {
-
         private val TAG = SplashViewModel::class.java.simpleName
     }
 }
