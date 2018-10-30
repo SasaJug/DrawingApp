@@ -57,7 +57,7 @@ class DrawingRepositoryImplementation(val db: AppDatabase, val transferUtility: 
     private fun uploadWithTransferUtility(path: String?) {
 
         val file = File(path)
-        val uploadObserver = transferUtility.upload("s3demo-jugurdzija", path?.substring(path.lastIndexOf("/") + 1), file)
+        val uploadObserver = transferUtility.upload(path?.substring(path.lastIndexOf("/") + 1), file)
 
         uploadObserver.setTransferListener(object : TransferListener {
             override fun onStateChanged(id: Int, state: TransferState) {

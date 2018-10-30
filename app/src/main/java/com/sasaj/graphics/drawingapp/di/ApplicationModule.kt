@@ -49,6 +49,7 @@ class ApplicationModule(val context: Context) {
         return TransferUtility.builder()
                 .context(context)
                 .s3Client(s3)
+                .defaultBucket("drawingappbucket")
                 .build()
     }
 
