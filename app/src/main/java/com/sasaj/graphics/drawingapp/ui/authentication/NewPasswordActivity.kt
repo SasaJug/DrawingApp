@@ -5,7 +5,7 @@ import android.os.Bundle
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.continuations.ForgotPasswordContinuation
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.handlers.ForgotPasswordHandler
 import com.sasaj.graphics.drawingapp.R
-import com.sasaj.graphics.drawingapp.cognito.CognitoHelper
+import com.sasaj.graphics.drawingapp.aws.CognitoHelper
 import com.sasaj.graphics.drawingapp.ui.base.BaseActivity
 import com.sasaj.graphics.drawingapp.ui.main.MainActivity
 import kotlinx.android.synthetic.main.activity_new_password.*

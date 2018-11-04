@@ -10,7 +10,7 @@ import com.amazonaws.mobileconnectors.cognitoidentityprovider.continuations.Mult
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.handlers.AuthenticationHandler
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.handlers.GenericHandler
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.handlers.SignUpHandler
-import com.sasaj.graphics.drawingapp.cognito.CognitoHelper
+import com.sasaj.graphics.drawingapp.aws.CognitoHelper
 import com.sasaj.graphics.drawingapp.viewmodel.dependencies.AuthRepository
 import io.reactivex.subjects.PublishSubject
 import io.reactivex.subjects.Subject

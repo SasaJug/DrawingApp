@@ -7,10 +7,8 @@ import android.os.Bundle
 import android.util.Log
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.handlers.GenericHandler
 import com.sasaj.graphics.drawingapp.R
-import com.sasaj.graphics.drawingapp.cognito.CognitoHelper
 import com.sasaj.graphics.drawingapp.ui.base.BaseActivity
 import com.sasaj.graphics.drawingapp.ui.main.MainActivity
-import com.sasaj.graphics.drawingapp.viewmodel.RegisterViewModel
 import com.sasaj.graphics.drawingapp.viewmodel.VerifyViewModel
 import com.sasaj.graphics.drawingapp.viewmodel.common.Response
 import com.sasaj.graphics.drawingapp.viewmodel.common.Status

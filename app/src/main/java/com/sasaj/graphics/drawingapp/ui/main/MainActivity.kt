@@ -2,15 +2,12 @@ package com.sasaj.graphics.drawingapp.ui.main
 
 import android.content.Intent
 import android.os.Bundle
-import android.support.v4.content.ContextCompat.startActivity
 import android.support.v7.app.AppCompatActivity
 import android.view.Menu
-import android.view.MenuInflater
 import android.view.MenuItem
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.CognitoUser
 import com.sasaj.graphics.drawingapp.R
-import com.sasaj.graphics.drawingapp.R.id.speedDial
-import com.sasaj.graphics.drawingapp.cognito.CognitoHelper
+import com.sasaj.graphics.drawingapp.aws.CognitoHelper
 import com.sasaj.graphics.drawingapp.ui.drawing.DrawingActivity
 import com.sasaj.graphics.drawingapp.ui.splash.SplashActivity
 import kotlinx.android.synthetic.main.activity_main.*

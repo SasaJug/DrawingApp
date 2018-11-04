@@ -3,10 +3,10 @@ package com.sasaj.graphics.drawingapp.repository
 import android.graphics.Bitmap
 import android.os.Environment
 import android.util.Log
+import com.amazonaws.mobileconnectors.appsync.AWSAppSyncClient
 import com.amazonaws.mobileconnectors.s3.transferutility.TransferListener
 import com.amazonaws.mobileconnectors.s3.transferutility.TransferState
 import com.amazonaws.mobileconnectors.s3.transferutility.TransferUtility
-import com.sasaj.graphics.drawingapp.R.id.save
 import com.sasaj.graphics.drawingapp.domain.Drawing
 import com.sasaj.graphics.drawingapp.repository.database.AppDatabase
 import com.sasaj.graphics.drawingapp.viewmodel.dependencies.DrawingRepository
@@ -21,7 +21,7 @@ import java.util.*
  * Created by sjugurdzija on 4/21/2017.
  */
 
-class DrawingRepositoryImplementation(val db: AppDatabase, val transferUtility: TransferUtility) : DrawingRepository {
+class DrawingRepositoryImplementation(val db: AppDatabase, val transferUtility: TransferUtility, val appSyncClient : AWSAppSyncClient) : DrawingRepository {
 
     companion object {
         val TAG = DrawingRepositoryImplementation::class.java.simpleName
@@ -54,6 +54,7 @@ class DrawingRepositoryImplementation(val db: AppDatabase, val transferUtility: 
     }
 
 
+
     private fun uploadWithTransferUtility(path: String?) {
 
         val file = File(path)
@@ -62,13 +63,13 @@ class DrawingRepositoryImplementation(val db: AppDatabase, val transferUtility: 
         uploadObserver.setTransferListener(object : TransferListener {
             override fun onStateChanged(id: Int, state: TransferState) {
                 if (state == TransferState.COMPLETED)
-                    Log.e(TAG, "onStateChanged: ")
+                    Log.i(TAG, "onStateChanged: Completed")
                 else if (state == TransferState.FAILED)
-                    Log.e(TAG, "onStateChanged: upload failed")
+                    Log.i(TAG, "onStateChanged: upload failed")
             }
 
             override fun onProgressChanged(id: Int, bytesCurrent: Long, bytesTotal: Long) {
-                Log.e(TAG, "onProgressChanged: $id")
+                Log.i(TAG, "onProgressChanged: $id")
             }
 
             override fun onError(id: Int, ex: Exception) {
