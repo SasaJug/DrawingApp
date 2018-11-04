@@ -11,3 +11,12 @@ query ListAllDrawings ($nextToken: String){
     }
   }
 }
+
+mutation SaveDrawing($url : String!){
+  createDrawing (input : { title:  "second saved", description: "but first saved from app", url: $url}){
+     id,
+     title,
+     description,
+     url
+  }
+}

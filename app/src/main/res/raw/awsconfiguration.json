@@ -4,11 +4,12 @@
     "IdentityManager": {
         "Default": {}
     },
+
     "AppSync": {
         "Default": {
-            "ApiUrl": "https://eprshjssvremzduaz3oc4nhkle.appsync-api.us-east-2.amazonaws.com/graphql",
-            "Region": "us-east-2",
-            "AuthMode": "AMAZON_COGNITO_USER_POOLS"
+            "graphqlEndpoint": "https://eprshjssvremzduaz3oc4nhkle.appsync-api.us-east-2.amazonaws.com/graphql",
+            "region": "us-east-2",
+            "authenticationType": "AMAZON_COGNITO_USER_POOLS"
         }
     }
 }

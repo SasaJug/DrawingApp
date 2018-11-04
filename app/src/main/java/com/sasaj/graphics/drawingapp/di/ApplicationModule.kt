@@ -39,7 +39,7 @@ class ApplicationModule(val context: Context) {
     @Provides
     @Reusable
     fun providesAppSyncClient(cognitoHelper: CognitoHelper): AWSAppSyncClient {
-        return AppSyncClientFactory.getInstance(context, cognitoHelper)
+        return AppSyncClientFactory(context,cognitoHelper).client
     }
 
     @Provides
