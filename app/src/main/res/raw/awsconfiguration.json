@@ -7,7 +7,7 @@
 
     "AppSync": {
         "Default": {
-            "graphqlEndpoint": "https://eprshjssvremzduaz3oc4nhkle.appsync-api.us-east-2.amazonaws.com/graphql",
+            "graphqlEndpoint": "https://qvmd55rpprhtvguqn3xwwg3bbm.appsync-api.us-east-2.amazonaws.com/graphql",
             "region": "us-east-2",
             "authenticationType": "AMAZON_COGNITO_USER_POOLS"
         }

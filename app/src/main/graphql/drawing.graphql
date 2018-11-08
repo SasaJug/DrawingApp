@@ -1,22 +1,22 @@
-query GetDrawing {
-  getDrawing(id: "ca8a182b-16bb-4966-9aac-51b4c851d779"){
-    title,description,url
+mutation createDrawing($createdrawinginput: CreateDrawingInput!) {
+  createDrawing(input: $createdrawinginput) {
+    id
+    userId
+    title
+    description
+    fileName
   }
 }
 
-query ListAllDrawings ($nextToken: String){
-  listAllDrawings(limit: 10, nextToken: $nextToken){
-    items{
-      title,description,url
+query listDrawings ($filt: TableDrawingFilterInput){
+  listDrawings (filter: $filt){
+    items {
+      id
+      userId
+      title
+      description
+      fileName
     }
   }
 }
 
-mutation SaveDrawing($url : String!){
-  createDrawing (input : { title:  "second saved", description: "but first saved from app", url: $url}){
-     id,
-     title,
-     description,
-     url
-  }
-}

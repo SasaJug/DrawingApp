@@ -33,44 +33,25 @@
                                         }
                                     },
                                     "defaultValue": null
+                                },
+                                {
+                                    "name": "userId",
+                                    "description": null,
+                                    "type": {
+                                        "kind": "NON_NULL",
+                                        "name": null,
+                                        "ofType": {
+                                            "kind": "SCALAR",
+                                            "name": "ID",
+                                            "ofType": null
+                                        }
+                                    },
+                                    "defaultValue": null
                                 }
                             ],
                             "type": {
                                 "kind": "OBJECT",
                                 "name": "Drawing",
-                                "ofType": null
-                            },
-                            "isDeprecated": false,
-                            "deprecationReason": null
-                        },
-                        {
-                            "name": "listAllDrawings",
-                            "description": null,
-                            "args": [
-                                {
-                                    "name": "limit",
-                                    "description": null,
-                                    "type": {
-                                        "kind": "SCALAR",
-                                        "name": "Int",
-                                        "ofType": null
-                                    },
-                                    "defaultValue": null
-                                },
-                                {
-                                    "name": "nextToken",
-                                    "description": null,
-                                    "type": {
-                                        "kind": "SCALAR",
-                                        "name": "String",
-                                        "ofType": null
-                                    },
-                                    "defaultValue": null
-                                }
-                            ],
-                            "type": {
-                                "kind": "OBJECT",
-                                "name": "DrawingConnection",
                                 "ofType": null
                             },
                             "isDeprecated": false,
@@ -147,7 +128,7 @@
                             "deprecationReason": null
                         },
                         {
-                            "name": "title",
+                            "name": "userId",
                             "description": null,
                             "args": [],
                             "type": {
@@ -155,9 +136,21 @@
                                 "name": null,
                                 "ofType": {
                                     "kind": "SCALAR",
-                                    "name": "String",
+                                    "name": "ID",
                                     "ofType": null
                                 }
+                            },
+                            "isDeprecated": false,
+                            "deprecationReason": null
+                        },
+                        {
+                            "name": "title",
+                            "description": null,
+                            "args": [],
+                            "type": {
+                                "kind": "SCALAR",
+                                "name": "String",
+                                "ofType": null
                             },
                             "isDeprecated": false,
                             "deprecationReason": null
@@ -167,29 +160,21 @@
                             "description": null,
                             "args": [],
                             "type": {
-                                "kind": "NON_NULL",
-                                "name": null,
-                                "ofType": {
-                                    "kind": "SCALAR",
-                                    "name": "String",
-                                    "ofType": null
-                                }
+                                "kind": "SCALAR",
+                                "name": "String",
+                                "ofType": null
                             },
                             "isDeprecated": false,
                             "deprecationReason": null
                         },
                         {
-                            "name": "url",
+                            "name": "fileName",
                             "description": null,
                             "args": [],
                             "type": {
-                                "kind": "NON_NULL",
-                                "name": null,
-                                "ofType": {
-                                    "kind": "SCALAR",
-                                    "name": "String",
-                                    "ofType": null
-                                }
+                                "kind": "SCALAR",
+                                "name": "String",
+                                "ofType": null
                             },
                             "isDeprecated": false,
                             "deprecationReason": null
@@ -260,16 +245,6 @@
                     "possibleTypes": null
                 },
                 {
-                    "kind": "SCALAR",
-                    "name": "Int",
-                    "description": "Built-in Int",
-                    "fields": null,
-                    "inputFields": null,
-                    "interfaces": null,
-                    "enumValues": null,
-                    "possibleTypes": null
-                },
-                {
                     "kind": "INPUT_OBJECT",
                     "name": "TableDrawingFilterInput",
                     "description": null,
@@ -277,6 +252,16 @@
                     "inputFields": [
                         {
                             "name": "id",
+                            "description": null,
+                            "type": {
+                                "kind": "INPUT_OBJECT",
+                                "name": "TableIDFilterInput",
+                                "ofType": null
+                            },
+                            "defaultValue": null
+                        },
+                        {
+                            "name": "userId",
                             "description": null,
                             "type": {
                                 "kind": "INPUT_OBJECT",
@@ -306,7 +291,7 @@
                             "defaultValue": null
                         },
                         {
-                            "name": "url",
+                            "name": "fileName",
                             "description": null,
                             "type": {
                                 "kind": "INPUT_OBJECT",
@@ -551,6 +536,16 @@
                     "possibleTypes": null
                 },
                 {
+                    "kind": "SCALAR",
+                    "name": "Int",
+                    "description": "Built-in Int",
+                    "fields": null,
+                    "inputFields": null,
+                    "interfaces": null,
+                    "enumValues": null,
+                    "possibleTypes": null
+                },
+                {
                     "kind": "OBJECT",
                     "name": "Mutation",
                     "description": null,
@@ -649,60 +644,21 @@
                     "fields": null,
                     "inputFields": [
                         {
-                            "name": "title",
-                            "description": null,
-                            "type": {
-                                "kind": "NON_NULL",
-                                "name": null,
-                                "ofType": {
-                                    "kind": "SCALAR",
-                                    "name": "String",
-                                    "ofType": null
-                                }
-                            },
-                            "defaultValue": null
-                        },
-                        {
-                            "name": "description",
-                            "description": null,
-                            "type": {
-                                "kind": "NON_NULL",
-                                "name": null,
-                                "ofType": {
-                                    "kind": "SCALAR",
-                                    "name": "String",
-                                    "ofType": null
-                                }
-                            },
-                            "defaultValue": null
-                        },
-                        {
-                            "name": "url",
-                            "description": null,
-                            "type": {
-                                "kind": "NON_NULL",
-                                "name": null,
-                                "ofType": {
-                                    "kind": "SCALAR",
-                                    "name": "String",
-                                    "ofType": null
-                                }
-                            },
-                            "defaultValue": null
-                        }
-                    ],
-                    "interfaces": null,
-                    "enumValues": null,
-                    "possibleTypes": null
-                },
-                {
-                    "kind": "INPUT_OBJECT",
-                    "name": "UpdateDrawingInput",
-                    "description": null,
-                    "fields": null,
-                    "inputFields": [
-                        {
                             "name": "id",
+                            "description": null,
+                            "type": {
+                                "kind": "NON_NULL",
+                                "name": null,
+                                "ofType": {
+                                    "kind": "SCALAR",
+                                    "name": "ID",
+                                    "ofType": null
+                                }
+                            },
+                            "defaultValue": null
+                        },
+                        {
+                            "name": "userId",
                             "description": null,
                             "type": {
                                 "kind": "NON_NULL",
@@ -736,7 +692,76 @@
                             "defaultValue": null
                         },
                         {
-                            "name": "url",
+                            "name": "fileName",
+                            "description": null,
+                            "type": {
+                                "kind": "SCALAR",
+                                "name": "String",
+                                "ofType": null
+                            },
+                            "defaultValue": null
+                        }
+                    ],
+                    "interfaces": null,
+                    "enumValues": null,
+                    "possibleTypes": null
+                },
+                {
+                    "kind": "INPUT_OBJECT",
+                    "name": "UpdateDrawingInput",
+                    "description": null,
+                    "fields": null,
+                    "inputFields": [
+                        {
+                            "name": "id",
+                            "description": null,
+                            "type": {
+                                "kind": "NON_NULL",
+                                "name": null,
+                                "ofType": {
+                                    "kind": "SCALAR",
+                                    "name": "ID",
+                                    "ofType": null
+                                }
+                            },
+                            "defaultValue": null
+                        },
+                        {
+                            "name": "userId",
+                            "description": null,
+                            "type": {
+                                "kind": "NON_NULL",
+                                "name": null,
+                                "ofType": {
+                                    "kind": "SCALAR",
+                                    "name": "ID",
+                                    "ofType": null
+                                }
+                            },
+                            "defaultValue": null
+                        },
+                        {
+                            "name": "title",
+                            "description": null,
+                            "type": {
+                                "kind": "SCALAR",
+                                "name": "String",
+                                "ofType": null
+                            },
+                            "defaultValue": null
+                        },
+                        {
+                            "name": "description",
+                            "description": null,
+                            "type": {
+                                "kind": "SCALAR",
+                                "name": "String",
+                                "ofType": null
+                            },
+                            "defaultValue": null
+                        },
+                        {
+                            "name": "fileName",
                             "description": null,
                             "type": {
                                 "kind": "SCALAR",
@@ -758,6 +783,20 @@
                     "inputFields": [
                         {
                             "name": "id",
+                            "description": null,
+                            "type": {
+                                "kind": "NON_NULL",
+                                "name": null,
+                                "ofType": {
+                                    "kind": "SCALAR",
+                                    "name": "ID",
+                                    "ofType": null
+                                }
+                            },
+                            "defaultValue": null
+                        },
+                        {
+                            "name": "userId",
                             "description": null,
                             "type": {
                                 "kind": "NON_NULL",
@@ -795,6 +834,16 @@
                                     "defaultValue": null
                                 },
                                 {
+                                    "name": "userId",
+                                    "description": null,
+                                    "type": {
+                                        "kind": "SCALAR",
+                                        "name": "ID",
+                                        "ofType": null
+                                    },
+                                    "defaultValue": null
+                                },
+                                {
                                     "name": "title",
                                     "description": null,
                                     "type": {
@@ -815,7 +864,7 @@
                                     "defaultValue": null
                                 },
                                 {
-                                    "name": "url",
+                                    "name": "fileName",
                                     "description": null,
                                     "type": {
                                         "kind": "SCALAR",
@@ -848,6 +897,16 @@
                                     "defaultValue": null
                                 },
                                 {
+                                    "name": "userId",
+                                    "description": null,
+                                    "type": {
+                                        "kind": "SCALAR",
+                                        "name": "ID",
+                                        "ofType": null
+                                    },
+                                    "defaultValue": null
+                                },
+                                {
                                     "name": "title",
                                     "description": null,
                                     "type": {
@@ -868,7 +927,7 @@
                                     "defaultValue": null
                                 },
                                 {
-                                    "name": "url",
+                                    "name": "fileName",
                                     "description": null,
                                     "type": {
                                         "kind": "SCALAR",
@@ -901,6 +960,16 @@
                                     "defaultValue": null
                                 },
                                 {
+                                    "name": "userId",
+                                    "description": null,
+                                    "type": {
+                                        "kind": "SCALAR",
+                                        "name": "ID",
+                                        "ofType": null
+                                    },
+                                    "defaultValue": null
+                                },
+                                {
                                     "name": "title",
                                     "description": null,
                                     "type": {
@@ -921,7 +990,7 @@
                                     "defaultValue": null
                                 },
                                 {
-                                    "name": "url",
+                                    "name": "fileName",
                                     "description": null,
                                     "type": {
                                         "kind": "SCALAR",
@@ -942,6 +1011,47 @@
                     ],
                     "inputFields": null,
                     "interfaces": [],
+                    "enumValues": null,
+                    "possibleTypes": null
+                },
+                {
+                    "kind": "INPUT_OBJECT",
+                    "name": "TableBooleanFilterInput",
+                    "description": null,
+                    "fields": null,
+                    "inputFields": [
+                        {
+                            "name": "ne",
+                            "description": null,
+                            "type": {
+                                "kind": "SCALAR",
+                                "name": "Boolean",
+                                "ofType": null
+                            },
+                            "defaultValue": null
+                        },
+                        {
+                            "name": "eq",
+                            "description": null,
+                            "type": {
+                                "kind": "SCALAR",
+                                "name": "Boolean",
+                                "ofType": null
+                            },
+                            "defaultValue": null
+                        }
+                    ],
+                    "interfaces": null,
+                    "enumValues": null,
+                    "possibleTypes": null
+                },
+                {
+                    "kind": "SCALAR",
+                    "name": "Boolean",
+                    "description": "Built-in Boolean",
+                    "fields": null,
+                    "inputFields": null,
+                    "interfaces": null,
                     "enumValues": null,
                     "possibleTypes": null
                 },
@@ -1054,47 +1164,6 @@
                     "kind": "SCALAR",
                     "name": "Float",
                     "description": "Built-in Float",
-                    "fields": null,
-                    "inputFields": null,
-                    "interfaces": null,
-                    "enumValues": null,
-                    "possibleTypes": null
-                },
-                {
-                    "kind": "INPUT_OBJECT",
-                    "name": "TableBooleanFilterInput",
-                    "description": null,
-                    "fields": null,
-                    "inputFields": [
-                        {
-                            "name": "ne",
-                            "description": null,
-                            "type": {
-                                "kind": "SCALAR",
-                                "name": "Boolean",
-                                "ofType": null
-                            },
-                            "defaultValue": null
-                        },
-                        {
-                            "name": "eq",
-                            "description": null,
-                            "type": {
-                                "kind": "SCALAR",
-                                "name": "Boolean",
-                                "ofType": null
-                            },
-                            "defaultValue": null
-                        }
-                    ],
-                    "interfaces": null,
-                    "enumValues": null,
-                    "possibleTypes": null
-                },
-                {
-                    "kind": "SCALAR",
-                    "name": "Boolean",
-                    "description": "Built-in Boolean",
                     "fields": null,
                     "inputFields": null,
                     "interfaces": null,
@@ -2140,6 +2209,29 @@
                     "onField": false
                 },
                 {
+                    "name": "deprecated",
+                    "description": null,
+                    "locations": [
+                        "FIELD_DEFINITION",
+                        "ENUM_VALUE"
+                    ],
+                    "args": [
+                        {
+                            "name": "reason",
+                            "description": null,
+                            "type": {
+                                "kind": "SCALAR",
+                                "name": "String",
+                                "ofType": null
+                            },
+                            "defaultValue": "\"No longer supported\""
+                        }
+                    ],
+                    "onOperation": false,
+                    "onFragment": false,
+                    "onField": false
+                },
+                {
                     "name": "aws_publish",
                     "description": "Tells the service which subscriptions will be published to when this mutation is called. This directive is deprecated use @aws_susbscribe directive instead.",
                     "locations": [
@@ -2159,29 +2251,6 @@
                                 }
                             },
                             "defaultValue": null
-                        }
-                    ],
-                    "onOperation": false,
-                    "onFragment": false,
-                    "onField": false
-                },
-                {
-                    "name": "deprecated",
-                    "description": null,
-                    "locations": [
-                        "FIELD_DEFINITION",
-                        "ENUM_VALUE"
-                    ],
-                    "args": [
-                        {
-                            "name": "reason",
-                            "description": null,
-                            "type": {
-                                "kind": "SCALAR",
-                                "name": "String",
-                                "ofType": null
-                            },
-                            "defaultValue": "\"No longer supported\""
                         }
                     ],
                     "onOperation": false,

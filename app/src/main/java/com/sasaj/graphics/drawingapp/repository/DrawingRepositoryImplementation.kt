@@ -3,7 +3,6 @@ package com.sasaj.graphics.drawingapp.repository
 import android.graphics.Bitmap
 import android.os.Environment
 import android.util.Log
-import android.widget.Toast
 import com.amazonaws.mobileconnectors.appsync.AWSAppSyncClient
 import com.amazonaws.mobileconnectors.s3.transferutility.TransferListener
 import com.amazonaws.mobileconnectors.s3.transferutility.TransferState
@@ -11,28 +10,47 @@ import com.amazonaws.mobileconnectors.s3.transferutility.TransferUtility
 import com.apollographql.apollo.GraphQLCall
 import com.apollographql.apollo.api.Response
 import com.apollographql.apollo.exception.ApolloException
+import com.sasaj.graphics.drawingapp.aws.CognitoHelper
 import com.sasaj.graphics.drawingapp.domain.Drawing
 import com.sasaj.graphics.drawingapp.repository.database.AppDatabase
 import com.sasaj.graphics.drawingapp.viewmodel.dependencies.DrawingRepository
 import io.reactivex.Flowable
+import type.CreateDrawingInput
+import CreateDrawingMutation
+import ListDrawingsQuery
+import type.TableDrawingFilterInput
+import type.TableIDFilterInput
+import type.TableStringFilterInput
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
-import javax.security.auth.login.LoginException
 
 /**
  * Created by sjugurdzija on 4/21/2017.
  */
 
-class DrawingRepositoryImplementation(val db: AppDatabase, val transferUtility: TransferUtility, val appSyncClient : AWSAppSyncClient) : DrawingRepository {
+class DrawingRepositoryImplementation(val db: AppDatabase,
+                                      val transferUtility: TransferUtility,
+                                      val appSyncClient : AWSAppSyncClient,
+                                      val cognitoHelper: CognitoHelper) : DrawingRepository {
 
     companion object {
         val TAG = DrawingRepositoryImplementation::class.java.simpleName
     }
 
     override fun getDrawings(): Flowable<List<Drawing>> {
+
+        val filter = TableDrawingFilterInput.builder().userId(TableIDFilterInput.builder().contains(cognitoHelper.userPool.currentUser.userId).build()).build()
+
+        val listDrawings : ListDrawingsQuery = ListDrawingsQuery.builder()
+                .filt(filter)
+                .build()
+
+
+        appSyncClient.query(listDrawings).enqueue(listDrawingsCallback)
+
         return db.drawingDao().getAll()
     }
 
@@ -62,12 +80,18 @@ class DrawingRepositoryImplementation(val db: AppDatabase, val transferUtility: 
 
 
         // Create the mutation request
-        val saveDrawingMutation = SaveDrawingMutation.builder()
-                .url(path?.substring(path.lastIndexOf("/") + 1))
+        val createDrawingInput = CreateDrawingInput.builder()
+                .id("empty")
+                .title("first from app")
+                .description("First img saved from app in table with userId")
+                .userId(cognitoHelper.userPool.currentUser.userId)
+                .fileName(path?.substring(path.lastIndexOf("/") + 1))
                 .build()
 
+        val createDrawing = CreateDrawingMutation(createDrawingInput)
+
         // Enqueue the request (This will execute the request)
-        appSyncClient.mutate(saveDrawingMutation).enqueue(addDrawingsCallback)
+        appSyncClient.mutate(createDrawing).enqueue(addDrawingsCallback)
     }
 
 
@@ -130,12 +154,28 @@ class DrawingRepositoryImplementation(val db: AppDatabase, val transferUtility: 
         return "drawing_$timeStamp.jpg"
     }
 
-    private val addDrawingsCallback = object : GraphQLCall.Callback<SaveDrawingMutation.Data>() {
-        override fun onResponse(response: Response<SaveDrawingMutation.Data>) {
+    private val addDrawingsCallback = object : GraphQLCall.Callback<CreateDrawingMutation.Data>() {
+        override fun onResponse(response: Response<CreateDrawingMutation.Data>) {
             if (response.hasErrors()) {
                 Log.i(TAG, "onResponse: error")
             } else {
                 Log.i(TAG, "onResponse: success")
+            }
+        }
+
+        override fun onFailure(e: ApolloException) {
+            Log.e(TAG, "Failed to make drawings api call", e)
+            Log.e(TAG, e.message)
+        }
+    }
+
+
+    private val listDrawingsCallback = object : GraphQLCall.Callback<ListDrawingsQuery.Data>() {
+        override fun onResponse(response: Response<ListDrawingsQuery.Data>) {
+            if (response.hasErrors()) {
+                Log.i(TAG, "onResponse: error")
+            } else {
+                Log.i(TAG, "onResponse: success"+response.data().toString())
             }
         }
 
