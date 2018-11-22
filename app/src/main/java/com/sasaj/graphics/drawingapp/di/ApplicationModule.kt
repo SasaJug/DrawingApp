@@ -65,8 +65,8 @@ class ApplicationModule(val context: Context) {
 
     @Provides
     @Reusable
-    fun providesDrawingRepository(db: AppDatabase, transferUtility: TransferUtility, appSyncClient: AWSAppSyncClient, cognitoHelper: CognitoHelper): DrawingRepository {
-        return DrawingRepositoryImplementation(db, transferUtility, appSyncClient, cognitoHelper)
+    fun providesDrawingRepository(db: AppDatabase, s3: AmazonS3Client, transferUtility: TransferUtility, appSyncClient: AWSAppSyncClient, cognitoHelper: CognitoHelper): DrawingRepository {
+        return DrawingRepositoryImplementation(db, s3, transferUtility, appSyncClient, cognitoHelper)
     }
 
     @Provides

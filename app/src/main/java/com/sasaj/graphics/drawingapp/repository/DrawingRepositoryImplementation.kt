@@ -1,71 +1,68 @@
 package com.sasaj.graphics.drawingapp.repository
 
+import CreateDrawingMutation
+import ListDrawingsQuery
 import android.graphics.Bitmap
 import android.os.Environment
 import android.util.Log
+import com.amazonaws.AmazonServiceException
+import com.amazonaws.HttpMethod
 import com.amazonaws.mobileconnectors.appsync.AWSAppSyncClient
 import com.amazonaws.mobileconnectors.s3.transferutility.TransferListener
 import com.amazonaws.mobileconnectors.s3.transferutility.TransferState
 import com.amazonaws.mobileconnectors.s3.transferutility.TransferUtility
+import com.amazonaws.services.s3.AmazonS3Client
+import com.amazonaws.services.s3.model.GeneratePresignedUrlRequest
 import com.apollographql.apollo.GraphQLCall
 import com.apollographql.apollo.api.Response
 import com.apollographql.apollo.exception.ApolloException
+import com.sasaj.graphics.drawingapp.R.id.drawing
 import com.sasaj.graphics.drawingapp.aws.CognitoHelper
 import com.sasaj.graphics.drawingapp.domain.Drawing
 import com.sasaj.graphics.drawingapp.repository.database.AppDatabase
 import com.sasaj.graphics.drawingapp.viewmodel.dependencies.DrawingRepository
 import io.reactivex.Flowable
+import io.reactivex.Single
+import io.reactivex.schedulers.Schedulers.single
 import type.CreateDrawingInput
-import CreateDrawingMutation
-import ListDrawingsQuery
 import type.TableDrawingFilterInput
 import type.TableIDFilterInput
-import type.TableStringFilterInput
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
-import java.text.SimpleDateFormat
-import java.util.*
+
 
 /**
  * Created by sjugurdzija on 4/21/2017.
  */
 
-class DrawingRepositoryImplementation(val db: AppDatabase,
-                                      val transferUtility: TransferUtility,
-                                      val appSyncClient : AWSAppSyncClient,
-                                      val cognitoHelper: CognitoHelper) : DrawingRepository {
+class DrawingRepositoryImplementation(private val db: AppDatabase,
+                                      private val s3 : AmazonS3Client,
+                                      private val transferUtility: TransferUtility,
+                                      private val appSyncClient : AWSAppSyncClient,
+                                      private val cognitoHelper: CognitoHelper) : DrawingRepository {
 
     companion object {
         val TAG = DrawingRepositoryImplementation::class.java.simpleName
     }
 
-    override fun getDrawings(): Flowable<List<Drawing>> {
-
-        val filter = TableDrawingFilterInput.builder().userId(TableIDFilterInput.builder().contains(cognitoHelper.userPool.currentUser.userId).build()).build()
-
-        val listDrawings : ListDrawingsQuery = ListDrawingsQuery.builder()
-                .filt(filter)
-                .build()
-
-
-        appSyncClient.query(listDrawings).enqueue(listDrawingsCallback)
-
-        return db.drawingDao().getAll()
-    }
-
     override fun saveDrawing(bitmap: Bitmap?) {
-        val path = saveFileLocally(bitmap)
-        uploadWithTransferUtility(path)
+        val timestamp = createTimestamp()
+        val filename = "drawing_$timestamp.jpg"
+        val imageFile = getImageFile(filename)
+
+        val drawing = Drawing(filename, imageFile.absolutePath, timestamp)
+        db.drawingDao().insert(drawing)
+
+        val path = saveFileLocally(bitmap, drawing)
+
+        uploadWithTransferUtility(drawing)
     }
 
-    private fun saveFileLocally(bitmap: Bitmap?): String {
-        val imageFile = getImageFile()
-        val fos = FileOutputStream(imageFile)
+    private fun saveFileLocally(bitmap: Bitmap?, drawing: Drawing): String {
+        val fos = FileOutputStream(drawing.imagePath)
         return try {
             bitmap?.compress(Bitmap.CompressFormat.PNG, 100, fos)
-            val drawing = Drawing(imageFile.absolutePath, System.currentTimeMillis())
-            db.drawingDao().insert(drawing)
             drawing.imagePath
         } catch (e: IOException) {
             Log.e(TAG, e.message)
@@ -76,16 +73,15 @@ class DrawingRepositoryImplementation(val db: AppDatabase,
         }
     }
 
-    private fun saveFileToDb(path: String){
-
+    private fun saveFileToDb(drawing: Drawing){
 
         // Create the mutation request
         val createDrawingInput = CreateDrawingInput.builder()
                 .id("empty")
-                .title("first from app")
-                .description("First img saved from app in table with userId")
+                .title(drawing.fileName)
+                .description(drawing.lastModified.toString())
                 .userId(cognitoHelper.userPool.currentUser.userId)
-                .fileName(path?.substring(path.lastIndexOf("/") + 1))
+                .fileName(drawing.fileName)
                 .build()
 
         val createDrawing = CreateDrawingMutation(createDrawingInput)
@@ -95,16 +91,15 @@ class DrawingRepositoryImplementation(val db: AppDatabase,
     }
 
 
-    private fun uploadWithTransferUtility(path: String) {
+    private fun uploadWithTransferUtility(drawing: Drawing) {
 
-        val file = File(path)
-        val uploadObserver = transferUtility.upload(path?.substring(path.lastIndexOf("/") + 1), file)
+        val uploadObserver = transferUtility.upload(drawing.fileName, File(drawing.imagePath))
 
         uploadObserver.setTransferListener(object : TransferListener {
             override fun onStateChanged(id: Int, state: TransferState) {
                 if (state == TransferState.COMPLETED){
                     Log.i(TAG, "onStateChanged: Completed")
-                    saveFileToDb(path)
+                    saveFileToDb(drawing)
                 } else if (state == TransferState.FAILED)
                     Log.i(TAG, "onStateChanged: upload failed")
             }
@@ -119,8 +114,47 @@ class DrawingRepositoryImplementation(val db: AppDatabase,
         })
     }
 
-    private fun getImageFile(): File {
-        val filename = createImageFileName()
+
+    private val addDrawingsCallback = object : GraphQLCall.Callback<CreateDrawingMutation.Data>() {
+        override fun onResponse(response: Response<CreateDrawingMutation.Data>) {
+            if (response.hasErrors()) {
+                Log.i(TAG, "onResponse: error")
+            } else {
+                Log.i(TAG, "onResponse: success")
+            }
+        }
+
+        override fun onFailure(e: ApolloException) {
+            Log.e(TAG, "Failed to make drawings api call", e)
+            Log.e(TAG, e.message)
+        }
+    }
+
+
+    private fun generatePresignedUrl(bucketName : String, objectKey: String?) {
+
+        try {
+            // Set the presigned URL to expire after one hour.
+            val expiration = java.util.Date()
+            var expTimeMillis = expiration.time
+            expTimeMillis += (1000 * 60 * 60).toLong()
+            expiration.time = expTimeMillis
+
+            val generatePresignedUrlRequest = GeneratePresignedUrlRequest(bucketName, objectKey)
+                    .withMethod(HttpMethod.GET)
+                    .withExpiration(expiration)
+            val url = s3.generatePresignedUrl(generatePresignedUrlRequest)
+
+            Log.e(TAG, "Pre-Signed URL: " + url.toString())
+        } catch (e: AmazonServiceException) {
+            // The call was transmitted successfully, but Amazon S3 couldn't process
+            // it, so it returned an error response.
+            e.printStackTrace()
+        }
+    }
+
+
+    private fun getImageFile(filename : String): File {
         val ext = albumStorageDir()
         val extPath = ext.path
         val dir = File(extPath)
@@ -148,34 +182,85 @@ class DrawingRepositoryImplementation(val db: AppDatabase,
         return file
     }
 
-    private fun createImageFileName(): String {
-        // Create an image file name
-        val timeStamp = SimpleDateFormat("yyyy_MM_dd_HH_mm_ss", Locale.ENGLISH).format(Date())
-        return "drawing_$timeStamp.jpg"
+    private fun createTimestamp(): Long{
+        // Create an image timestamp
+//        return SimpleDateFormat("yyyy_MM_dd_HH_mm_ss", Locale.ENGLISH).format(Date())
+        return System.currentTimeMillis()
     }
 
-    private val addDrawingsCallback = object : GraphQLCall.Callback<CreateDrawingMutation.Data>() {
-        override fun onResponse(response: Response<CreateDrawingMutation.Data>) {
-            if (response.hasErrors()) {
-                Log.i(TAG, "onResponse: error")
-            } else {
-                Log.i(TAG, "onResponse: success")
+
+    //get Part
+    override fun getDrawings(): Flowable<List<Drawing>> {
+        return db.drawingDao().getAll()
+    }
+
+
+    // Sync part
+    override fun syncDrawings(): Single<Boolean> {
+
+        val filter = TableDrawingFilterInput.builder()
+                .userId(TableIDFilterInput.builder().contains(cognitoHelper.userPool.currentUser.userId).build())
+                .build()
+
+        val listDrawings : ListDrawingsQuery = ListDrawingsQuery.builder()
+                .filt(filter)
+                .build()
+
+        appSyncClient.query(listDrawings).enqueue(listDrawingsCallback)
+
+        val single : Single<Boolean> = Single.create<Boolean> { emitter ->
+            try {
+                if (true) {
+                    emitter.onSuccess(true)
+                } else {
+                    emitter.onError(RuntimeException())
+                }
+            } catch (e : Exception) {
+                emitter.onError(e)
             }
         }
 
-        override fun onFailure(e: ApolloException) {
-            Log.e(TAG, "Failed to make drawings api call", e)
-            Log.e(TAG, e.message)
-        }
+        return single
     }
 
 
     private val listDrawingsCallback = object : GraphQLCall.Callback<ListDrawingsQuery.Data>() {
+
         override fun onResponse(response: Response<ListDrawingsQuery.Data>) {
             if (response.hasErrors()) {
                 Log.i(TAG, "onResponse: error")
             } else {
-                Log.i(TAG, "onResponse: success"+response.data().toString())
+                Log.i(TAG, "onResponse: success"+response.data())
+                val drawings: MutableList<ListDrawingsQuery.Item>? = response.data()?.listDrawings()?.items()
+                drawings?.forEach { item ->
+                    if(db.drawingDao().getByFilename(item.fileName())?.fileName == null){
+                        val file = getImageFile(item.fileName()!!)
+                        val downloadObserver = transferUtility.download(item.fileName(), file)
+
+                        downloadObserver.setTransferListener(object : TransferListener {
+                            override fun onStateChanged(id: Int, state: TransferState) {
+                                if (state == TransferState.COMPLETED){
+                                    Log.i(TAG, "onStateChanged: Completed")
+                                    val drawing = Drawing(item.fileName()!!,
+                                            file.absolutePath,
+                                            (item.fileName()!!.substring(8, item.fileName()!!.indexOf('.'))).toLong())
+
+                                    val thread = Thread(Runnable { db.drawingDao().insert(drawing)})
+                                    thread.start()
+                                } else if (state == TransferState.FAILED)
+                                    Log.i(TAG, "onStateChanged: download failed")
+                            }
+
+                            override fun onProgressChanged(id: Int, bytesCurrent: Long, bytesTotal: Long) {
+                                Log.i(TAG, "onProgressChanged: $id")
+                            }
+
+                            override fun onError(id: Int, ex: Exception) {
+                                Log.e(TAG, "onError: ", ex)
+                            }
+                        })
+                    }
+                }
             }
         }
 

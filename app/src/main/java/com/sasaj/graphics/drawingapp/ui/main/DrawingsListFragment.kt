@@ -78,7 +78,8 @@ class DrawingsListFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         vm = ViewModelProviders.of(this)[DrawingListViewModel::class.java]
-
+        val thread = Thread(Runnable { vm.syncDrawings() })
+        thread.start()
         disposable = vm.getDrawings()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

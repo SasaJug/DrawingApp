@@ -16,6 +16,10 @@ interface DrawingDao {
     @Query("SELECT * FROM drawing where id = :drawingId")
     fun getById(drawingId: Long): Flowable<List<Drawing>>
 
+
+    @Query("SELECT * FROM drawing where filename = :filename")
+    fun getByFilename(filename: String?): Drawing?
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(drawing: Drawing)
 
