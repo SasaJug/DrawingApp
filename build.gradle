@@ -49,5 +49,8 @@ ext {
     speedDialVersion = "1.0.0"
     picassoVersion = "2.71828"
 
+    JUnitVersion = "4.12"
+    MockitoVersion = "2.15.0"
+
     awsVersion = "2.6.+"
 }

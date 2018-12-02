@@ -92,10 +92,10 @@ dependencies {
     testImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:1.5'
 
     //Mockito
-    testImplementation 'org.mockito:mockito-core:2.15.0'
-    androidTestImplementation 'org.mockito:mockito-android:2.15.0'
+    testImplementation "org.mockito:mockito-core:$rootProject.MockitoVersion"
+    androidTestImplementation "org.mockito:mockito-android:$rootProject.MockitoVersion"
 
     //JUnit
-    testImplementation 'junit:junit:4.12'
+    testImplementation "junit:junit:$rootProject.JUnitVersion"
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 }
