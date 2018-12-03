@@ -4,10 +4,7 @@ import android.graphics.Bitmap
 import com.sasaj.domain.entities.Optional
 import com.sasaj.domain.usecases.GetBrush
 import com.sasaj.domain.usecases.SaveBrush
-import com.sasaj.graphics.drawingapp.domain.Brush
-import com.sasaj.graphics.drawingapp.viewmodel.dependencies.BrushRepository
 import com.sasaj.graphics.drawingapp.viewmodel.dependencies.DrawingRepository
-import io.reactivex.Flowable
 import io.reactivex.Observable
 import javax.inject.Inject
 
@@ -15,9 +12,6 @@ class DrawingViewModel : BaseViewModel() {
 
     @Inject
     lateinit var drawingRepository: DrawingRepository
-
-    @Inject
-    lateinit var brushRepository: BrushRepository
 
     @Inject
     lateinit var getBrush: GetBrush
@@ -29,10 +23,6 @@ class DrawingViewModel : BaseViewModel() {
         // ToDo use RxKotlin
         val thread = Thread(Runnable { drawingRepository.saveDrawing(bitmap) })
         thread.start()
-    }
-
-    fun getBrush(): Flowable<Brush> {
-        return brushRepository.getBrushFlowable()
     }
 
     fun getLastBrush() : Observable<Optional<com.sasaj.domain.entities.Brush>> {

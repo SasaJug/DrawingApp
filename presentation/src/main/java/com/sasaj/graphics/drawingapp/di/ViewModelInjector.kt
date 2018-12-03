@@ -15,7 +15,6 @@ interface ViewModelInjector {
      */
     fun inject(drawingListViewModel: DrawingListViewModel)
     fun inject(drawingViewModel: DrawingViewModel)
-    fun inject(selectBrushViewModel: SelectBrushViewModel)
     fun inject(splashViewModel: SplashViewModel)
     fun inject(loginViewModel: LoginViewModel)
     fun inject(registerViewModel: RegisterViewModel)

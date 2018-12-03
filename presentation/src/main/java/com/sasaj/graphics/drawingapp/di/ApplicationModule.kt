@@ -21,12 +21,10 @@ import com.sasaj.graphics.drawingapp.aws.AppSyncClientFactory
 import com.sasaj.graphics.drawingapp.aws.CognitoHelper
 import com.sasaj.graphics.drawingapp.common.ASyncTransformer
 import com.sasaj.graphics.drawingapp.repository.AwsAuthRepositoryImplementation
-import com.sasaj.graphics.drawingapp.repository.BrushRepositoryImplementation
 import com.sasaj.graphics.drawingapp.repository.DrawingRepositoryImplementation
 import com.sasaj.graphics.drawingapp.repository.database.APP_DATABASE_NAME
 import com.sasaj.graphics.drawingapp.repository.database.AppDatabase
 import com.sasaj.graphics.drawingapp.viewmodel.dependencies.AuthRepository
-import com.sasaj.graphics.drawingapp.viewmodel.dependencies.BrushRepository
 import com.sasaj.graphics.drawingapp.viewmodel.dependencies.DrawingRepository
 import dagger.Module
 import dagger.Provides
@@ -78,12 +76,6 @@ class ApplicationModule(val context: Context) {
     @Reusable
     fun providesDrawingRepository(db: AppDatabase, s3: AmazonS3Client, transferUtility: TransferUtility, appSyncClient: AWSAppSyncClient, cognitoHelper: CognitoHelper): DrawingRepository {
         return DrawingRepositoryImplementation(db, s3, transferUtility, appSyncClient, cognitoHelper)
-    }
-
-    @Provides
-    @Reusable
-    fun providesBrushRepo(db: AppDatabase): BrushRepository {
-        return BrushRepositoryImplementation(db)
     }
 
 

@@ -1,7 +1,7 @@
 package com.sasaj.graphics.drawingapp.ui.drawing
 
 import android.app.Activity.RESULT_OK
-import android.arch.lifecycle.ViewModelProviders
+import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.DialogFragment
 import android.support.v4.app.Fragment
@@ -11,14 +11,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.Window
 import com.sasaj.graphics.drawingapp.R
-import com.sasaj.graphics.drawingapp.domain.Brush
 import com.sasaj.graphics.drawingapp.entities.BrushUI
-import com.sasaj.graphics.drawingapp.viewmodel.SelectBrushViewModel
 import io.reactivex.Observable
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.select_brush_dialog_fragment_layout.*
-import android.content.Intent
-
 
 
 /**
@@ -27,13 +23,8 @@ import android.content.Intent
 
 class SelectBrushDialogFragment : DialogFragment() {
 
-    private lateinit var vm: SelectBrushViewModel
     private lateinit var brushSelectorObservable: Observable<BrushUI>
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        vm = ViewModelProviders.of(this).get(SelectBrushViewModel::class.java)
-    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         dialog.window!!.requestFeature(Window.FEATURE_NO_TITLE)
