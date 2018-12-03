@@ -4,9 +4,9 @@ import android.content.Context
 import android.graphics.*
 import android.util.AttributeSet
 import android.view.View
-import com.sasaj.graphics.drawingapp.domain.Brush
+import com.sasaj.graphics.drawingapp.entities.BrushUI
 import com.sasaj.graphics.drawingapp.system.init
-import com.sasaj.graphics.drawingapp.system.setBrush
+import com.sasaj.graphics.drawingapp.system.setPaintParameters
 
 /**
  * Created by sjugurdzija on 6/25/2016.
@@ -34,8 +34,8 @@ class BrushSample : View {
         paint.init()
     }
 
-    fun setBrush(brush: Brush?) {
-        paint.setBrush(brush)
+    fun setBrush(brush: BrushUI?) {
+        paint.setPaintParameters(brush!!)
         invalidate()
     }
 

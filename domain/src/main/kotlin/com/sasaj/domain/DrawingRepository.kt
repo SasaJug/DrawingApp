@@ -1,6 +1,6 @@
 package com.sasaj.domain
 
-import com.sasaj.graphics.drawingapp.domain.Drawing
+import com.sasaj.domain.entities.Drawing
 import io.reactivex.Observable
 
 interface DrawingRepository {

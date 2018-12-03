@@ -3,6 +3,7 @@ package com.sasaj.graphics.drawingapp.system
 import android.graphics.BlurMaskFilter
 import android.graphics.Paint
 import com.sasaj.graphics.drawingapp.domain.Brush
+import com.sasaj.graphics.drawingapp.entities.BrushUI
 
 fun Paint.init() {
     this.isAntiAlias = true
@@ -14,7 +15,17 @@ fun Paint.init() {
     this.color = 0xff000000.toInt()
 }
 
+
 fun Paint.setBrush(brush: Brush?) {
+    brush?.let {
+        this.strokeWidth = it.size.toFloat()
+        this.maskFilter = BlurMaskFilter(it.blur, BlurMaskFilter.Blur.NORMAL)
+        this.color = it.color
+    }
+}
+
+
+fun Paint.setPaintParameters(brush: BrushUI) {
     brush?.let {
         this.strokeWidth = it.size.toFloat()
         this.maskFilter = BlurMaskFilter(it.blur, BlurMaskFilter.Blur.NORMAL)

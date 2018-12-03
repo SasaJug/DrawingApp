@@ -32,6 +32,9 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    androidExtensions {
+        experimental = true
+    }
 }
 
 dependencies {
@@ -98,4 +101,7 @@ dependencies {
     //JUnit
     testImplementation "junit:junit:$rootProject.JUnitVersion"
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+
+    compile project(path: ':domain')
+    compile project(path: ':data')
 }

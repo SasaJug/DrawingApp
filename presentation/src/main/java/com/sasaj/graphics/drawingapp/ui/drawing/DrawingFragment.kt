@@ -1,7 +1,9 @@
 package com.sasaj.graphics.drawingapp.ui.drawing
 
 
+import android.app.Activity.RESULT_OK
 import android.arch.lifecycle.ViewModelProviders
+import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.Paint
 import android.os.Bundle
@@ -9,11 +11,14 @@ import android.support.v4.app.Fragment
 import android.support.v7.app.AlertDialog
 import android.view.*
 import com.sasaj.graphics.drawingapp.R
-import com.sasaj.graphics.drawingapp.domain.Brush
+import com.sasaj.graphics.drawingapp.entities.BrushUI
+import com.sasaj.graphics.drawingapp.mappers.BrushEntityToUIMapper
+import com.sasaj.graphics.drawingapp.mappers.BrushUIToEntityMapper
 import com.sasaj.graphics.drawingapp.system.init
-import com.sasaj.graphics.drawingapp.system.setBrush
+import com.sasaj.graphics.drawingapp.system.setPaintParameters
+import com.sasaj.graphics.drawingapp.ui.drawing.SelectBrushDialogFragment.Companion.BRUSH_PARCELABLE
+import com.sasaj.graphics.drawingapp.ui.drawing.SelectBrushDialogFragment.Companion.BRUSH_REQUEST_CODE
 import com.sasaj.graphics.drawingapp.viewmodel.DrawingViewModel
-import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import kotlinx.android.synthetic.main.fragment_drawing.*
 
@@ -21,6 +26,7 @@ class DrawingFragment : Fragment() {
 
     private var vm: DrawingViewModel? = null
     private val paint: Paint = Paint()
+    private var brushUI : BrushUI = BrushUI()
     private lateinit var disposable: Disposable
 
     private val bitmap: Bitmap?
@@ -45,10 +51,18 @@ class DrawingFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        disposable = vm!!.getBrush()
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe { brush: Brush? ->
-                    paint.setBrush(brush!!)
+//        disposable = vm!!.getBrush()
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribe { brush: Brush? ->
+//                    paint.setBrush(brush!!)
+//                    drawing?.setPaint(paint)
+//                }
+        disposable = vm!!.getLastBrush()
+                .subscribe { optional ->
+                    if (optional.hasValue()) {
+                        brushUI = BrushEntityToUIMapper().mapFrom(optional.value!!)
+                    }
+                    paint.setPaintParameters(brushUI)
                     drawing?.setPaint(paint)
                 }
     }
@@ -72,8 +86,17 @@ class DrawingFragment : Fragment() {
         }
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        if(resultCode == RESULT_OK && requestCode == BRUSH_REQUEST_CODE){
+            brushUI = data!!.getParcelableExtra(BRUSH_PARCELABLE)
+            paint.setPaintParameters(brushUI)
+            drawing?.setPaint(paint)
+            vm!!.saveBrush(BrushUIToEntityMapper().mapFrom(brushUI)).subscribe()
+        }
+    }
+
     private fun startToolsDialog() {
-        val newFragment = SelectBrushDialogFragment.newInstance()
+        val newFragment = SelectBrushDialogFragment.newInstance(this, brushUI)
         newFragment.show(fragmentManager!!, "com.sasaj.graphics.drawingapp.dialog")
     }
 

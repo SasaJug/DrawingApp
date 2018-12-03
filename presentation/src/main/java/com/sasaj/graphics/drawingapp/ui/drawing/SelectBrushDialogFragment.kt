@@ -1,8 +1,10 @@
 package com.sasaj.graphics.drawingapp.ui.drawing
 
+import android.app.Activity.RESULT_OK
 import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.support.v4.app.DialogFragment
+import android.support.v4.app.Fragment
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -10,10 +12,14 @@ import android.view.ViewGroup
 import android.view.Window
 import com.sasaj.graphics.drawingapp.R
 import com.sasaj.graphics.drawingapp.domain.Brush
+import com.sasaj.graphics.drawingapp.entities.BrushUI
 import com.sasaj.graphics.drawingapp.viewmodel.SelectBrushViewModel
 import io.reactivex.Observable
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.select_brush_dialog_fragment_layout.*
+import android.content.Intent
+
+
 
 /**
  * Created by sjugurdzija on 9/11/2016.
@@ -22,7 +28,7 @@ import kotlinx.android.synthetic.main.select_brush_dialog_fragment_layout.*
 class SelectBrushDialogFragment : DialogFragment() {
 
     private lateinit var vm: SelectBrushViewModel
-    private lateinit var brushSelectorObservable: Observable<Brush>
+    private lateinit var brushSelectorObservable: Observable<BrushUI>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,23 +42,37 @@ class SelectBrushDialogFragment : DialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        selectBrushView.setCurrentBrush(vm.getCurrentBrush())
+        selectBrushView.setCurrentBrush(arguments!!.getParcelable(BRUSH_PARCELABLE))
         brushSelectorObservable = selectBrushView.getSelectorObservable()
         brushSelectorObservable
                 .observeOn(Schedulers.io())
                 .subscribe(
-                        { br -> vm.setBrush(br) },
+                        { br -> sendResult(br) },
                         { e -> Log.e(TAG, "Error creating brush.", e) },
                         { dismiss() }
                 )
     }
 
+    private fun sendResult(brush : BrushUI) {
+        val intent = Intent()
+        intent.putExtra(BRUSH_PARCELABLE, brush)
+        targetFragment!!.onActivityResult(
+                targetRequestCode, RESULT_OK, intent)
+    }
+
     companion object {
 
         private val TAG = SelectBrushDialogFragment::class.java.simpleName
+        const val BRUSH_REQUEST_CODE: Int = 123
+        const val BRUSH_PARCELABLE: String = "brush"
 
-        fun newInstance(): SelectBrushDialogFragment {
-            return SelectBrushDialogFragment()
+        fun newInstance(targetFragment: Fragment, brush: BrushUI): SelectBrushDialogFragment {
+            val fragment = SelectBrushDialogFragment()
+            fragment.setTargetFragment(targetFragment, BRUSH_REQUEST_CODE)
+            val bundle = Bundle()
+            bundle.putParcelable(BRUSH_PARCELABLE, brush)
+            fragment.arguments = bundle
+            return fragment
         }
     }
 }

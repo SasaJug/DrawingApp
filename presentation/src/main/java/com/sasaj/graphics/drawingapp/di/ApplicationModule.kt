@@ -7,8 +7,19 @@ import com.amazonaws.mobileconnectors.s3.transferutility.TransferUtility
 import com.amazonaws.regions.Region
 import com.amazonaws.regions.Regions
 import com.amazonaws.services.s3.AmazonS3Client
+import com.sasaj.data.database.APP_DB_NAME
+import com.sasaj.data.database.AppDb
+import com.sasaj.data.mappers.BrushDataMapper
+import com.sasaj.data.mappers.BrushEntityMapper
+import com.sasaj.data.repositories.BrushRepositoryImpl
+import com.sasaj.data.repositories.DrawingAppLocalRepository
+import com.sasaj.domain.entities.Brush
+import com.sasaj.domain.entities.Optional
+import com.sasaj.domain.usecases.GetBrush
+import com.sasaj.domain.usecases.SaveBrush
 import com.sasaj.graphics.drawingapp.aws.AppSyncClientFactory
 import com.sasaj.graphics.drawingapp.aws.CognitoHelper
+import com.sasaj.graphics.drawingapp.common.ASyncTransformer
 import com.sasaj.graphics.drawingapp.repository.AwsAuthRepositoryImplementation
 import com.sasaj.graphics.drawingapp.repository.BrushRepositoryImplementation
 import com.sasaj.graphics.drawingapp.repository.DrawingRepositoryImplementation
@@ -71,7 +82,7 @@ class ApplicationModule(val context: Context) {
 
     @Provides
     @Reusable
-    fun providesBrushRepository(db: AppDatabase): BrushRepository {
+    fun providesBrushRepo(db: AppDatabase): BrushRepository {
         return BrushRepositoryImplementation(db)
     }
 
@@ -80,5 +91,37 @@ class ApplicationModule(val context: Context) {
     @Reusable
     fun providesAuthRepository(): AuthRepository {
         return AwsAuthRepositoryImplementation(context)
+    }
+
+
+    @Provides
+    @Reusable
+    fun providesAppDb(): AppDb {
+        return Room.databaseBuilder(context, AppDb::class.java, APP_DB_NAME).fallbackToDestructiveMigration().build()
+    }
+
+
+    @Provides
+    @Reusable
+    fun providesDrawingAppLocalRepository(appDb : AppDb): DrawingAppLocalRepository {
+        return DrawingAppLocalRepository(BrushEntityMapper(), BrushDataMapper(), appDb)
+    }
+
+    @Provides
+    @Reusable
+    fun providesBrushRepository(drawingAppLocalRepository: DrawingAppLocalRepository): com.sasaj.domain.BrushRepository {
+        return BrushRepositoryImpl(drawingAppLocalRepository)
+    }
+
+    @Provides
+    @Reusable
+    fun providesGetBrushUseCase(brushRepository : com.sasaj.domain.BrushRepository): GetBrush {
+        return GetBrush(ASyncTransformer<Optional<Brush>>(), brushRepository)
+    }
+
+    @Provides
+    @Reusable
+    fun providesSaveBrushUseCase(brushRepository : com.sasaj.domain.BrushRepository): SaveBrush {
+        return SaveBrush(ASyncTransformer<Boolean>(), brushRepository)
     }
 }

@@ -1,7 +1,7 @@
 package com.sasaj.graphics.drawingapp.ui.drawing.brushselector.utilities
 
 import android.graphics.Color
-import com.sasaj.graphics.drawingapp.domain.Brush
+import com.sasaj.graphics.drawingapp.entities.BrushUI
 
 /**
  * Created by sjugurdzija on 6/28/2016.
@@ -10,7 +10,7 @@ object BrushAdapter {
 
     private val TAG: String = javaClass.simpleName
 
-    var brush: Brush? = null
+    var brush: BrushUI? = null
         set(value) {
             field = value
             size = value!!.size

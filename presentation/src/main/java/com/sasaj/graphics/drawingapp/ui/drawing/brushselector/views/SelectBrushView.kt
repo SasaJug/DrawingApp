@@ -6,7 +6,7 @@ import android.view.LayoutInflater
 import android.widget.LinearLayout
 import com.jakewharton.rxbinding2.widget.RxSeekBar
 import com.sasaj.graphics.drawingapp.R
-import com.sasaj.graphics.drawingapp.domain.Brush
+import com.sasaj.graphics.drawingapp.entities.BrushUI
 import com.sasaj.graphics.drawingapp.ui.drawing.brushselector.utilities.BrushAdapter
 import com.sasaj.graphics.drawingapp.ui.drawing.brushselector.utilities.OnColorComponentSelectedListener
 import io.reactivex.Observable
@@ -27,7 +27,7 @@ class SelectBrushView : LinearLayout {
 
     private val brushAdapter: BrushAdapter = BrushAdapter
 
-    private var brushSelectorObservable: Subject<Brush> = PublishSubject.create<Brush>()
+    private var brushSelectorObservable: Subject<BrushUI> = PublishSubject.create<BrushUI>()
 
 
     private val selectionListener: OnColorComponentSelectedListener = object : OnColorComponentSelectedListener {
@@ -107,11 +107,11 @@ class SelectBrushView : LinearLayout {
 
     }
 
-    fun getSelectorObservable(): Observable<Brush> {
+    fun getSelectorObservable(): Observable<BrushUI> {
         return brushSelectorObservable
     }
 
-    fun setCurrentBrush(brush: Brush) {
+    fun setCurrentBrush(brush: BrushUI) {
         brushAdapter.brush = brush
         brushSample.setBrush(brushAdapter.brush)
         setViews()

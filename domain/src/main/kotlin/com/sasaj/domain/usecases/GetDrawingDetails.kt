@@ -2,7 +2,7 @@ package com.sasaj.domain.usecases
 
 import com.sasaj.domain.DrawingRepository
 import com.sasaj.domain.common.Transformer
-import com.sasaj.graphics.drawingapp.domain.Drawing
+import com.sasaj.domain.entities.Drawing
 import io.reactivex.Observable
 import java.lang.IllegalArgumentException
 import java.util.*

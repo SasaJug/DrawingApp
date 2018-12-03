@@ -1,4 +1,4 @@
-package com.sasaj.graphics.drawingapp.domain
+package com.sasaj.domain.entities
 
 /**
  * Created by sjugurdzija on 4/21/2017.

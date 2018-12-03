@@ -2,7 +2,7 @@ package com.sasaj.domain.usecases
 
 import com.sasaj.domain.BrushRepository
 import com.sasaj.domain.common.Transformer
-import com.sasaj.graphics.drawingapp.domain.Brush
+import com.sasaj.domain.entities.Brush
 import io.reactivex.Observable
 import java.lang.IllegalArgumentException
 import java.util.*

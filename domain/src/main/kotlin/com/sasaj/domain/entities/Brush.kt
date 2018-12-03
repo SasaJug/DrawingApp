@@ -1,4 +1,4 @@
-package com.sasaj.graphics.drawingapp.domain
+package com.sasaj.domain.entities
 
 data class Brush(var id: Long = 0,
                  var size: Int = 5,
