@@ -1,0 +1,22 @@
+mutation createDrawing($createdrawinginput: CreateDrawingInput!) {
+  createDrawing(input: $createdrawinginput) {
+    id
+    userId
+    title
+    description
+    fileName
+  }
+}
+
+query listDrawings ($filt: TableDrawingFilterInput){
+  listDrawings (filter: $filt){
+    items {
+      id
+      userId
+      title
+      description
+      fileName
+    }
+  }
+}
+

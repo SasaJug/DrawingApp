@@ -1,22 +1,26 @@
 package com.sasaj.graphics.drawingapp.viewmodel
 
-import com.sasaj.graphics.drawingapp.domain.Drawing
-import com.sasaj.graphics.drawingapp.viewmodel.dependencies.DrawingRepository
-import io.reactivex.Flowable
-import io.reactivex.Single
+import com.sasaj.domain.entities.Drawing
+import com.sasaj.domain.usecases.GetDrawings
+import com.sasaj.domain.usecases.SyncDrawings
+import io.reactivex.Observable
 import javax.inject.Inject
 
 class DrawingListViewModel : BaseViewModel() {
 
 
     @Inject
-    lateinit var drawingRepository: DrawingRepository
+    lateinit var syncDrawings: SyncDrawings
 
-    fun getDrawings(): Flowable<List<Drawing>> {
-        return drawingRepository.getDrawings()
+    @Inject
+    lateinit var getDrawings: GetDrawings
+
+    fun getDrawings(): Observable<List<Drawing>> {
+        return getDrawings.getDrawings()
     }
 
-    fun syncDrawings(): Single<Boolean> {
-        return drawingRepository.syncDrawings()
+    fun syncDrawings(): Observable<Boolean> {
+        return syncDrawings.syncDrawings()
     }
 }
+

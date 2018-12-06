@@ -2,6 +2,7 @@
 
 package com.sasaj.graphics.drawingapp.repository.database
 
+const val APP_DATABASE_NAME_OLD = "DrawingDb_Old"
 const val APP_DATABASE_NAME = "DrawingDb"
 
 const val BRUSH_TABLE_NAME = "brush"

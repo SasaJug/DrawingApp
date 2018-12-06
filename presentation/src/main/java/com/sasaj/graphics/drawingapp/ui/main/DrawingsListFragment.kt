@@ -13,9 +13,9 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.sasaj.domain.entities.Drawing
 import com.sasaj.graphics.drawingapp.BuildConfig
 import com.sasaj.graphics.drawingapp.R
-import com.sasaj.graphics.drawingapp.domain.Drawing
 import com.sasaj.graphics.drawingapp.ui.main.adapter.DrawingsListAdapter
 import com.sasaj.graphics.drawingapp.viewmodel.DrawingListViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -78,11 +78,8 @@ class DrawingsListFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         vm = ViewModelProviders.of(this)[DrawingListViewModel::class.java]
-        val thread = Thread(Runnable { vm.syncDrawings() })
-        thread.start()
+        vm.syncDrawings().subscribe()
         disposable = vm.getDrawings()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe { list -> adapter?.setDrawings(list) }
     }
 

@@ -6,6 +6,7 @@ import android.arch.persistence.room.OnConflictStrategy
 import android.arch.persistence.room.Query
 import com.sasaj.data.entities.DrawingDb
 import io.reactivex.Flowable
+import io.reactivex.Observable
 
 @Dao
 interface DrawingDao {
@@ -21,7 +22,7 @@ interface DrawingDao {
     fun getByFilename(filename: String?): DrawingDb?
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insert(drawingDb: DrawingDb)
+    fun insert(drawingDb: DrawingDb) : Long
 
     @Query("DELETE from drawing")
     fun deleteAll()

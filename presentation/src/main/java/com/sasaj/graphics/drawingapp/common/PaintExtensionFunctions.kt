@@ -1,4 +1,4 @@
-package com.sasaj.graphics.drawingapp.system
+package com.sasaj.graphics.drawingapp.common
 
 import android.graphics.BlurMaskFilter
 import android.graphics.Paint

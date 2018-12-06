@@ -14,8 +14,8 @@ import com.sasaj.graphics.drawingapp.R
 import com.sasaj.graphics.drawingapp.entities.BrushUI
 import com.sasaj.graphics.drawingapp.mappers.BrushEntityToUIMapper
 import com.sasaj.graphics.drawingapp.mappers.BrushUIToEntityMapper
-import com.sasaj.graphics.drawingapp.system.init
-import com.sasaj.graphics.drawingapp.system.setPaintParameters
+import com.sasaj.graphics.drawingapp.common.init
+import com.sasaj.graphics.drawingapp.common.setPaintParameters
 import com.sasaj.graphics.drawingapp.ui.drawing.SelectBrushDialogFragment.Companion.BRUSH_PARCELABLE
 import com.sasaj.graphics.drawingapp.ui.drawing.SelectBrushDialogFragment.Companion.BRUSH_REQUEST_CODE
 import com.sasaj.graphics.drawingapp.viewmodel.DrawingViewModel
@@ -51,12 +51,6 @@ class DrawingFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-//        disposable = vm!!.getBrush()
-//                .observeOn(AndroidSchedulers.mainThread())
-//                .subscribe { brush: Brush? ->
-//                    paint.setBrush(brush!!)
-//                    drawing?.setPaint(paint)
-//                }
         disposable = vm!!.getLastBrush()
                 .subscribe { optional ->
                     if (optional.hasValue()) {

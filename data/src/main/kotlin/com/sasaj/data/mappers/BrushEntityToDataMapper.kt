@@ -4,10 +4,9 @@ import com.sasaj.data.entities.BrushDb
 import com.sasaj.domain.common.Mapper
 import com.sasaj.domain.entities.Brush
 
-class BrushDataMapper() : Mapper<BrushDb, Brush>() {
-    override fun mapFrom(from: BrushDb): Brush {
-        return Brush(from.id,
-                from.size,
+class BrushEntityToDataMapper() : Mapper<Brush, BrushDb>() {
+    override fun mapFrom(from: Brush): BrushDb {
+        return BrushDb(from.size,
                 from.blur,
                 from.color)
     }

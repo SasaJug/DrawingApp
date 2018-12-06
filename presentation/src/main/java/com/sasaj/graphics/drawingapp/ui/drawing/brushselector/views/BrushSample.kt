@@ -5,8 +5,8 @@ import android.graphics.*
 import android.util.AttributeSet
 import android.view.View
 import com.sasaj.graphics.drawingapp.entities.BrushUI
-import com.sasaj.graphics.drawingapp.system.init
-import com.sasaj.graphics.drawingapp.system.setPaintParameters
+import com.sasaj.graphics.drawingapp.common.init
+import com.sasaj.graphics.drawingapp.common.setPaintParameters
 
 /**
  * Created by sjugurdzija on 6/25/2016.

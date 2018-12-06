@@ -6,8 +6,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import com.sasaj.domain.entities.Drawing
 import com.sasaj.graphics.drawingapp.R
-import com.sasaj.graphics.drawingapp.domain.Drawing
 import com.sasaj.graphics.drawingapp.ui.main.DrawingsListFragment
 import com.squareup.picasso.Picasso
 import java.io.File
