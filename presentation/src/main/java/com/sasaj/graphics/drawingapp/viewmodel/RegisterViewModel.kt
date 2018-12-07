@@ -2,6 +2,7 @@ package com.sasaj.graphics.drawingapp.viewmodel
 
 import android.arch.lifecycle.MutableLiveData
 import android.util.Log
+import com.sasaj.domain.usecases.SignUp
 import com.sasaj.graphics.drawingapp.viewmodel.common.Response
 import com.sasaj.graphics.drawingapp.viewmodel.dependencies.AuthRepository
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -12,7 +13,7 @@ import javax.inject.Inject
 class RegisterViewModel : BaseViewModel() {
 
     @Inject
-    lateinit var repo: AuthRepository
+    lateinit var signUpUseCase : SignUp
 
     private val registerLiveData: MutableLiveData<Response> = MutableLiveData()
 
@@ -20,24 +21,23 @@ class RegisterViewModel : BaseViewModel() {
         return registerLiveData
     }
 
-    private var disposable: Disposable? = repo.getRegisterSubject()
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(
-                    { b: Boolean ->
-                        if (b) {
-                            registerLiveData.setValue(Response.success("confirmed"))
-                        } else {
-                            registerLiveData.setValue(Response.success("notConfirmed"))
-                        }
-                    },
-                    { e -> registerLiveData.setValue(Response.error(e)) },
-                    { Log.e(TAG, "completed") }
-            )
+    private var disposable: Disposable? = null
 
-    fun register (username: String, password: String = "", attrs : HashMap<String, String>) {
+
+    fun register (username: String, password: String = "", email : String = "") {
         registerLiveData.postValue(Response.loading())
-        repo.signUp(username, password, attrs)
+        signUpUseCase.signUp(username, password, email)
+                .subscribe(
+                        { b: Boolean ->
+                            if (b) {
+                                registerLiveData.setValue(Response.success("confirmed"))
+                            } else {
+                                registerLiveData.setValue(Response.success("notConfirmed"))
+                            }
+                        },
+                        { e -> registerLiveData.setValue(Response.error(e)) },
+                        { Log.e(TAG, "completed") }
+                )
     }
 
     fun resetLiveData() {

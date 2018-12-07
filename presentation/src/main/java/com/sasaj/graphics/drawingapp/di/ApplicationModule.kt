@@ -14,19 +14,12 @@ import com.sasaj.data.mappers.DrawingDataToEntityMapper
 import com.sasaj.data.mappers.DrawingEntityToDataMapper
 import com.sasaj.data.remote.AppSyncClientFactory
 import com.sasaj.data.remote.CognitoHelper
-import com.sasaj.data.repositories.BrushRepositoryImpl
-import com.sasaj.data.repositories.DrawingRepositoryImpl
-import com.sasaj.data.repositories.LocalRepository
-import com.sasaj.data.repositories.RemoteRepository
+import com.sasaj.data.repositories.*
 import com.sasaj.domain.DrawingRepository
-import com.sasaj.domain.entities.Brush
-import com.sasaj.domain.entities.Optional
+import com.sasaj.domain.UserRepository
 import com.sasaj.domain.usecases.*
 import com.sasaj.graphics.drawingapp.common.ASyncTransformer
 import com.sasaj.graphics.drawingapp.repository.AwsAuthRepositoryImplementation
-import com.sasaj.graphics.drawingapp.repository.database.APP_DATABASE_NAME
-import com.sasaj.graphics.drawingapp.repository.database.APP_DATABASE_NAME_OLD
-import com.sasaj.graphics.drawingapp.repository.database.AppDatabase
 import com.sasaj.graphics.drawingapp.viewmodel.dependencies.AuthRepository
 import dagger.Module
 import dagger.Provides
@@ -38,14 +31,8 @@ class ApplicationModule(val context: Context) {
 
     @Provides
     @Reusable
-    fun providesOldAppDatabase(): AppDatabase {
-        return Room.databaseBuilder(context, AppDatabase::class.java, APP_DATABASE_NAME_OLD).fallbackToDestructiveMigration().build()
-    }
-
-    @Provides
-    @Reusable
     fun providesAppDatabase(): AppDb {
-        return Room.databaseBuilder(context, AppDb::class.java, APP_DATABASE_NAME).fallbackToDestructiveMigration().build()
+        return Room.databaseBuilder(context, AppDb::class.java, "DrawingAppDb").fallbackToDestructiveMigration().build()
     }
 
 
@@ -113,6 +100,12 @@ class ApplicationModule(val context: Context) {
 
     @Provides
     @Reusable
+    fun providesUserRepository(cognitoHelper: CognitoHelper): UserRepository {
+        return UserRepositoryImpl(cognitoHelper)
+    }
+
+    @Provides
+    @Reusable
     fun providesBrushRepository(localRepository: LocalRepository): com.sasaj.domain.BrushRepository {
         return BrushRepositoryImpl(localRepository)
     }
@@ -120,13 +113,13 @@ class ApplicationModule(val context: Context) {
     @Provides
     @Reusable
     fun providesGetBrushUseCase(brushRepository: com.sasaj.domain.BrushRepository): GetBrush {
-        return GetBrush(ASyncTransformer<Optional<Brush>>(), brushRepository)
+        return GetBrush(ASyncTransformer(), brushRepository)
     }
 
     @Provides
     @Reusable
     fun providesSaveBrushUseCase(brushRepository: com.sasaj.domain.BrushRepository): SaveBrush {
-        return SaveBrush(ASyncTransformer<Boolean>(), brushRepository)
+        return SaveBrush(ASyncTransformer(), brushRepository)
     }
 
 
@@ -148,5 +141,41 @@ class ApplicationModule(val context: Context) {
     @Reusable
     fun providesSyncDrawingsUseCase(drawingRepository: DrawingRepository): SyncDrawings {
         return SyncDrawings(ASyncTransformer(), drawingRepository)
+    }
+
+    @Provides
+    @Reusable
+    fun providesCheckIfLoggedInUseCase(userRepository: UserRepository): CheckIfLoggedIn {
+        return CheckIfLoggedIn(ASyncTransformer(), userRepository)
+    }
+
+    @Provides
+    @Reusable
+    fun providesLoginUseCase(userRepository: UserRepository): LogIn {
+        return LogIn(ASyncTransformer(), userRepository)
+    }
+
+    @Provides
+    @Reusable
+    fun providesSignUpUseCase(userRepository: UserRepository): SignUp {
+        return SignUp(ASyncTransformer(), userRepository)
+    }
+
+    @Provides
+    @Reusable
+    fun providesVerifyUserUseCase(userRepository: UserRepository): VerifyUser {
+        return VerifyUser(ASyncTransformer(), userRepository)
+    }
+
+    @Provides
+    @Reusable
+    fun providesChangePassword(userRepository: UserRepository): ChangePassword {
+        return ChangePassword(ASyncTransformer(), userRepository)
+    }
+
+    @Provides
+    @Reusable
+    fun providesNewPassword(userRepository: UserRepository): NewPassword {
+        return NewPassword(ASyncTransformer(), userRepository)
     }
 }

@@ -25,10 +25,7 @@ class RegisterActivity : BaseActivity() {
         vm.getRegisterLiveData().observe(this, Observer { response -> processResponse(response) })
 
         signUpButton!!.setOnClickListener {
-            val attributes: HashMap<String, String> = HashMap()
-            attributes.put("email", email!!.text.toString())
-            vm.register(username!!.text.toString(), password!!.text.toString(), attributes)
-
+            vm.register(username!!.text.toString(), password!!.text.toString(), email!!.text.toString())
         }
     }
 

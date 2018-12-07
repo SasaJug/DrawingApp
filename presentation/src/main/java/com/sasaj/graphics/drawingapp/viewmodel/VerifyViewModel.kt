@@ -2,6 +2,7 @@ package com.sasaj.graphics.drawingapp.viewmodel
 
 import android.arch.lifecycle.MutableLiveData
 import android.util.Log
+import com.sasaj.domain.usecases.VerifyUser
 import com.sasaj.graphics.drawingapp.viewmodel.common.Response
 import com.sasaj.graphics.drawingapp.viewmodel.dependencies.AuthRepository
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -12,7 +13,7 @@ import javax.inject.Inject
 class VerifyViewModel : BaseViewModel(){
 
     @Inject
-    lateinit var repo: AuthRepository
+    lateinit var verifyUserUseCase : VerifyUser
 
     private val verifyLiveData: MutableLiveData<Response> = MutableLiveData()
 
@@ -20,24 +21,23 @@ class VerifyViewModel : BaseViewModel(){
         return verifyLiveData
     }
 
-    private var disposable: Disposable? = repo.getVerifySubject()
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(
-                    { b : Boolean ->
-                        if (b) {
-                            verifyLiveData.setValue(Response.success("verified"))
-                        } else {
-                            verifyLiveData.setValue(Response.success("notVerified"))
-                        }
-                    },
-                    { e -> verifyLiveData.setValue(Response.error(e)) },
-                    { Log.i(TAG, "completed") }
-            )
+    private var disposable: Disposable? = null
+
 
     fun verify(username: String?, code: String?) {
         verifyLiveData.postValue(Response.loading())
-        repo.verify(username, code)
+        disposable = verifyUserUseCase.verifyUser(username!!, code!!)
+                .subscribe(
+                        { b : Boolean ->
+                            if (b) {
+                                verifyLiveData.setValue(Response.success("verified"))
+                            } else {
+                                verifyLiveData.setValue(Response.success("notVerified"))
+                            }
+                        },
+                        { e -> verifyLiveData.setValue(Response.error(e)) },
+                        { Log.i(TAG, "completed") }
+                )
     }
 
     fun resetLiveData(){

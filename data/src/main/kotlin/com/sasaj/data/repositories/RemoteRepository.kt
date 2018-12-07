@@ -145,17 +145,6 @@ class RemoteRepository(private val s3: AmazonS3Client,
         return file
     }
 
-    private fun createTimestamp(): Long {
-        // Create an image timestamp
-//        return SimpleDateFormat("yyyy_MM_dd_HH_mm_ss", Locale.ENGLISH).format(Date())
-        return System.currentTimeMillis()
-    }
-
-
-//    //get Part
-//    override fun getDrawings(): Flowable<List<Drawing>> {
-//        return db.drawingDao().getAll()
-//    }
 
 
     // Sync part
