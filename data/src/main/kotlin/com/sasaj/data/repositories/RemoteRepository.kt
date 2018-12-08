@@ -31,7 +31,7 @@ class RemoteRepository(private val s3: AmazonS3Client,
                        private val cognitoHelper: CognitoHelper) {
 
     companion object {
-        const val TAG = "Remote Repository"
+        val TAG = RemoteRepository::class.java.simpleName
     }
 
     var drawing: Drawing? = null
@@ -48,9 +48,6 @@ class RemoteRepository(private val s3: AmazonS3Client,
                 .build()
 
         val createDrawing = CreateDrawingMutation(createDrawingInput)
-
-        // Enqueue the request (This will execute the request)
-
         appSyncClient.mutate(createDrawing).enqueue(addDrawingsCallback)
     }
 

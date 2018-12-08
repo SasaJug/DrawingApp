@@ -1,4 +1,4 @@
-package com.sasaj.graphics.drawingapp.ui.splash
+package com.sasaj.graphics.drawingapp
 
 
 import android.Manifest
@@ -11,10 +11,13 @@ import android.os.Bundle
 import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
 import android.util.Log
+import android.view.View
+import android.widget.Toast
+import com.sasaj.graphics.drawingapp.mappers.SplashViewState
 import com.sasaj.graphics.drawingapp.ui.authentication.LoginActivity
 import com.sasaj.graphics.drawingapp.ui.base.BaseActivity
 import com.sasaj.graphics.drawingapp.ui.main.MainActivity
-import com.sasaj.graphics.drawingapp.viewmodel.SplashViewModel
+import com.sasaj.graphics.drawingapp.splash.SplashViewModel
 import com.sasaj.graphics.drawingapp.viewmodel.common.Response
 import com.sasaj.graphics.drawingapp.viewmodel.common.Status.*
 
@@ -28,7 +31,7 @@ class SplashActivity : BaseActivity() {
 
     public override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        vm = ViewModelProviders.of(this).get(SplashViewModel::class.java)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (ContextCompat.checkSelfPermission(this,
                             Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
@@ -42,6 +45,18 @@ class SplashActivity : BaseActivity() {
         } else {
             findCurrent()
         }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        vm.getSplashLiveData().observe(this, Observer {
+            if (it != null) handleViewState(it)
+        })
+        vm.errorState.observe(this, Observer { throwable ->
+            throwable?.let {
+                renderErrorState(throwable)
+            }
+        })
     }
 
 
@@ -60,8 +75,6 @@ class SplashActivity : BaseActivity() {
     }
 
     private fun findCurrent() {
-        vm = ViewModelProviders.of(this).get(SplashViewModel::class.java)
-        vm.getSplashLiveData().observe(this, Observer { response -> processResponse(response) })
         vm.checkIfLoggedIn()
     }
 
@@ -69,12 +82,11 @@ class SplashActivity : BaseActivity() {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    private fun processResponse(response: Response?) {
-        when (response?.status) {
-            LOADING -> renderLoadingState()
-            SUCCESS -> renderAlreadyLoggedInState(response.data)
-            ERROR -> renderErrorState(response.error)
-        }
+    private fun handleViewState(splashViewState : SplashViewState) {
+        if (splashViewState.loading)
+            renderLoadingState()
+        else
+            renderAlreadyLoggedInState(splashViewState.username)
     }
 
     private fun renderLoadingState() {
@@ -84,12 +96,12 @@ class SplashActivity : BaseActivity() {
     private fun renderAlreadyLoggedInState(username: String?) {
         hideProgress()
         if (username != "") {
-            Log.i(SplashActivity.TAG, "Already logged in: $username")
+            Log.i(TAG, "Already logged in: $username")
             val intent = Intent(this@SplashActivity, MainActivity::class.java)
             startActivity(intent)
             finish()
         } else {
-            Log.i(SplashActivity.TAG, "No logIn details")
+            Log.i(TAG, "No logIn details")
             val intent = Intent(this@SplashActivity, LoginActivity::class.java)
             startActivity(intent)
             finish()
@@ -98,8 +110,13 @@ class SplashActivity : BaseActivity() {
 
     private fun renderErrorState(throwable: Throwable?) {
         hideProgress()
-        Log.e(SplashActivity.TAG, "Error checking logIn status: ", throwable)
+        Log.e(TAG, "Error checking logIn status: ", throwable)
         showDialogMessage("Error checking logIn status", throwable.toString())
+    }
+
+    override fun onDestroy() {
+        vm.clearDisposables()
+        super.onDestroy()
     }
 
     companion object {

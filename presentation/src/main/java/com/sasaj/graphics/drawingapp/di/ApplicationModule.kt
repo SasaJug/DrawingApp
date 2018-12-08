@@ -19,8 +19,6 @@ import com.sasaj.domain.DrawingRepository
 import com.sasaj.domain.UserRepository
 import com.sasaj.domain.usecases.*
 import com.sasaj.graphics.drawingapp.common.ASyncTransformer
-import com.sasaj.graphics.drawingapp.repository.AwsAuthRepositoryImplementation
-import com.sasaj.graphics.drawingapp.viewmodel.dependencies.AuthRepository
 import dagger.Module
 import dagger.Provides
 import dagger.Reusable
@@ -92,11 +90,11 @@ class ApplicationModule(val context: Context) {
     }
 
 
-    @Provides
-    @Reusable
-    fun providesAuthRepository(): AuthRepository {
-        return AwsAuthRepositoryImplementation(context)
-    }
+//    @Provides
+//    @Reusable
+//    fun providesAuthRepository(): AuthRepository {
+//        return AwsAuthRepositoryImplementation(context)
+//    }
 
     @Provides
     @Reusable

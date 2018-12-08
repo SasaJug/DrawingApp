@@ -2,6 +2,7 @@ package com.sasaj.graphics.drawingapp.viewmodel
 
 import android.arch.lifecycle.ViewModel
 import com.sasaj.graphics.drawingapp.DrawingApplication.Companion.injector
+import com.sasaj.graphics.drawingapp.splash.SplashViewModel
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 
@@ -33,11 +34,7 @@ abstract class BaseViewModel : ViewModel() {
         compositeDisposable.add(disposable)
     }
 
-    private fun clearDisposables() {
+    fun clearDisposables() {
         compositeDisposable.clear()
-    }
-
-    override fun onCleared() {
-        clearDisposables()
     }
 }

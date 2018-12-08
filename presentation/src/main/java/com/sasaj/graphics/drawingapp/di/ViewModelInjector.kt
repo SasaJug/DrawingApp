@@ -1,5 +1,6 @@
 package com.sasaj.graphics.drawingapp.di
 
+import com.sasaj.graphics.drawingapp.splash.SplashViewModel
 import com.sasaj.graphics.drawingapp.viewmodel.*
 import dagger.Component
 import javax.inject.Singleton
