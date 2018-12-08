@@ -110,6 +110,7 @@ class UserRepositoryImpl(private val cognitoHelper: CognitoHelper) : UserReposit
 
     val forgotPasswordHandler: ForgotPasswordHandler = object: ForgotPasswordHandler{
         override fun onSuccess() {
+            newPasswordSubject.onNext(true)
         }
 
         override fun getResetCode(continuation: ForgotPasswordContinuation?) {
@@ -117,7 +118,7 @@ class UserRepositoryImpl(private val cognitoHelper: CognitoHelper) : UserReposit
         }
 
         override fun onFailure(exception: Exception?) {
-            TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+            newPasswordSubject.onError(exception as Throwable)
         }
     }
 

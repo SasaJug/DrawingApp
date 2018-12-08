@@ -29,7 +29,7 @@ class NewPasswordActivity : BaseActivity() {
         vm.changePassword(intent.getStringExtra("username"))
 
         changePasswordButton.setOnClickListener {
-            if(newPassword.text.toString().equals(confirmPassword.text.toString())){
+            if (newPassword.text.toString().equals(confirmPassword.text.toString())) {
                 vm.newPassword(newPassword.text.toString(), newPasswordCode.text.toString())
             } else {
                 showDialogMessage("Error", "Passwords do not match!")
@@ -57,14 +57,10 @@ class NewPasswordActivity : BaseActivity() {
 
     private fun renderSucessLoggingInState(username: String?) {
         hideProgress()
-        if (username == "success") {
-            Log.i(TAG, "Succesfully logged in")
-            val intent = Intent(this@NewPasswordActivity, MainActivity::class.java)
-            startActivity(intent)
-            finish()
-        } else {
-            showDialogMessage("Error logging in", username)
-        }
+        Log.i(TAG, "Succesfully logged in")
+        val intent = Intent(this@NewPasswordActivity, MainActivity::class.java)
+        startActivity(intent)
+        finish()
     }
 
     private fun renderErrorState(throwable: Throwable?) {
