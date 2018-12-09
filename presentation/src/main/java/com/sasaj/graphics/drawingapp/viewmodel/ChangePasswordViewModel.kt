@@ -1,13 +1,10 @@
 package com.sasaj.graphics.drawingapp.viewmodel
 
 import android.arch.lifecycle.MutableLiveData
-import android.content.Intent
-import android.support.v4.content.ContextCompat.startActivity
 import android.util.Log
 import com.sasaj.domain.usecases.ChangePassword
 import com.sasaj.domain.usecases.NewPassword
-import com.sasaj.graphics.drawingapp.ui.authentication.LoginActivity
-import com.sasaj.graphics.drawingapp.ui.main.MainActivity
+import com.sasaj.graphics.drawingapp.common.BaseViewModel
 import com.sasaj.graphics.drawingapp.viewmodel.common.Response
 import io.reactivex.disposables.Disposable
 import javax.inject.Inject

@@ -1,4 +1,4 @@
-package com.sasaj.graphics.drawingapp.ui.base
+package com.sasaj.graphics.drawingapp
 
 import android.app.ProgressDialog
 import android.support.v7.app.AppCompatActivity

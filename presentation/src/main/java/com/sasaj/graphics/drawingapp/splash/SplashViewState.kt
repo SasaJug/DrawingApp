@@ -1,4 +1,4 @@
-package com.sasaj.graphics.drawingapp.mappers
+package com.sasaj.graphics.drawingapp.splash
 
 data class SplashViewState(
         var loading : Boolean = true,

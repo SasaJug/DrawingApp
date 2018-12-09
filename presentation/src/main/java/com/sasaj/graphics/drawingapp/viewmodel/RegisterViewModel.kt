@@ -3,11 +3,9 @@ package com.sasaj.graphics.drawingapp.viewmodel
 import android.arch.lifecycle.MutableLiveData
 import android.util.Log
 import com.sasaj.domain.usecases.SignUp
+import com.sasaj.graphics.drawingapp.common.BaseViewModel
 import com.sasaj.graphics.drawingapp.viewmodel.common.Response
-import com.sasaj.graphics.drawingapp.viewmodel.dependencies.AuthRepository
-import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
-import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
 class RegisterViewModel : BaseViewModel() {

@@ -1,4 +1,4 @@
-package com.sasaj.graphics.drawingapp.ui.authentication
+package com.sasaj.graphics.drawingapp.authentication
 
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
@@ -7,7 +7,7 @@ import android.os.Bundle
 import android.util.Log
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.handlers.GenericHandler
 import com.sasaj.graphics.drawingapp.R
-import com.sasaj.graphics.drawingapp.ui.base.BaseActivity
+import com.sasaj.graphics.drawingapp.BaseActivity
 import com.sasaj.graphics.drawingapp.ui.main.MainActivity
 import com.sasaj.graphics.drawingapp.viewmodel.VerifyViewModel
 import com.sasaj.graphics.drawingapp.viewmodel.common.Response

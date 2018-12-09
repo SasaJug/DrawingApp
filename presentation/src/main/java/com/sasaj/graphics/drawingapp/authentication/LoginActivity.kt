@@ -1,4 +1,4 @@
-package com.sasaj.graphics.drawingapp.ui.authentication
+package com.sasaj.graphics.drawingapp.authentication
 
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
@@ -6,7 +6,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import com.sasaj.graphics.drawingapp.R
-import com.sasaj.graphics.drawingapp.ui.base.BaseActivity
+import com.sasaj.graphics.drawingapp.BaseActivity
 import com.sasaj.graphics.drawingapp.ui.main.MainActivity
 import com.sasaj.graphics.drawingapp.viewmodel.LoginViewModel
 import com.sasaj.graphics.drawingapp.viewmodel.common.Response
@@ -22,7 +22,7 @@ class LoginActivity : BaseActivity() {
         setContentView(R.layout.activity_login)
 
         vm = ViewModelProviders.of(this).get(LoginViewModel::class.java)
-        vm.getLoginLiveData().observe(this, Observer { response -> processResponse(response) })
+//        vm.getLoginLiveData().observe(this, Observer { response -> processResponse(response) })
 
         loginButton!!.setOnClickListener {
             if (username?.text != null && !username.equals("") && password?.text != null && !password.text.toString().equals(""))

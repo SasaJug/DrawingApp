@@ -3,57 +3,51 @@ package com.sasaj.graphics.drawingapp.viewmodel
 import android.arch.lifecycle.MutableLiveData
 import android.util.Log
 import com.sasaj.domain.usecases.LogIn
-import com.sasaj.graphics.drawingapp.viewmodel.common.Response
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.Disposable
-import io.reactivex.schedulers.Schedulers
+import com.sasaj.graphics.drawingapp.authentication.states.LoginViewState
+import com.sasaj.graphics.drawingapp.common.BaseViewModel
+import com.sasaj.graphics.drawingapp.common.SingleLiveEvent
 import javax.inject.Inject
 
 class LoginViewModel : BaseViewModel() {
 
     @Inject
-    lateinit var logInUseCase : LogIn
+    lateinit var logInUseCase: LogIn
 
-    private val loginLiveData: MutableLiveData<Response> = MutableLiveData()
+    private val loginLiveData: MutableLiveData<LoginViewState> = MutableLiveData()
+    var errorState: SingleLiveEvent<Throwable?> = SingleLiveEvent()
 
-    private var disposable: Disposable? = null
+    init {
+        val loginViewState = LoginViewState()
+        loginLiveData.value = loginViewState
+    }
 
-
-    fun getLoginLiveData(): MutableLiveData<Response> {
+    fun getLoginLiveData(): MutableLiveData<LoginViewState> {
         return loginLiveData
     }
 
     fun logIn(username: String, password: String = "") {
-        loginLiveData.postValue(Response.loading())
-        logInUseCase.logIn(username, password)
+        loginLiveData.value = loginLiveData.value?.copy(loading = true, username = "")
+        addDisposable(logInUseCase.logIn(username, password)
                 .subscribe(
                         { s: String ->
-                            if (s == "success") {
-                                loginLiveData.setValue(Response.success(s))
-                            } else {
-                                loginLiveData.setValue(Response.success(""))
-                            }
+                            val newLoginViewState = loginLiveData.value?.copy(loading = false, username = s)
+                            loginLiveData.value = newLoginViewState
+                            errorState.value = null
                         },
                         { e ->
-                            Log.e(TAG, "onError", e)
-                            loginLiveData.setValue(Response.error(e))
+                            loginLiveData.value = loginLiveData.value?.copy(loading = false, username = "")
+                            errorState.value = e
                         },
-                        { Log.e(TAG, "onComplete") }
+                        { Log.e(TAG, "completed") }
                 )
+        )
     }
 
     fun resetLiveData() {
         loginLiveData.value = null
     }
 
-    override fun onCleared() {
-        Log.e(TAG, "onCleared")
-        disposable?.dispose()
-        super.onCleared()
-    }
-
     companion object {
-
         private val TAG = LoginViewModel::class.java.simpleName
     }
 }

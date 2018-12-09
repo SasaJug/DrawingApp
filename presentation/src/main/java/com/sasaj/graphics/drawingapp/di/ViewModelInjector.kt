@@ -1,5 +1,6 @@
 package com.sasaj.graphics.drawingapp.di
 
+import com.sasaj.graphics.drawingapp.authentication.AuthenticationNavigationViewModel
 import com.sasaj.graphics.drawingapp.splash.SplashViewModel
 import com.sasaj.graphics.drawingapp.viewmodel.*
 import dagger.Component
@@ -21,6 +22,7 @@ interface ViewModelInjector {
     fun inject(registerViewModel: RegisterViewModel)
     fun inject(verifyViewModel: VerifyViewModel)
     fun inject(changePasswordViewModel: ChangePasswordViewModel)
+    fun inject(authenticationNavigationViewModel: AuthenticationNavigationViewModel)
 
     @Component.Builder
     interface Builder {

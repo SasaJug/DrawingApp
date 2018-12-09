@@ -3,6 +3,7 @@ package com.sasaj.graphics.drawingapp.viewmodel
 import com.sasaj.domain.entities.Drawing
 import com.sasaj.domain.usecases.GetDrawings
 import com.sasaj.domain.usecases.SyncDrawings
+import com.sasaj.graphics.drawingapp.common.BaseViewModel
 import io.reactivex.Observable
 import javax.inject.Inject
 

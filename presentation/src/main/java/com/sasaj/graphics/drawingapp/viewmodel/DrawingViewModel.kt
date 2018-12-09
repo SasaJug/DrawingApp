@@ -5,6 +5,7 @@ import com.sasaj.domain.entities.Optional
 import com.sasaj.domain.usecases.GetBrush
 import com.sasaj.domain.usecases.SaveBrush
 import com.sasaj.domain.usecases.SaveDrawing
+import com.sasaj.graphics.drawingapp.common.BaseViewModel
 import com.sasaj.graphics.drawingapp.common.BitmapManager
 import io.reactivex.Observable
 import javax.inject.Inject

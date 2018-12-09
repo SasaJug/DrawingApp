@@ -1,8 +1,10 @@
-package com.sasaj.graphics.drawingapp.viewmodel
+package com.sasaj.graphics.drawingapp.common
 
 import android.arch.lifecycle.ViewModel
 import com.sasaj.graphics.drawingapp.DrawingApplication.Companion.injector
+import com.sasaj.graphics.drawingapp.authentication.AuthenticationNavigationViewModel
 import com.sasaj.graphics.drawingapp.splash.SplashViewModel
+import com.sasaj.graphics.drawingapp.viewmodel.*
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 
@@ -24,6 +26,7 @@ abstract class BaseViewModel : ViewModel() {
             is RegisterViewModel -> injector.inject(this)
             is VerifyViewModel -> injector.inject(this)
             is ChangePasswordViewModel -> injector.inject(this)
+            is AuthenticationNavigationViewModel -> injector.inject(this)
         }
     }
 

@@ -19,14 +19,13 @@ class UserRepositoryImpl(private val cognitoHelper: CognitoHelper) : UserReposit
         val TAG: String = UserRepositoryImpl::class.java.simpleName
     }
 
-    private var loginSubject: PublishSubject<String> = PublishSubject.create<String>()
-    private var checkLoggedInSubject: PublishSubject<String> = PublishSubject.create<String>()
-    private var registerSubject: PublishSubject<Boolean> = PublishSubject.create<Boolean>()
-    private var verifySubject: PublishSubject<Boolean> = PublishSubject.create<Boolean>()
-    private var changePasswordSubject: PublishSubject<Boolean> = PublishSubject.create<Boolean>()
-    private var newPasswordSubject: PublishSubject<Boolean> = PublishSubject.create<Boolean>()
+    private lateinit var loginSubject: PublishSubject<String>
+    private lateinit var checkLoggedInSubject: PublishSubject<String>
+    private lateinit var registerSubject: PublishSubject<Boolean>
+    private lateinit var verifySubject: PublishSubject<Boolean>
+    private lateinit var changePasswordSubject: PublishSubject<Boolean>
+    private lateinit var newPasswordSubject: PublishSubject<Boolean>
 
-    // ToDo - secure
     private var password: String? = null
     var forgotPasswordContinuation:  ForgotPasswordContinuation? = null
 
@@ -34,7 +33,7 @@ class UserRepositoryImpl(private val cognitoHelper: CognitoHelper) : UserReposit
     private var loginHandler: AuthenticationHandler? = object : AuthenticationHandler {
         override fun onSuccess(userSession: CognitoUserSession, newDevice: CognitoDevice?) {
             Log.i(TAG, "Login success: ")
-            loginSubject.onNext("success")
+            loginSubject.onNext(userSession.username)
         }
 
         override fun getAuthenticationDetails(authenticationContinuation: AuthenticationContinuation, userId: String?) {
@@ -57,7 +56,7 @@ class UserRepositoryImpl(private val cognitoHelper: CognitoHelper) : UserReposit
 
         override fun onFailure(exception: Exception) {
             Log.e(TAG, "Login failure: ", exception)
-            loginSubject.onNext("error")
+            loginSubject.onError(exception)
         }
     }
 
@@ -123,6 +122,7 @@ class UserRepositoryImpl(private val cognitoHelper: CognitoHelper) : UserReposit
     }
 
     override fun checkIfLoggedIn() : Observable<String> {
+        checkLoggedInSubject = PublishSubject.create<String>()
         val user = cognitoHelper?.userPool?.currentUser
         val username = user?.userId
         if (username != null) {
@@ -134,6 +134,7 @@ class UserRepositoryImpl(private val cognitoHelper: CognitoHelper) : UserReposit
     }
 
     override fun logIn(username: String?, password: String?) : Observable<String> {
+        loginSubject  = PublishSubject.create<String>()
         this.password = password
         val user = cognitoHelper?.userPool?.getUser(username)
         if (user?.userId != null) {
@@ -143,6 +144,7 @@ class UserRepositoryImpl(private val cognitoHelper: CognitoHelper) : UserReposit
     }
 
     override fun signUp(username: String?, password: String?, attr: HashMap<String, String>) : Observable<Boolean>{
+        registerSubject = PublishSubject.create<Boolean>()
         val attributes = CognitoUserAttributes()
         attr.forEach { (key, value) -> attributes.addAttribute(key, value) }
 
@@ -156,6 +158,7 @@ class UserRepositoryImpl(private val cognitoHelper: CognitoHelper) : UserReposit
     }
 
     override fun verify(username: String?, code: String?) : Observable<Boolean>{
+        verifySubject = PublishSubject.create<Boolean>()
         val user = cognitoHelper.userPool.getUser(username)
         user?.confirmSignUpInBackground(code, false, genericHandler)
 
@@ -163,6 +166,7 @@ class UserRepositoryImpl(private val cognitoHelper: CognitoHelper) : UserReposit
     }
 
     override fun changePassword(username: String?): Observable<Boolean> {
+        changePasswordSubject= PublishSubject.create<Boolean>()
         val user = cognitoHelper.userPool.getUser(username)
         user.forgotPasswordInBackground(forgotPasswordHandler)
         changePasswordSubject.onNext(true)
@@ -171,6 +175,8 @@ class UserRepositoryImpl(private val cognitoHelper: CognitoHelper) : UserReposit
     }
 
     override fun newPassword(newPassword: String?, code: String?): Observable<Boolean> {
+        newPasswordSubject = PublishSubject.create<Boolean>()
+
         forgotPasswordContinuation?.setVerificationCode(code)
         forgotPasswordContinuation?.setPassword(newPassword)
         forgotPasswordContinuation?.continueTask()

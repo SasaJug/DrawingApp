@@ -1,4 +1,4 @@
-package com.sasaj.graphics.drawingapp.ui.authentication
+package com.sasaj.graphics.drawingapp.authentication
 
 import android.content.Intent
 import android.os.Bundle

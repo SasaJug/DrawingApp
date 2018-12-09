@@ -11,15 +11,9 @@ import android.os.Bundle
 import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
 import android.util.Log
-import android.view.View
-import android.widget.Toast
-import com.sasaj.graphics.drawingapp.mappers.SplashViewState
-import com.sasaj.graphics.drawingapp.ui.authentication.LoginActivity
-import com.sasaj.graphics.drawingapp.ui.base.BaseActivity
+import com.sasaj.graphics.drawingapp.splash.SplashViewState
 import com.sasaj.graphics.drawingapp.ui.main.MainActivity
 import com.sasaj.graphics.drawingapp.splash.SplashViewModel
-import com.sasaj.graphics.drawingapp.viewmodel.common.Response
-import com.sasaj.graphics.drawingapp.viewmodel.common.Status.*
 
 /**
  * Created by sjugurdzija on 4/22/2017
@@ -78,10 +72,6 @@ class SplashActivity : BaseActivity() {
         vm.checkIfLoggedIn()
     }
 
-    override fun resetViewModel() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
     private fun handleViewState(splashViewState : SplashViewState) {
         if (splashViewState.loading)
             renderLoadingState()
@@ -102,7 +92,7 @@ class SplashActivity : BaseActivity() {
             finish()
         } else {
             Log.i(TAG, "No logIn details")
-            val intent = Intent(this@SplashActivity, LoginActivity::class.java)
+            val intent = Intent(this@SplashActivity, AuthenticationActivity::class.java)
             startActivity(intent)
             finish()
         }
