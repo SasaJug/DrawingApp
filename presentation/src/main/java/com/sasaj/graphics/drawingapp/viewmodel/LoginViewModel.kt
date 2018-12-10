@@ -13,16 +13,12 @@ class LoginViewModel : BaseViewModel() {
     @Inject
     lateinit var logInUseCase: LogIn
 
-    private val loginLiveData: MutableLiveData<LoginViewState> = MutableLiveData()
+    val loginLiveData: MutableLiveData<LoginViewState> = MutableLiveData()
     var errorState: SingleLiveEvent<Throwable?> = SingleLiveEvent()
 
     init {
         val loginViewState = LoginViewState()
         loginLiveData.value = loginViewState
-    }
-
-    fun getLoginLiveData(): MutableLiveData<LoginViewState> {
-        return loginLiveData
     }
 
     fun logIn(username: String, password: String = "") {
@@ -38,13 +34,9 @@ class LoginViewModel : BaseViewModel() {
                             loginLiveData.value = loginLiveData.value?.copy(loading = false, username = "")
                             errorState.value = e
                         },
-                        { Log.e(TAG, "completed") }
+                        { Log.i(TAG, "Login completed") }
                 )
         )
-    }
-
-    fun resetLiveData() {
-        loginLiveData.value = null
     }
 
     companion object {

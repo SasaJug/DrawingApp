@@ -22,7 +22,25 @@ class AuthenticationNavigationViewModel : BaseViewModel(){
     }
 
     fun loginSuccessful(username: String){
-        val newNavigationState = navigationLiveData.value?.copy(state = AuthenticationNavigationViewState.LOGIN_SUCCESFUL, data = username)
+        val newNavigationState = navigationLiveData.value?.copy(state = AuthenticationNavigationViewState.LOGIN_SUCCESSFUL, data = username)
+        navigationLiveData.value = newNavigationState
+        errorState.value = null
+    }
+
+    fun registerConfirmed(){
+        val newNavigationState = navigationLiveData.value?.copy(state = AuthenticationNavigationViewState.REGISTRATION_CONFIRMED)
+        navigationLiveData.value = newNavigationState
+        errorState.value = null
+    }
+
+    fun registerNotConfirmed(){
+        val newNavigationState = navigationLiveData.value?.copy(state = AuthenticationNavigationViewState.REGISTRATION_NOT_CONFIRMED)
+        navigationLiveData.value = newNavigationState
+        errorState.value = null
+    }
+
+    fun verifyConfirmed() {
+        val newNavigationState = navigationLiveData.value?.copy(state = AuthenticationNavigationViewState.VERIFICATION_CONFIRMED)
         navigationLiveData.value = newNavigationState
         errorState.value = null
     }
@@ -30,5 +48,11 @@ class AuthenticationNavigationViewModel : BaseViewModel(){
     fun error(throwable: Throwable){
         errorState.value = throwable
     }
+
+    fun goToRegister() {
+        val newNavigationState = navigationLiveData.value?.copy(state = AuthenticationNavigationViewState.GO_TO_REGISTER)
+        navigationLiveData.value = newNavigationState
+    }
+
 
 }

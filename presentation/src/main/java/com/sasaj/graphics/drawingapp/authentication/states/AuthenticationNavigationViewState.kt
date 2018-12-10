@@ -5,12 +5,15 @@ data class AuthenticationNavigationViewState(
         var data: String = ""
 ) {
     companion object {
-        val LOADING: Int  = 0
-        val LOGIN_SUCCESFUL: Int = 1
-        val GO_TO_LOGIN: Int = 2
-        val GO_TO_REGISTER: Int = 3
-        val GO_TO_FORGOT_PASSWORD: Int = 4
-        val GO_TO_VERIFY: Int = 5
+        const val LOADING: Int = 0
+        const val LOGIN_SUCCESSFUL: Int = 1
+        const val REGISTRATION_CONFIRMED: Int = 2
+        const val REGISTRATION_NOT_CONFIRMED: Int = 3
+        const val VERIFICATION_CONFIRMED: Int = 4
+
+        const val GO_TO_REGISTER: Int = 13
+        const val GO_TO_FORGOT_PASSWORD: Int = 14
+        const val GO_TO_VERIFY: Int = 15
     }
 
 }

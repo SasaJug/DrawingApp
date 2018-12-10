@@ -3,49 +3,40 @@ package com.sasaj.graphics.drawingapp.viewmodel
 import android.arch.lifecycle.MutableLiveData
 import android.util.Log
 import com.sasaj.domain.usecases.VerifyUser
+import com.sasaj.graphics.drawingapp.authentication.states.VerifyViewState
 import com.sasaj.graphics.drawingapp.common.BaseViewModel
-import com.sasaj.graphics.drawingapp.viewmodel.common.Response
-import io.reactivex.disposables.Disposable
+import com.sasaj.graphics.drawingapp.common.SingleLiveEvent
 import javax.inject.Inject
 
-class VerifyViewModel : BaseViewModel(){
+class VerifyViewModel : BaseViewModel() {
 
     @Inject
-    lateinit var verifyUserUseCase : VerifyUser
+    lateinit var verifyUserUseCase: VerifyUser
 
-    private val verifyLiveData: MutableLiveData<Response> = MutableLiveData()
+    val verifyLiveData: MutableLiveData<VerifyViewState> = MutableLiveData()
+    var errorState: SingleLiveEvent<Throwable?> = SingleLiveEvent()
 
-    fun getVerifyLiveData(): MutableLiveData<Response> {
-        return verifyLiveData
+    init {
+        verifyLiveData.value = VerifyViewState()
     }
-
-    private var disposable: Disposable? = null
-
 
     fun verify(username: String?, code: String?) {
-        verifyLiveData.postValue(Response.loading())
-        disposable = verifyUserUseCase.verifyUser(username!!, code!!)
+        val verifyViewState = verifyLiveData.value?.copy(verificationStarted = true, loading = true, isVerified = false)
+        verifyLiveData.value = verifyViewState
+
+        addDisposable(verifyUserUseCase.verifyUser(username!!, code!!)
                 .subscribe(
-                        { b : Boolean ->
-                            if (b) {
-                                verifyLiveData.setValue(Response.success("verified"))
-                            } else {
-                                verifyLiveData.setValue(Response.success("notVerified"))
+                        { b: Boolean ->
+                            if(b){
+                                val newVerifyViewState = verifyLiveData.value?.copy(verificationStarted = true, loading = false, isVerified = b)
+                                verifyLiveData.value = newVerifyViewState
+                                errorState.value = null
                             }
                         },
-                        { e -> verifyLiveData.setValue(Response.error(e)) },
-                        { Log.i(TAG, "completed") }
+                        { e -> errorState.value = e },
+                        { Log.i(TAG, "Verification completed") }
                 )
-    }
-
-    fun resetLiveData(){
-        verifyLiveData.value = null
-    }
-
-    override fun onCleared() {
-        Log.i(TAG, "onCleared")
-        disposable?.dispose()
-        super.onCleared()
+        )
     }
 
     companion object {

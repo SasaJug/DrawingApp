@@ -12,7 +12,7 @@ import android.view.ViewGroup
 import com.sasaj.graphics.drawingapp.R
 import com.sasaj.graphics.drawingapp.authentication.states.LoginViewState
 import com.sasaj.graphics.drawingapp.viewmodel.LoginViewModel
-import kotlinx.android.synthetic.main.activity_login.*
+import kotlinx.android.synthetic.main.fragment_login.*
 
 class LoginFragment : Fragment() {
 
@@ -26,13 +26,12 @@ class LoginFragment : Fragment() {
         activity?.let {
             vmNavigation = ViewModelProviders.of(it).get(AuthenticationNavigationViewModel::class.java)
         }
-
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        vmLogin.getLoginLiveData().observe(this, Observer { loginViewState -> handleViewState(loginViewState!!) })
-        vmLogin.getLoginLiveData().observe(this, Observer {
+        vmLogin.loginLiveData.observe(this, Observer { loginViewState -> handleViewState(loginViewState!!) })
+        vmLogin.loginLiveData.observe(this, Observer {
             if (it != null) handleViewState(it)
         })
         vmLogin.errorState.observe(this, Observer { throwable ->
@@ -60,8 +59,7 @@ class LoginFragment : Fragment() {
         }
 
         goToRegister!!.setOnClickListener {
-            //            val intent = Intent(this@LoginActivity, RegisterActivity::class.java)
-//            startActivity(intent)
+            vmNavigation.goToRegister()
         }
 
         goToForgotPassword!!.setOnClickListener {

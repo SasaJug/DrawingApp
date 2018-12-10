@@ -103,7 +103,7 @@ class UserRepositoryImpl(private val cognitoHelper: CognitoHelper) : UserReposit
         }
 
         override fun onFailure(exception: Exception) {
-            verifySubject.onNext(false)
+            verifySubject.onError(exception)
         }
     }
 

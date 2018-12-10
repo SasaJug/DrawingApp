@@ -5,12 +5,10 @@ import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import com.sasaj.graphics.drawingapp.authentication.AuthenticationNavigationViewModel
-import com.sasaj.graphics.drawingapp.authentication.LoginFragment
+import com.sasaj.graphics.drawingapp.authentication.*
 import com.sasaj.graphics.drawingapp.authentication.states.AuthenticationNavigationViewState
 import com.sasaj.graphics.drawingapp.ui.main.MainActivity
 import kotlinx.android.synthetic.main.activity_main.*
-
 
 
 class AuthenticationActivity : BaseActivity() {
@@ -38,9 +36,13 @@ class AuthenticationActivity : BaseActivity() {
     }
 
     private fun handleResponse(navigationState: AuthenticationNavigationViewState?) {
-        when(navigationState?.state){
+        when (navigationState?.state) {
             AuthenticationNavigationViewState.LOADING -> renderLoadingState()
-            AuthenticationNavigationViewState.LOGIN_SUCCESFUL -> renderSucessLoggingInState(navigationState.data)
+            AuthenticationNavigationViewState.LOGIN_SUCCESSFUL -> renderSucessLoggingInState(navigationState.data)
+            AuthenticationNavigationViewState.REGISTRATION_CONFIRMED -> renderRegistrationConfirmedState()
+            AuthenticationNavigationViewState.REGISTRATION_NOT_CONFIRMED -> renderRegistrationNotConfirmedState()
+            AuthenticationNavigationViewState.VERIFICATION_CONFIRMED -> renderVerificationConfirmedState()
+            AuthenticationNavigationViewState.GO_TO_REGISTER -> goToRegister()
         }
     }
 
@@ -57,10 +59,37 @@ class AuthenticationActivity : BaseActivity() {
         }
     }
 
+    private fun renderRegistrationConfirmedState() {
+        hideProgress()
+        val intent = Intent(this@AuthenticationActivity, MainActivity::class.java)
+        startActivity(intent)
+        finish()
+    }
+
+    private fun renderRegistrationNotConfirmedState() {
+        hideProgress()
+        supportFragmentManager.beginTransaction()
+                .replace(R.id.container, VerifyFragment(), "verify")
+                .commitNow()
+    }
+
+    private fun renderVerificationConfirmedState() {
+        hideProgress()
+        val intent = Intent(this@AuthenticationActivity, MainActivity::class.java)
+        startActivity(intent)
+        finish()    }
+
+
     private fun renderErrorState(throwable: Throwable?) {
         hideProgress()
-        Log.e(TAG, "Error logging in ", throwable)
-        showDialogMessage("Error logging in", throwable.toString())
+        Log.e(TAG, "Error ", throwable)
+        showDialogMessage("Error ", throwable.toString())
+    }
+
+    private fun goToRegister(){
+        supportFragmentManager.beginTransaction()
+                .replace(R.id.container, RegisterFragment(), "register")
+                .commitNow()
     }
 
     companion object {
