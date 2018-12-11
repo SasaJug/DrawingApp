@@ -117,6 +117,7 @@ class UserRepositoryImpl(private val cognitoHelper: CognitoHelper) : UserReposit
         }
 
         override fun onFailure(exception: Exception?) {
+            changePasswordSubject.onError(exception as Throwable)
             newPasswordSubject.onError(exception as Throwable)
         }
     }
@@ -167,6 +168,7 @@ class UserRepositoryImpl(private val cognitoHelper: CognitoHelper) : UserReposit
 
     override fun changePassword(username: String?): Observable<Boolean> {
         changePasswordSubject= PublishSubject.create<Boolean>()
+        newPasswordSubject = PublishSubject.create<Boolean>()
         val user = cognitoHelper.userPool.getUser(username)
         user.forgotPasswordInBackground(forgotPasswordHandler)
         changePasswordSubject.onNext(true)
@@ -175,7 +177,7 @@ class UserRepositoryImpl(private val cognitoHelper: CognitoHelper) : UserReposit
     }
 
     override fun newPassword(newPassword: String?, code: String?): Observable<Boolean> {
-        newPasswordSubject = PublishSubject.create<Boolean>()
+
 
         forgotPasswordContinuation?.setVerificationCode(code)
         forgotPasswordContinuation?.setPassword(newPassword)

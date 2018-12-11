@@ -54,7 +54,6 @@ class LoginFragment : Fragment() {
                 vmNavigation.loadingData()
                 vmLogin.logIn(username?.text.toString(), password?.text.toString())
             } else
-//                showDialogMessage("Error", "Username and password must not be empty!")
                 vmNavigation.error(RuntimeException("Username and password must not be empty!"))
         }
 
@@ -63,8 +62,7 @@ class LoginFragment : Fragment() {
         }
 
         goToForgotPassword!!.setOnClickListener {
-            //            val intent = Intent(this@LoginActivity, ForgotPasswordActivity::class.java)
-//            startActivity(intent)
+            vmNavigation.goToForgotPassword()
         }
     }
 

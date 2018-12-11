@@ -54,5 +54,23 @@ class AuthenticationNavigationViewModel : BaseViewModel(){
         navigationLiveData.value = newNavigationState
     }
 
+    fun goToForgotPassword() {
+        val newNavigationState = navigationLiveData.value?.copy(state = AuthenticationNavigationViewState.GO_TO_FORGOT_PASSWORD)
+        navigationLiveData.value = newNavigationState    }
+
+    fun getCode(username: String) {
+        val newNavigationState = navigationLiveData.value?.copy(state = AuthenticationNavigationViewState.GO_TO_NEW_PASSWORD, data = username)
+        navigationLiveData.value = newNavigationState
+    }
+
+    fun passwordChangeRequested() {
+        val newNavigationState = navigationLiveData.value?.copy(state = AuthenticationNavigationViewState.PASSWORD_CHANGE_REQUESTED)
+        navigationLiveData.value = newNavigationState
+    }
+
+    fun passwordChangeSuccessful() {
+        val newNavigationState = navigationLiveData.value?.copy(state = AuthenticationNavigationViewState.PASSWORD_CHANGE_SUCCESSFUL)
+        navigationLiveData.value = newNavigationState
+    }
 
 }

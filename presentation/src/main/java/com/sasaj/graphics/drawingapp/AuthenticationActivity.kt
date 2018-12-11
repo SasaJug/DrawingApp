@@ -43,8 +43,13 @@ class AuthenticationActivity : BaseActivity() {
             AuthenticationNavigationViewState.REGISTRATION_NOT_CONFIRMED -> renderRegistrationNotConfirmedState()
             AuthenticationNavigationViewState.VERIFICATION_CONFIRMED -> renderVerificationConfirmedState()
             AuthenticationNavigationViewState.GO_TO_REGISTER -> goToRegister()
+            AuthenticationNavigationViewState.GO_TO_FORGOT_PASSWORD -> goToForgotPasswordFragment()
+            AuthenticationNavigationViewState.GO_TO_NEW_PASSWORD -> goToNewPassword(navigationState.data)
+            AuthenticationNavigationViewState.PASSWORD_CHANGE_REQUESTED-> renderChangePasswordRequested()
+            AuthenticationNavigationViewState.PASSWORD_CHANGE_SUCCESSFUL-> renderChangePasswordSuccessful()
         }
     }
+
 
     private fun renderLoadingState() {
         showProgress("wait...")
@@ -77,8 +82,20 @@ class AuthenticationActivity : BaseActivity() {
         hideProgress()
         val intent = Intent(this@AuthenticationActivity, MainActivity::class.java)
         startActivity(intent)
-        finish()    }
+        finish()
+    }
 
+    private fun renderChangePasswordRequested(){
+        hideProgress()
+    }
+
+
+    private fun renderChangePasswordSuccessful(){
+        hideProgress()
+        val intent = Intent(this@AuthenticationActivity, MainActivity::class.java)
+        startActivity(intent)
+        finish()
+    }
 
     private fun renderErrorState(throwable: Throwable?) {
         hideProgress()
@@ -89,6 +106,20 @@ class AuthenticationActivity : BaseActivity() {
     private fun goToRegister(){
         supportFragmentManager.beginTransaction()
                 .replace(R.id.container, RegisterFragment(), "register")
+                .commitNow()
+    }
+    
+    private fun goToForgotPasswordFragment() {
+        hideProgress()
+        supportFragmentManager.beginTransaction()
+                .replace(R.id.container, ForgotPaswordFragment(), "forgotPassword")
+                .commitNow()
+    }
+
+    private fun goToNewPassword(username: String) {
+        hideProgress()
+        supportFragmentManager.beginTransaction()
+                .replace(R.id.container, NewPasswordFragment.newInstance(username), "newPassword")
                 .commitNow()
     }
 

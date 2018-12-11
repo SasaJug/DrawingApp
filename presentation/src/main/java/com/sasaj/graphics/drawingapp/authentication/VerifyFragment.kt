@@ -30,7 +30,6 @@ class VerifyFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        vmVerify.verifyLiveData.observe(this, Observer { verifyViewState -> handleViewState(verifyViewState!!) })
         vmVerify.verifyLiveData.observe(this, Observer {
             if (it != null) handleViewState(it)
         })

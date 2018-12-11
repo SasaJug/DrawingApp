@@ -4,67 +4,72 @@ import android.arch.lifecycle.MutableLiveData
 import android.util.Log
 import com.sasaj.domain.usecases.ChangePassword
 import com.sasaj.domain.usecases.NewPassword
+import com.sasaj.graphics.drawingapp.authentication.states.PasswordChangeViewState
 import com.sasaj.graphics.drawingapp.common.BaseViewModel
+import com.sasaj.graphics.drawingapp.common.SingleLiveEvent
 import com.sasaj.graphics.drawingapp.viewmodel.common.Response
-import io.reactivex.disposables.Disposable
 import javax.inject.Inject
 
 
-class ChangePasswordViewModel : BaseViewModel(){
+class ChangePasswordViewModel : BaseViewModel() {
 
     @Inject
-    lateinit var changePasswordUseCase : ChangePassword
+    lateinit var changePasswordUseCase: ChangePassword
 
     @Inject
-    lateinit var newPasswordUseCase : NewPassword
+    lateinit var newPasswordUseCase: NewPassword
 
-    private val changePasswordLiveData: MutableLiveData<Response> = MutableLiveData()
+    val passwordChangeLiveData: MutableLiveData<PasswordChangeViewState> = MutableLiveData()
+    var errorState: SingleLiveEvent<Throwable?> = SingleLiveEvent()
 
-    private var disposable: Disposable? = null
-
-    fun getChangePasswordLiveData(): MutableLiveData<Response> {
-        return changePasswordLiveData
+    init {
+        passwordChangeLiveData.value = PasswordChangeViewState()
     }
 
-    fun changePassword(username : String){
-       addDisposable(changePasswordUseCase.changePassword(username)
+    fun changePassword(username: String) {
+        addDisposable(changePasswordUseCase.changePassword(username)
                 .subscribe(
-                        { s: Boolean->
-                            if (s) {
-                                changePasswordLiveData.setValue(Response.success("success change password"))
-                            } else {
-                                changePasswordLiveData.setValue(Response.success(""))
+                        { b: Boolean ->
+                            if (b) {
+                                val newPasswordChangeViewState = passwordChangeLiveData.value?.copy(passwordChangeStarted = true,
+                                        loading = false,
+                                        isPasswordChangeRequested = true,
+                                        isPasswordChanged = false)
+                                passwordChangeLiveData.value = newPasswordChangeViewState
+                                errorState.value = null
                             }
                         },
-                        { e ->
-                            Log.e(TAG, "onError", e)
-                            changePasswordLiveData.setValue(Response.error(e))
-                        },
-                        { Log.e(TAG, "onComplete") }
+                        { e -> errorState.value = e },
+                        { Log.i(TAG, "Password change requested") }
                 ))
     }
 
 
-    fun newPassword(password : String, code : String){
-       addDisposable(newPasswordUseCase.newPassword(password, code)
+    fun newPassword(password: String, code: String) {
+        val passwordChangeViewState = passwordChangeLiveData.value?.copy(passwordChangeStarted = true,
+                loading = true,
+                isPasswordChangeRequested = true,
+                isPasswordChanged = false)
+        passwordChangeLiveData.value = passwordChangeViewState
+        addDisposable(newPasswordUseCase.newPassword(password, code)
                 .subscribe(
-                        { s: Boolean->
-                            if (s) {
-                                changePasswordLiveData.setValue(Response.success("success new password"))
-                            } else {
-                                changePasswordLiveData.setValue(Response.success(""))
+                        { b: Boolean ->
+                            if (b) {
+                                val newPasswordChangeViewState = passwordChangeLiveData.value?.copy(passwordChangeStarted = true,
+                                        loading = false,
+                                        isPasswordChangeRequested = false,
+                                        isPasswordChanged = true)
+                                passwordChangeLiveData.value = newPasswordChangeViewState
+                                errorState.value = null
                             }
                         },
-                        { e ->
-                            Log.e(TAG, "onError", e)
-                            changePasswordLiveData.setValue(Response.error(e))
-                        },
-                        { Log.e(TAG, "onComplete") }
+                        { e -> errorState.value = e },
+                        { Log.e(TAG, "Password changed successfully") }
                 ))
     }
 
     fun resetLiveData() {
-        changePasswordLiveData.value = null
+        passwordChangeLiveData.value = null
     }
 
 
