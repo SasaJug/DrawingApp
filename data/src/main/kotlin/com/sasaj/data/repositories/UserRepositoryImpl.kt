@@ -24,7 +24,7 @@ class UserRepositoryImpl(private val cognitoHelper: CognitoHelper) : UserReposit
     private lateinit var registerSubject: PublishSubject<Boolean>
     private lateinit var verifySubject: PublishSubject<Boolean>
     private lateinit var changePasswordSubject: PublishSubject<Boolean>
-    private lateinit var newPasswordSubject: PublishSubject<Boolean>
+//    private lateinit var newPasswordSubject: PublishSubject<Boolean>
 
     private var password: String? = null
     var forgotPasswordContinuation:  ForgotPasswordContinuation? = null
@@ -109,7 +109,7 @@ class UserRepositoryImpl(private val cognitoHelper: CognitoHelper) : UserReposit
 
     val forgotPasswordHandler: ForgotPasswordHandler = object: ForgotPasswordHandler{
         override fun onSuccess() {
-            newPasswordSubject.onNext(true)
+            changePasswordSubject.onNext(true)
         }
 
         override fun getResetCode(continuation: ForgotPasswordContinuation?) {
@@ -118,7 +118,7 @@ class UserRepositoryImpl(private val cognitoHelper: CognitoHelper) : UserReposit
 
         override fun onFailure(exception: Exception?) {
             changePasswordSubject.onError(exception as Throwable)
-            newPasswordSubject.onError(exception as Throwable)
+//            newPasswordSubject.onError(exception as Throwable)
         }
     }
 
@@ -168,7 +168,7 @@ class UserRepositoryImpl(private val cognitoHelper: CognitoHelper) : UserReposit
 
     override fun changePassword(username: String?): Observable<Boolean> {
         changePasswordSubject= PublishSubject.create<Boolean>()
-        newPasswordSubject = PublishSubject.create<Boolean>()
+//        newPasswordSubject = PublishSubject.create<Boolean>()
         val user = cognitoHelper.userPool.getUser(username)
         user.forgotPasswordInBackground(forgotPasswordHandler)
         changePasswordSubject.onNext(true)
@@ -178,11 +178,10 @@ class UserRepositoryImpl(private val cognitoHelper: CognitoHelper) : UserReposit
 
     override fun newPassword(newPassword: String?, code: String?): Observable<Boolean> {
 
-
         forgotPasswordContinuation?.setVerificationCode(code)
         forgotPasswordContinuation?.setPassword(newPassword)
         forgotPasswordContinuation?.continueTask()
 
-        return newPasswordSubject
+        return changePasswordSubject
     }
 }
