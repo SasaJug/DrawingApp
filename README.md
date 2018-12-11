@@ -12,8 +12,8 @@ Android app for on-screen drawing
 
 
 An example of using clean architecture in android app, references:
-![Movie Night](https://github.com/mrsegev/MovieNight)
-![Android Clean Architecture](https://github.com/android10/Android-CleanArchitecture)
+* [Movie Night](https://github.com/mrsegev/MovieNight)
+* [Android Clean Architecture](https://github.com/android10/Android-CleanArchitecture)
 
 Screenshots:
 
