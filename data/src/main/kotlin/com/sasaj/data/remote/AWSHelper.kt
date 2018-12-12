@@ -10,13 +10,16 @@ import com.amazonaws.mobileconnectors.cognitoidentityprovider.CognitoUserSession
 import com.amazonaws.regions.Regions
 import com.sasaj.data.BuildConfig
 
-class CognitoHelper(private val context: Context) {
+class AWSHelper(private val context: Context) {
     private val userPoolId = BuildConfig.USER_POOL_ID
     private val clientId = BuildConfig.CLIENT_ID
     private val clientSecret = BuildConfig.CLIENT_SECRET
 
-    private val identityPoolRegion = Regions.US_EAST_2
+    private val identityPoolRegion = Regions.fromName(BuildConfig.IDENTITY_POOL_REGION)
     private val identityPoolId = BuildConfig.IDENTITY_POOL_ID
+
+    val s3BucketName = BuildConfig.s3_BUCKET_NAME
+    val s3BucketRegion =BuildConfig.s3_BUCKET_REGION
 
     // User details from the service
     var currSession: CognitoUserSession? = null

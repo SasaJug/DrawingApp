@@ -7,11 +7,11 @@ import com.amazonaws.mobileconnectors.appsync.AWSAppSyncClient
 import com.amazonaws.mobileconnectors.appsync.sigv4.BasicCognitoUserPoolsAuthProvider
 import com.amazonaws.regions.Regions
 
-class AppSyncClientFactory (context: Context, cognitoHelper: CognitoHelper){
+class AppSyncClientFactory (context: Context, AWSHelper: AWSHelper){
 
     val configProvider = AWSConfiguration(context)
     val appSyncConfig = configProvider.optJsonObject("AppSync")
-    val cognitoUserPool = cognitoHelper.userPool
+    val cognitoUserPool = AWSHelper.userPool
 
     val client: AWSAppSyncClient = AWSAppSyncClient.builder()
             .context(context)

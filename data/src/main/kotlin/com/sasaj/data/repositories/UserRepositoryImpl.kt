@@ -7,13 +7,13 @@ import com.amazonaws.mobileconnectors.cognitoidentityprovider.handlers.Authentic
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.handlers.ForgotPasswordHandler
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.handlers.GenericHandler
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.handlers.SignUpHandler
-import com.sasaj.data.remote.CognitoHelper
+import com.sasaj.data.remote.AWSHelper
 import com.sasaj.domain.UserRepository
 import io.reactivex.Observable
 import io.reactivex.subjects.PublishSubject
 
 
-class UserRepositoryImpl(private val cognitoHelper: CognitoHelper) : UserRepository {
+class UserRepositoryImpl(private val AWSHelper: AWSHelper) : UserRepository {
 
     companion object {
         val TAG: String = UserRepositoryImpl::class.java.simpleName
@@ -124,7 +124,7 @@ class UserRepositoryImpl(private val cognitoHelper: CognitoHelper) : UserReposit
 
     override fun checkIfLoggedIn(): Observable<String> {
         checkLoggedInSubject = PublishSubject.create<String>()
-        val user = cognitoHelper?.userPool?.currentUser
+        val user = AWSHelper?.userPool?.currentUser
         val username = user?.userId
         if (username != null) {
             user.getSessionInBackground(checkHandler)
@@ -137,7 +137,7 @@ class UserRepositoryImpl(private val cognitoHelper: CognitoHelper) : UserReposit
     override fun logIn(username: String?, password: String?): Observable<String> {
         loginSubject = PublishSubject.create<String>()
         this.password = password
-        val user = cognitoHelper?.userPool?.getUser(username)
+        val user = AWSHelper?.userPool?.getUser(username)
         if (user?.userId != null) {
             user.getSessionInBackground(loginHandler)
         }
@@ -149,7 +149,7 @@ class UserRepositoryImpl(private val cognitoHelper: CognitoHelper) : UserReposit
         val attributes = CognitoUserAttributes()
         attr.forEach { (key, value) -> attributes.addAttribute(key, value) }
 
-        cognitoHelper.userPool.signUpInBackground(username,
+        AWSHelper.userPool.signUpInBackground(username,
                 password,
                 attributes,
                 null,
@@ -161,8 +161,8 @@ class UserRepositoryImpl(private val cognitoHelper: CognitoHelper) : UserReposit
 
     override fun signOut(): Observable<Boolean> {
         return Observable.fromCallable {
-            val username = cognitoHelper.userPool.currentUser.userId
-            val user = cognitoHelper.userPool.getUser(username)
+            val username = AWSHelper.userPool.currentUser.userId
+            val user = AWSHelper.userPool.getUser(username)
             user.signOut()
             true
         }
@@ -171,7 +171,7 @@ class UserRepositoryImpl(private val cognitoHelper: CognitoHelper) : UserReposit
 
     override fun verify(username: String?, code: String?): Observable<Boolean> {
         verifySubject = PublishSubject.create<Boolean>()
-        val user = cognitoHelper.userPool.getUser(username)
+        val user = AWSHelper.userPool.getUser(username)
         user?.confirmSignUpInBackground(code, false, genericHandler)
 
         return verifySubject
@@ -180,7 +180,7 @@ class UserRepositoryImpl(private val cognitoHelper: CognitoHelper) : UserReposit
     override fun changePassword(username: String?): Observable<Boolean> {
         changePasswordSubject = PublishSubject.create<Boolean>()
 //        newPasswordSubject = PublishSubject.create<Boolean>()
-        val user = cognitoHelper.userPool.getUser(username)
+        val user = AWSHelper.userPool.getUser(username)
         user.forgotPasswordInBackground(forgotPasswordHandler)
         changePasswordSubject.onNext(true)
 

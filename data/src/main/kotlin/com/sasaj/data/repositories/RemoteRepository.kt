@@ -2,7 +2,6 @@ package com.sasaj.data.repositories
 
 import CreateDrawingMutation
 import android.os.Environment
-import android.os.Looper
 import android.util.Log
 import com.amazonaws.AmazonServiceException
 import com.amazonaws.HttpMethod
@@ -15,9 +14,8 @@ import com.amazonaws.services.s3.model.GeneratePresignedUrlRequest
 import com.apollographql.apollo.GraphQLCall
 import com.apollographql.apollo.api.Response
 import com.apollographql.apollo.exception.ApolloException
-import com.sasaj.data.remote.CognitoHelper
+import com.sasaj.data.remote.AWSHelper
 import com.sasaj.domain.entities.Drawing
-import io.reactivex.Single
 import type.CreateDrawingInput
 import ListDrawingsQuery
 import type.TableDrawingFilterInput
@@ -28,7 +26,7 @@ import java.io.File
 class RemoteRepository(private val s3: AmazonS3Client,
                        private val transferUtility: TransferUtility,
                        private val appSyncClient: AWSAppSyncClient,
-                       private val cognitoHelper: CognitoHelper) {
+                       private val AWSHelper: AWSHelper) {
 
     companion object {
         val TAG = RemoteRepository::class.java.simpleName
@@ -43,7 +41,7 @@ class RemoteRepository(private val s3: AmazonS3Client,
                 .id("empty")
                 .title(drawing?.fileName)
                 .description(drawing?.lastModified.toString())
-                .userId(cognitoHelper!!.userPool.currentUser.userId)
+                .userId(AWSHelper!!.userPool.currentUser.userId)
                 .fileName(drawing?.fileName)
                 .build()
 
@@ -148,7 +146,7 @@ class RemoteRepository(private val s3: AmazonS3Client,
     fun syncDrawings(localRepository: LocalRepository): Boolean {
 
         val filter = TableDrawingFilterInput.builder()
-                .userId(TableIDFilterInput.builder().contains(cognitoHelper.userPool.currentUser.userId).build())
+                .userId(TableIDFilterInput.builder().contains(AWSHelper.userPool.currentUser.userId).build())
                 .build()
 
         val listDrawings: ListDrawingsQuery = ListDrawingsQuery.builder()

@@ -13,7 +13,7 @@ import com.sasaj.data.mappers.BrushEntityToDataMapper
 import com.sasaj.data.mappers.DrawingDataToEntityMapper
 import com.sasaj.data.mappers.DrawingEntityToDataMapper
 import com.sasaj.data.remote.AppSyncClientFactory
-import com.sasaj.data.remote.CognitoHelper
+import com.sasaj.data.remote.AWSHelper
 import com.sasaj.data.repositories.*
 import com.sasaj.domain.DrawingRepository
 import com.sasaj.domain.UserRepository
@@ -36,32 +36,32 @@ class ApplicationModule(val context: Context) {
 
     @Provides
     @Reusable
-    fun providesCognitoHelper(): CognitoHelper {
-        return CognitoHelper(context)
+    fun providesCognitoHelper(): AWSHelper {
+        return AWSHelper(context)
     }
 
     @Provides
     @Reusable
-    fun providesAppSyncClient(cognitoHelper: CognitoHelper): AWSAppSyncClient {
-        return AppSyncClientFactory(context, cognitoHelper).client
+    fun providesAppSyncClient(AWSHelper: AWSHelper): AWSAppSyncClient {
+        return AppSyncClientFactory(context, AWSHelper).client
     }
 
     @Provides
     @Reusable
-    fun providesAmazonS3Client(cognitoHelper: CognitoHelper): AmazonS3Client {
-        val s3 = AmazonS3Client(cognitoHelper.credentialsProvider)
-        s3.setRegion(Region.getRegion(Regions.US_EAST_2))
+    fun providesAmazonS3Client(AWSHelper: AWSHelper): AmazonS3Client {
+        val s3 = AmazonS3Client(AWSHelper.credentialsProvider)
+        s3.setRegion(Region.getRegion(AWSHelper.s3BucketRegion))
         return s3
     }
 
 
     @Provides
     @Reusable
-    fun providesTransferUtility(s3: AmazonS3Client): TransferUtility {
+    fun providesTransferUtility(s3: AmazonS3Client, awsHelper: AWSHelper): TransferUtility {
         return TransferUtility.builder()
                 .context(context)
                 .s3Client(s3)
-                .defaultBucket("drawingappbucket")
+                .defaultBucket(awsHelper.s3BucketName)
                 .build()
     }
 
@@ -78,8 +78,8 @@ class ApplicationModule(val context: Context) {
     fun providesRemoteRepository(s3: AmazonS3Client,
                                  transferUtility: TransferUtility,
                                  appSyncClient: AWSAppSyncClient,
-                                 cognitoHelper: CognitoHelper): RemoteRepository {
-        return RemoteRepository(s3, transferUtility, appSyncClient, cognitoHelper)
+                                 AWSHelper: AWSHelper): RemoteRepository {
+        return RemoteRepository(s3, transferUtility, appSyncClient, AWSHelper)
     }
 
 
@@ -91,8 +91,8 @@ class ApplicationModule(val context: Context) {
 
     @Provides
     @Reusable
-    fun providesUserRepository(cognitoHelper: CognitoHelper): UserRepository {
-        return UserRepositoryImpl(cognitoHelper)
+    fun providesUserRepository(AWSHelper: AWSHelper): UserRepository {
+        return UserRepositoryImpl(AWSHelper)
     }
 
     @Provides
