@@ -13,7 +13,7 @@ import io.reactivex.Observable
 import io.reactivex.subjects.PublishSubject
 
 
-class UserRepositoryImpl(private val cognitoHelper: CognitoHelper) : UserRepository{
+class UserRepositoryImpl(private val cognitoHelper: CognitoHelper) : UserRepository {
 
     companion object {
         val TAG: String = UserRepositoryImpl::class.java.simpleName
@@ -27,7 +27,7 @@ class UserRepositoryImpl(private val cognitoHelper: CognitoHelper) : UserReposit
 //    private lateinit var newPasswordSubject: PublishSubject<Boolean>
 
     private var password: String? = null
-    var forgotPasswordContinuation:  ForgotPasswordContinuation? = null
+    var forgotPasswordContinuation: ForgotPasswordContinuation? = null
 
 
     private var loginHandler: AuthenticationHandler? = object : AuthenticationHandler {
@@ -107,7 +107,7 @@ class UserRepositoryImpl(private val cognitoHelper: CognitoHelper) : UserReposit
         }
     }
 
-    val forgotPasswordHandler: ForgotPasswordHandler = object: ForgotPasswordHandler{
+    val forgotPasswordHandler: ForgotPasswordHandler = object : ForgotPasswordHandler {
         override fun onSuccess() {
             changePasswordSubject.onNext(true)
         }
@@ -122,7 +122,7 @@ class UserRepositoryImpl(private val cognitoHelper: CognitoHelper) : UserReposit
         }
     }
 
-    override fun checkIfLoggedIn() : Observable<String> {
+    override fun checkIfLoggedIn(): Observable<String> {
         checkLoggedInSubject = PublishSubject.create<String>()
         val user = cognitoHelper?.userPool?.currentUser
         val username = user?.userId
@@ -134,8 +134,8 @@ class UserRepositoryImpl(private val cognitoHelper: CognitoHelper) : UserReposit
         return checkLoggedInSubject
     }
 
-    override fun logIn(username: String?, password: String?) : Observable<String> {
-        loginSubject  = PublishSubject.create<String>()
+    override fun logIn(username: String?, password: String?): Observable<String> {
+        loginSubject = PublishSubject.create<String>()
         this.password = password
         val user = cognitoHelper?.userPool?.getUser(username)
         if (user?.userId != null) {
@@ -144,7 +144,7 @@ class UserRepositoryImpl(private val cognitoHelper: CognitoHelper) : UserReposit
         return loginSubject
     }
 
-    override fun signUp(username: String?, password: String?, attr: HashMap<String, String>) : Observable<Boolean>{
+    override fun signUp(username: String?, password: String?, attr: HashMap<String, String>): Observable<Boolean> {
         registerSubject = PublishSubject.create<Boolean>()
         val attributes = CognitoUserAttributes()
         attr.forEach { (key, value) -> attributes.addAttribute(key, value) }
@@ -158,7 +158,18 @@ class UserRepositoryImpl(private val cognitoHelper: CognitoHelper) : UserReposit
         return registerSubject
     }
 
-    override fun verify(username: String?, code: String?) : Observable<Boolean>{
+
+    override fun signOut(): Observable<Boolean> {
+        return Observable.fromCallable {
+            val username = cognitoHelper.userPool.currentUser.userId
+            val user = cognitoHelper.userPool.getUser(username)
+            user.signOut()
+            true
+        }
+    }
+
+
+    override fun verify(username: String?, code: String?): Observable<Boolean> {
         verifySubject = PublishSubject.create<Boolean>()
         val user = cognitoHelper.userPool.getUser(username)
         user?.confirmSignUpInBackground(code, false, genericHandler)
@@ -167,7 +178,7 @@ class UserRepositoryImpl(private val cognitoHelper: CognitoHelper) : UserReposit
     }
 
     override fun changePassword(username: String?): Observable<Boolean> {
-        changePasswordSubject= PublishSubject.create<Boolean>()
+        changePasswordSubject = PublishSubject.create<Boolean>()
 //        newPasswordSubject = PublishSubject.create<Boolean>()
         val user = cognitoHelper.userPool.getUser(username)
         user.forgotPasswordInBackground(forgotPasswordHandler)
@@ -184,4 +195,5 @@ class UserRepositoryImpl(private val cognitoHelper: CognitoHelper) : UserReposit
 
         return changePasswordSubject
     }
+
 }

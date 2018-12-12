@@ -27,6 +27,7 @@ abstract class BaseViewModel : ViewModel() {
             is VerifyViewModel -> injector.inject(this)
             is ChangePasswordViewModel -> injector.inject(this)
             is AuthenticationNavigationViewModel -> injector.inject(this)
+            is MainViewModel -> injector.inject(this)
         }
     }
 

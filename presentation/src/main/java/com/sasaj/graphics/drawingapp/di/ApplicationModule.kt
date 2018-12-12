@@ -161,6 +161,12 @@ class ApplicationModule(val context: Context) {
 
     @Provides
     @Reusable
+    fun providesSignOutUseCase(userRepository: UserRepository): SignOut {
+        return SignOut(ASyncTransformer(), userRepository)
+    }
+
+    @Provides
+    @Reusable
     fun providesVerifyUserUseCase(userRepository: UserRepository): VerifyUser {
         return VerifyUser(ASyncTransformer(), userRepository)
     }

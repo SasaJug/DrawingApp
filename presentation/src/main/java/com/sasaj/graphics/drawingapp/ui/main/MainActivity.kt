@@ -1,30 +1,35 @@
 package com.sasaj.graphics.drawingapp.ui.main
 
+import android.arch.lifecycle.Observer
+import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
-import com.amazonaws.mobileconnectors.cognitoidentityprovider.CognitoUser
+import com.sasaj.graphics.drawingapp.BaseActivity
 import com.sasaj.graphics.drawingapp.R
-import com.sasaj.graphics.drawingapp.aws.CognitoHelper
-import com.sasaj.graphics.drawingapp.ui.drawing.DrawingActivity
 import com.sasaj.graphics.drawingapp.SplashActivity
+import com.sasaj.graphics.drawingapp.ui.drawing.DrawingActivity
+import com.sasaj.graphics.drawingapp.viewmodel.MainViewModel
 import kotlinx.android.synthetic.main.activity_main.*
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : BaseActivity() {
 
-    private val cognitoHelper: CognitoHelper = CognitoHelper(this)
-    private var username: String? = null
-    private var user: CognitoUser? = null
+    private lateinit var vm: MainViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
 
-        username = cognitoHelper.userPool.currentUser.userId
-        user = cognitoHelper.userPool.getUser(username)
+        vm = ViewModelProviders.of(this).get(MainViewModel::class.java)
+        vm.mainLiveData.observe(this, Observer { mainState -> handleResponse(mainState) })
+        vm.errorState.observe(this, Observer { throwable ->
+            throwable?.let {
+                renderErrorState(it)
+            }
+        })
 
         setFabButton()
     }
@@ -48,10 +53,32 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun signOut() {
-        user?.signOut()
-        val intent = Intent(this, SplashActivity::class.java)
+        vm.signOut()
+    }
+
+
+    private fun handleResponse(mainViewState: MainViewState?) {
+        when (mainViewState?.state) {
+            MainViewState.LOADING -> renderLoadingState()
+            MainViewState.SIGNOUT_SUCCESSFUL -> renderSuccessSignOutState()
+        }
+    }
+
+    private fun renderLoadingState() {
+        showProgress("wait...")
+    }
+
+    private fun renderSuccessSignOutState() {
+        hideProgress()
+        val intent = Intent(this@MainActivity, SplashActivity::class.java)
         startActivity(intent)
         finish()
+    }
+
+    private fun renderErrorState(throwable: Throwable?) {
+        hideProgress()
+        Log.e(TAG, "Error ", throwable)
+        showDialogMessage("Error ", throwable.toString())
     }
 
     private fun setFabButton() {
@@ -76,4 +103,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    companion object {
+        private val TAG = MainActivity::class.java.simpleName
+    }
 }
