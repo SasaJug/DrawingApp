@@ -9,7 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.sasaj.graphics.drawingapp.R
 import com.sasaj.graphics.drawingapp.authentication.states.PasswordChangeViewState
-import com.sasaj.graphics.drawingapp.viewmodel.ChangePasswordViewModel
+import com.sasaj.graphics.drawingapp.authentication.viewmodels.ChangePasswordViewModel
 import kotlinx.android.synthetic.main.fragment_new_password.*
 
 

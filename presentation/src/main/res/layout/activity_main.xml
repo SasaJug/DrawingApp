@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.main.MainActivity">
+    tools:context=".main.MainActivity">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
@@ -29,7 +29,7 @@
 
         <fragment
             android:id="@+id/fragment_drawings_list"
-            android:name="com.sasaj.graphics.drawingapp.ui.main.DrawingsListFragment"
+            android:name="com.sasaj.graphics.drawingapp.main.DrawingsListFragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
     </FrameLayout>

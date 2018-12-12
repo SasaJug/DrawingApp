@@ -89,13 +89,6 @@ class ApplicationModule(val context: Context) {
         return DrawingRepositoryImpl(localRepository, remoteRepository)
     }
 
-
-//    @Provides
-//    @Reusable
-//    fun providesAuthRepository(): AuthRepository {
-//        return AwsAuthRepositoryImplementation(context)
-//    }
-
     @Provides
     @Reusable
     fun providesUserRepository(cognitoHelper: CognitoHelper): UserRepository {

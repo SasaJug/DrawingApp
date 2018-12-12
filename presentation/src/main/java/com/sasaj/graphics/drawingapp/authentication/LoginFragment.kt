@@ -11,7 +11,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.sasaj.graphics.drawingapp.R
 import com.sasaj.graphics.drawingapp.authentication.states.LoginViewState
-import com.sasaj.graphics.drawingapp.viewmodel.LoginViewModel
+import com.sasaj.graphics.drawingapp.authentication.viewmodels.LoginViewModel
 import kotlinx.android.synthetic.main.fragment_login.*
 
 class LoginFragment : Fragment() {

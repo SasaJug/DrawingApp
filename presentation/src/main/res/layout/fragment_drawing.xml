@@ -2,11 +2,11 @@
              xmlns:tools="http://schemas.android.com/tools"
              android:layout_width="match_parent"
              android:layout_height="match_parent"
-             tools:context=".ui.drawing.DrawingFragment">
+             tools:context=".drawing.DrawingFragment">
 
 
 
-    <com.sasaj.graphics.drawingapp.ui.drawing.brushselector.views.DrawingView
+    <com.sasaj.graphics.drawingapp.drawing.brushselector.views.DrawingView
         android:id="@+id/drawing"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>

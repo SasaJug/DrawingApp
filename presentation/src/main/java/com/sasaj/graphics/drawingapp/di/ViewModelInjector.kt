@@ -1,8 +1,14 @@
 package com.sasaj.graphics.drawingapp.di
 
 import com.sasaj.graphics.drawingapp.authentication.AuthenticationNavigationViewModel
+import com.sasaj.graphics.drawingapp.authentication.viewmodels.ChangePasswordViewModel
+import com.sasaj.graphics.drawingapp.authentication.viewmodels.LoginViewModel
+import com.sasaj.graphics.drawingapp.authentication.viewmodels.RegisterViewModel
+import com.sasaj.graphics.drawingapp.authentication.viewmodels.VerifyViewModel
+import com.sasaj.graphics.drawingapp.drawing.DrawingViewModel
+import com.sasaj.graphics.drawingapp.main.DrawingListViewModel
+import com.sasaj.graphics.drawingapp.main.MainViewModel
 import com.sasaj.graphics.drawingapp.splash.SplashViewModel
-import com.sasaj.graphics.drawingapp.viewmodel.*
 import dagger.Component
 import javax.inject.Singleton
 

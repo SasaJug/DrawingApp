@@ -3,10 +3,10 @@
              android:layout_width="match_parent"
              android:layout_height="match_parent">
 
-    <com.sasaj.graphics.drawingapp.ui.drawing.brushselector.views.SelectBrushView
+    <com.sasaj.graphics.drawingapp.drawing.brushselector.views.SelectBrushView
         android:id="@+id/selectBrushView"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-    </com.sasaj.graphics.drawingapp.ui.drawing.brushselector.views.SelectBrushView>
+    </com.sasaj.graphics.drawingapp.drawing.brushselector.views.SelectBrushView>
 
 </FrameLayout>

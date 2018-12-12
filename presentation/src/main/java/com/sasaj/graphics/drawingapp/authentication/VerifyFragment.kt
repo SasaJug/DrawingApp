@@ -11,7 +11,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.sasaj.graphics.drawingapp.R
 import com.sasaj.graphics.drawingapp.authentication.states.VerifyViewState
-import com.sasaj.graphics.drawingapp.viewmodel.VerifyViewModel
+import com.sasaj.graphics.drawingapp.authentication.viewmodels.VerifyViewModel
 import kotlinx.android.synthetic.main.fragment_verify.*
 
 class VerifyFragment : Fragment() {
