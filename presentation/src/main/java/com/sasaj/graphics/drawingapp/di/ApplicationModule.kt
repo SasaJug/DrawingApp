@@ -42,8 +42,8 @@ class ApplicationModule(val context: Context) {
 
     @Provides
     @Reusable
-    fun providesAppSyncClient(AWSHelper: AWSHelper): AWSAppSyncClient {
-        return AppSyncClientFactory(context, AWSHelper).client
+    fun providesAppSyncClient(awsHelper: AWSHelper): AWSAppSyncClient {
+        return AppSyncClientFactory(context, awsHelper).client
     }
 
     @Provides
@@ -78,8 +78,8 @@ class ApplicationModule(val context: Context) {
     fun providesRemoteRepository(s3: AmazonS3Client,
                                  transferUtility: TransferUtility,
                                  appSyncClient: AWSAppSyncClient,
-                                 AWSHelper: AWSHelper): RemoteRepository {
-        return RemoteRepository(s3, transferUtility, appSyncClient, AWSHelper)
+                                 awsHelper: AWSHelper): RemoteRepository {
+        return RemoteRepository(s3, transferUtility, appSyncClient, awsHelper)
     }
 
 
@@ -91,8 +91,8 @@ class ApplicationModule(val context: Context) {
 
     @Provides
     @Reusable
-    fun providesUserRepository(AWSHelper: AWSHelper): UserRepository {
-        return UserRepositoryImpl(AWSHelper)
+    fun providesUserRepository(awsHelper: AWSHelper): UserRepository {
+        return UserRepositoryImpl(awsHelper)
     }
 
     @Provides
