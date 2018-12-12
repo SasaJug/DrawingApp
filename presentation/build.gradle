@@ -15,16 +15,6 @@ android {
         targetSdkVersion rootProject.compileSdkVersion
         versionCode 2
         versionName "2.0"
-
-        def props = new Properties()
-        def File configFile = file('config/aws.properties')
-        if (configFile.exists() && configFile.canRead()) {
-            props.load(new FileInputStream(configFile))
-            props.each { key, val ->
-                String[] value = val.split("#")
-                buildConfigField value[0], key, value[1]
-            }
-        }
     }
     buildTypes {
         release {
