@@ -21,6 +21,8 @@ Screenshots:
 ![Screenshot_2](https://i.imgur.com/uSe0C6Bm.png)
 
 ### AWS  Instructions ###
+
+AWS is used for user management and for syncing data between devices.
 In order to use app it is necessary to add config/amazon.properties 
 file to the data module. The amazon.properties file must have following structure:
 

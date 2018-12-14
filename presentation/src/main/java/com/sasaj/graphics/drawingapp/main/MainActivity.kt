@@ -31,6 +31,7 @@ class MainActivity : BaseActivity() {
         })
 
         setFabButton()
+        vm.syncData()
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -60,7 +61,12 @@ class MainActivity : BaseActivity() {
         when (mainViewState?.state) {
             MainViewState.LOADING -> renderLoadingState()
             MainViewState.SIGNOUT_SUCCESSFUL -> renderSuccessSignOutState()
+            MainViewState.SYNC_SUCCESSFUL -> renderSuccessSyncDataState()
         }
+    }
+
+    private fun renderSuccessSyncDataState() {
+        hideProgress()
     }
 
     private fun renderLoadingState() {

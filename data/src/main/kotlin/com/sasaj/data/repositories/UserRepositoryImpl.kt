@@ -13,7 +13,7 @@ import io.reactivex.Observable
 import io.reactivex.subjects.PublishSubject
 
 
-class UserRepositoryImpl(private val AWSHelper: AWSHelper) : UserRepository {
+class UserRepositoryImpl(private val AWSHelper: AWSHelper, private val localRepository: LocalRepository) : UserRepository {
 
     companion object {
         val TAG: String = UserRepositoryImpl::class.java.simpleName
@@ -24,7 +24,6 @@ class UserRepositoryImpl(private val AWSHelper: AWSHelper) : UserRepository {
     private lateinit var registerSubject: PublishSubject<Boolean>
     private lateinit var verifySubject: PublishSubject<Boolean>
     private lateinit var changePasswordSubject: PublishSubject<Boolean>
-//    private lateinit var newPasswordSubject: PublishSubject<Boolean>
 
     private var password: String? = null
     var forgotPasswordContinuation: ForgotPasswordContinuation? = null
@@ -161,6 +160,7 @@ class UserRepositoryImpl(private val AWSHelper: AWSHelper) : UserRepository {
 
     override fun signOut(): Observable<Boolean> {
         return Observable.fromCallable {
+            localRepository.deleteAll()
             val username = AWSHelper.userPool.currentUser.userId
             val user = AWSHelper.userPool.getUser(username)
             user.signOut()

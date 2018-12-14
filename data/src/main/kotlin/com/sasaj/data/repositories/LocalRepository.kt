@@ -56,4 +56,10 @@ class LocalRepository(private val brushEntityToDataMapper: BrushEntityToDataMapp
        list.forEach{drawingDb -> finalList.add(drawingDataToEntityMapper.mapFrom(drawingDb))}
         return finalList
     }
+
+    fun deleteAll(){
+        db.brushDao().deleteAll()
+        db.drawingDao().deleteAll()
+        db.clearAllTables()
+    }
 }

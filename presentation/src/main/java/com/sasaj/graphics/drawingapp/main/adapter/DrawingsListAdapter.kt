@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import com.sasaj.domain.entities.Drawing
 import com.sasaj.graphics.drawingapp.R
+import com.sasaj.graphics.drawingapp.entities.DrawingUI
 import com.sasaj.graphics.drawingapp.main.DrawingsListFragment
 import com.squareup.picasso.Picasso
 import java.io.File
@@ -17,8 +18,8 @@ import java.util.*
  * Created by sjugurdzija on 4/22/2017.
  */
 
-class DrawingsListAdapter(context: Context, list: List<Drawing>, private val listener: DrawingsListFragment.DrawingItemListener) : RecyclerView.Adapter<DrawingsListAdapter.ViewHolder>() {
-    private var data: MutableList<Drawing> = ArrayList()
+class DrawingsListAdapter(context: Context, list: List<DrawingUI>, private val listener: DrawingsListFragment.DrawingItemListener) : RecyclerView.Adapter<DrawingsListAdapter.ViewHolder>() {
+    private var data: MutableList<DrawingUI> = ArrayList()
     private val inflater: LayoutInflater = LayoutInflater.from(context)
 
     init {
@@ -45,7 +46,7 @@ class DrawingsListAdapter(context: Context, list: List<Drawing>, private val lis
         holder.imageView.setOnClickListener { listener.onItemClicked(drawing) }
     }
 
-    fun setDrawings(list: List<Drawing>) {
+    fun setDrawings(list: List<DrawingUI>) {
         data = list.toMutableList()
         data.sort()
         notifyDataSetChanged()

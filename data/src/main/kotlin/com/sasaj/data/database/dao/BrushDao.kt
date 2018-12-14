@@ -14,4 +14,7 @@ interface BrushDao {
 
     @Insert(onConflict = REPLACE)
     fun insert(brushDb: BrushDb) : Long
+
+    @Query("DELETE from brush")
+    fun deleteAll()
 }

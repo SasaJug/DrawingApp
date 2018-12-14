@@ -1,5 +1,6 @@
 package com.sasaj.graphics.drawingapp.main
 
+import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.content.res.Configuration
@@ -16,10 +17,10 @@ import android.view.ViewGroup
 import com.sasaj.domain.entities.Drawing
 import com.sasaj.graphics.drawingapp.BuildConfig
 import com.sasaj.graphics.drawingapp.R
+import com.sasaj.graphics.drawingapp.entities.DrawingUI
 import com.sasaj.graphics.drawingapp.main.adapter.DrawingsListAdapter
 import io.reactivex.disposables.Disposable
 import java.io.File
-import java.util.*
 
 
 class DrawingsListFragment : Fragment() {
@@ -32,10 +33,9 @@ class DrawingsListFragment : Fragment() {
     private lateinit var vm: DrawingListViewModel
     private lateinit var drawingsList: RecyclerView
     private var adapter: DrawingsListAdapter? = null
-    private lateinit var disposable: Disposable
 
     private var drawingItemListener: DrawingItemListener = object : DrawingItemListener {
-        override fun onItemClicked(clickedItem: Drawing) {
+        override fun onItemClicked(clickedItem: DrawingUI) {
             if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
                 val intent = Intent()
                 intent.action = Intent.ACTION_VIEW
@@ -51,6 +51,12 @@ class DrawingsListFragment : Fragment() {
                 startActivity(intent)
             }
         }
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        vm = ViewModelProviders.of(this)[DrawingListViewModel::class.java]
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -74,18 +80,21 @@ class DrawingsListFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        vm = ViewModelProviders.of(this)[DrawingListViewModel::class.java]
-        vm.syncDrawings().subscribe()
-        disposable = vm.getDrawings()
-                .subscribe { list -> adapter?.setDrawings(list) }
+
+        vm.drawingsListLiveData.observe(this, Observer { drawingListViewState -> handleViewState(drawingListViewState!!) })
+
+        vm.getDrawings()
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        disposable.dispose()
+    private fun handleViewState(drawingListViewState : DrawingsListViewState) {
+        if (drawingListViewState.loading)
+//            vmNavigation.loadingData()
+        else if (drawingListViewState.isLoaded) {
+            adapter?.setDrawings(drawingListViewState.list!!)
+        }
     }
 
     interface DrawingItemListener {
-        fun onItemClicked(clickedItem: Drawing)
+        fun onItemClicked(clickedItem: DrawingUI)
     }
 }

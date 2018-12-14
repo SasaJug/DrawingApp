@@ -19,6 +19,7 @@ import com.sasaj.domain.DrawingRepository
 import com.sasaj.domain.UserRepository
 import com.sasaj.domain.usecases.*
 import com.sasaj.graphics.drawingapp.common.ASyncTransformer
+import com.sasaj.graphics.drawingapp.mappers.DrawingEntityToUIMapper
 import dagger.Module
 import dagger.Provides
 import dagger.Reusable
@@ -91,8 +92,8 @@ class ApplicationModule(val context: Context) {
 
     @Provides
     @Reusable
-    fun providesUserRepository(awsHelper: AWSHelper): UserRepository {
-        return UserRepositoryImpl(awsHelper)
+    fun providesUserRepository(awsHelper: AWSHelper, localRepository: LocalRepository): UserRepository {
+        return UserRepositoryImpl(awsHelper, localRepository)
     }
 
     @Provides
@@ -174,5 +175,11 @@ class ApplicationModule(val context: Context) {
     @Reusable
     fun providesNewPassword(userRepository: UserRepository): NewPassword {
         return NewPassword(ASyncTransformer(), userRepository)
+    }
+
+    @Provides
+    @Reusable
+    fun providesDrawingEntityToUIMapper(): DrawingEntityToUIMapper{
+        return DrawingEntityToUIMapper()
     }
 }

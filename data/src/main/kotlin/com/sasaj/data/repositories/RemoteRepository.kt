@@ -141,7 +141,6 @@ class RemoteRepository(private val s3: AmazonS3Client,
     }
 
 
-
     // Sync part
     fun syncDrawings(localRepository: LocalRepository): Boolean {
 
