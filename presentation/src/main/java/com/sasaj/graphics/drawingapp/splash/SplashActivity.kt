@@ -26,6 +26,14 @@ class SplashActivity : BaseActivity() {
     public override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         vm = ViewModelProviders.of(this).get(SplashViewModel::class.java)
+        vm.getSplashLiveData().observe(this, Observer {
+            if (it != null) handleViewState(it)
+        })
+        vm.errorState.observe(this, Observer { throwable ->
+            throwable?.let {
+                renderErrorState(throwable)
+            }
+        })
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (ContextCompat.checkSelfPermission(this,
                             Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
@@ -39,18 +47,6 @@ class SplashActivity : BaseActivity() {
         } else {
             findCurrent()
         }
-    }
-
-    override fun onStart() {
-        super.onStart()
-        vm.getSplashLiveData().observe(this, Observer {
-            if (it != null) handleViewState(it)
-        })
-        vm.errorState.observe(this, Observer { throwable ->
-            throwable?.let {
-                renderErrorState(throwable)
-            }
-        })
     }
 
 
@@ -104,10 +100,6 @@ class SplashActivity : BaseActivity() {
         showDialogMessage("Error checking logIn status", throwable.toString())
     }
 
-    override fun onDestroy() {
-        vm.clearDisposables()
-        super.onDestroy()
-    }
 
     companion object {
         private val TAG = SplashActivity::class.java.simpleName

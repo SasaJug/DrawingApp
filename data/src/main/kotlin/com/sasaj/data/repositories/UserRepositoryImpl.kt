@@ -125,11 +125,8 @@ class UserRepositoryImpl(private val AWSHelper: AWSHelper, private val localRepo
         checkLoggedInSubject = PublishSubject.create<String>()
         val user = AWSHelper?.userPool?.currentUser
         val username = user?.userId
-        if (username != null) {
-            user.getSessionInBackground(checkHandler)
-        } else {
-            checkLoggedInSubject.onNext("")
-        }
+        user.getSessionInBackground(checkHandler)
+
         return checkLoggedInSubject
     }
 
