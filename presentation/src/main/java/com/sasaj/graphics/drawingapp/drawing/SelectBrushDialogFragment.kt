@@ -1,10 +1,8 @@
 package com.sasaj.graphics.drawingapp.drawing
 
-import android.app.Activity.RESULT_OK
-import android.content.Intent
+import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.support.v4.app.DialogFragment
-import android.support.v4.app.Fragment
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -13,7 +11,6 @@ import android.view.Window
 import com.sasaj.graphics.drawingapp.R
 import com.sasaj.graphics.drawingapp.entities.BrushUI
 import io.reactivex.Observable
-import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.select_brush_dialog_fragment_layout.*
 
 
@@ -24,6 +21,15 @@ import kotlinx.android.synthetic.main.select_brush_dialog_fragment_layout.*
 class SelectBrushDialogFragment : DialogFragment() {
 
     private lateinit var brushSelectorObservable: Observable<BrushUI>
+    lateinit var drawingNavigationViewModel: DrawingNavigationViewModel
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        activity?.let {
+            drawingNavigationViewModel = ViewModelProviders.of(it).get(DrawingNavigationViewModel::class.java)
+        }
+    }
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -36,7 +42,6 @@ class SelectBrushDialogFragment : DialogFragment() {
         selectBrushView.setCurrentBrush(arguments!!.getParcelable(BRUSH_PARCELABLE))
         brushSelectorObservable = selectBrushView.getSelectorObservable()
         brushSelectorObservable
-                .observeOn(Schedulers.io())
                 .subscribe(
                         { br -> sendResult(br) },
                         { e -> Log.e(TAG, "Error creating brush.", e) },
@@ -45,21 +50,16 @@ class SelectBrushDialogFragment : DialogFragment() {
     }
 
     private fun sendResult(brush : BrushUI) {
-        val intent = Intent()
-        intent.putExtra(BRUSH_PARCELABLE, brush)
-        targetFragment!!.onActivityResult(
-                targetRequestCode, RESULT_OK, intent)
+        drawingNavigationViewModel.drawingNavigationLiveData.value = DrawingNavigationViewState(brush)
     }
 
     companion object {
 
         private val TAG = SelectBrushDialogFragment::class.java.simpleName
-        const val BRUSH_REQUEST_CODE: Int = 123
         const val BRUSH_PARCELABLE: String = "brush"
 
-        fun newInstance(targetFragment: Fragment, brush: BrushUI): SelectBrushDialogFragment {
+        fun newInstance(brush: BrushUI): SelectBrushDialogFragment {
             val fragment = SelectBrushDialogFragment()
-            fragment.setTargetFragment(targetFragment, BRUSH_REQUEST_CODE)
             val bundle = Bundle()
             bundle.putParcelable(BRUSH_PARCELABLE, brush)
             fragment.arguments = bundle

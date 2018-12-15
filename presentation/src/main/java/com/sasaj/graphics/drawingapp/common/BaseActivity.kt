@@ -9,7 +9,7 @@ open class BaseActivity : AppCompatActivity() {
     private var userDialog: AlertDialog? = null
     private var waitDialog: ProgressDialog? = null
 
-    fun showProgress(message: String) {
+    fun showProgress(message: String = "Wait...") {
         hideProgress()
         waitDialog = ProgressDialog(this)
         waitDialog?.setTitle(message)

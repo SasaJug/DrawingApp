@@ -176,7 +176,6 @@ class UserRepositoryImpl(private val AWSHelper: AWSHelper, private val localRepo
 
     override fun changePassword(username: String?): Observable<Boolean> {
         changePasswordSubject = PublishSubject.create<Boolean>()
-//        newPasswordSubject = PublishSubject.create<Boolean>()
         val user = AWSHelper.userPool.getUser(username)
         user.forgotPasswordInBackground(forgotPasswordHandler)
         changePasswordSubject.onNext(true)

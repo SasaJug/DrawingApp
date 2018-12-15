@@ -10,6 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.sasaj.graphics.drawingapp.R
 import com.sasaj.graphics.drawingapp.authentication.states.RegisterViewState
+import com.sasaj.graphics.drawingapp.authentication.viewmodels.AuthenticationNavigationViewModel
 import com.sasaj.graphics.drawingapp.authentication.viewmodels.RegisterViewModel
 import kotlinx.android.synthetic.main.fragment_register.*
 

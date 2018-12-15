@@ -1,13 +1,19 @@
 package com.sasaj.graphics.drawingapp.drawing
 
+import android.arch.lifecycle.MutableLiveData
 import android.graphics.Bitmap
+import android.util.Log
+import com.sasaj.domain.entities.Brush
 import com.sasaj.domain.entities.Optional
 import com.sasaj.domain.usecases.GetBrush
 import com.sasaj.domain.usecases.SaveBrush
 import com.sasaj.domain.usecases.SaveDrawing
 import com.sasaj.graphics.drawingapp.common.BaseViewModel
 import com.sasaj.graphics.drawingapp.common.BitmapManager
-import io.reactivex.Observable
+import com.sasaj.graphics.drawingapp.common.SingleLiveEvent
+import com.sasaj.graphics.drawingapp.entities.BrushUI
+import com.sasaj.graphics.drawingapp.mappers.BrushEntityToUIMapper
+import com.sasaj.graphics.drawingapp.mappers.BrushUIToEntityMapper
 import javax.inject.Inject
 
 class DrawingViewModel : BaseViewModel() {
@@ -21,17 +27,75 @@ class DrawingViewModel : BaseViewModel() {
     @Inject
     lateinit var saveBrush: SaveBrush
 
+    val drawingLiveData: MutableLiveData<DrawingViewState> = MutableLiveData()
+    var errorState: SingleLiveEvent<Throwable?> = SingleLiveEvent()
+
+    init {
+        drawingLiveData.value = DrawingViewState()
+    }
+
+
     fun saveDrawing(bitmap: Bitmap?) {
-            val bitmapManager = BitmapManager()
-            bitmapManager.bitmap = bitmap
-            saveDrawing.saveDrawing(bitmapManager).subscribe()
+        drawingLiveData.value = drawingLiveData.value?.copy(initialized = true, loading = true, brush = null, brushSaved = false, bitmapSaved = false)
+        val bitmapManager = BitmapManager()
+        bitmapManager.bitmap = bitmap
+        addDisposable(saveDrawing.saveDrawing(bitmapManager)
+                .subscribe(
+                        { s: Boolean ->
+                            val newDrawingViewState = drawingLiveData.value?.copy(loading = false, bitmapSaved = true)
+                            drawingLiveData.value = newDrawingViewState
+                            errorState.value = null
+                        },
+                        { e ->
+                            drawingLiveData.value = drawingLiveData.value?.copy(loading = false, bitmapSaved = false)
+                            errorState.value = e
+                        },
+                        { Log.i(TAG, "Login completed") }
+                )
+        )
     }
 
-    fun getLastBrush() : Observable<Optional<com.sasaj.domain.entities.Brush>> {
-        return getBrush.getLastBrush()
+
+    fun getLastBrush() {
+        drawingLiveData.value = drawingLiveData.value?.copy(initialized = true, loading = true, brush = null, brushSaved = false, bitmapSaved = false)
+        addDisposable(getBrush.getLastBrush()
+                .subscribe(
+                        { s: Optional<Brush> ->
+                            val brushUI: BrushUI = BrushEntityToUIMapper().mapFrom(s.value!!)
+                            val newDrawingViewState = drawingLiveData.value?.copy(loading = false, brush = brushUI)
+                            drawingLiveData.value = newDrawingViewState
+                            errorState.value = null
+                        },
+                        { e ->
+                            drawingLiveData.value = drawingLiveData.value?.copy(loading = false)
+                            errorState.value = e
+                        },
+                        { Log.i(TAG, "Brush retrieved") }
+                )
+        )
     }
 
-    fun saveBrush(brush: com.sasaj.domain.entities.Brush) : Observable<Boolean>  {
-        return saveBrush.saveBrush(brush)
+
+    fun saveBrush(brushUI: BrushUI) {
+        drawingLiveData.value = drawingLiveData.value?.copy(initialized = true, loading = true, brush = null, brushSaved = false, bitmapSaved = false)
+        addDisposable(saveBrush.saveBrush(BrushUIToEntityMapper().mapFrom(brushUI))
+                .subscribe(
+                        { s: Boolean ->
+                            val newDrawingViewState = drawingLiveData.value?.copy(loading = false, brushSaved = true)
+                            drawingLiveData.value = newDrawingViewState
+                            errorState.value = null
+                        },
+                        { e ->
+                            drawingLiveData.value = drawingLiveData.value?.copy(loading = false, brushSaved = false)
+                            errorState.value = e
+                        },
+                        { Log.i(TAG, "Brush saved") }
+                )
+        )
+    }
+
+
+    companion object {
+        private val TAG = DrawingViewModel::class.java.simpleName
     }
 }

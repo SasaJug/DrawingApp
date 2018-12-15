@@ -1,4 +1,4 @@
-package com.sasaj.graphics.drawingapp.authentication
+package com.sasaj.graphics.drawingapp.authentication.viewmodels
 
 import android.arch.lifecycle.MutableLiveData
 import com.sasaj.graphics.drawingapp.authentication.states.AuthenticationNavigationViewState

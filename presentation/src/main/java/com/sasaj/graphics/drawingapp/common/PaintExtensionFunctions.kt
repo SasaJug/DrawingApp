@@ -16,6 +16,7 @@ fun Paint.init() {
 
 
 fun Paint.setPaintParameters(brush: BrushUI) {
+    this.init()
     brush?.let {
         this.strokeWidth = it.size.toFloat()
         this.maskFilter = BlurMaskFilter(it.blur, BlurMaskFilter.Blur.NORMAL)

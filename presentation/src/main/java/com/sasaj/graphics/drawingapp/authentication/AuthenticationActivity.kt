@@ -8,6 +8,7 @@ import android.util.Log
 import com.sasaj.graphics.drawingapp.common.BaseActivity
 import com.sasaj.graphics.drawingapp.R
 import com.sasaj.graphics.drawingapp.authentication.states.AuthenticationNavigationViewState
+import com.sasaj.graphics.drawingapp.authentication.viewmodels.AuthenticationNavigationViewModel
 import com.sasaj.graphics.drawingapp.main.MainActivity
 import kotlinx.android.synthetic.main.activity_main.*
 
