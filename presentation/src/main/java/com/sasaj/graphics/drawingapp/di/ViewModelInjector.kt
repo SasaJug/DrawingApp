@@ -7,7 +7,7 @@ import com.sasaj.graphics.drawingapp.authentication.viewmodels.RegisterViewModel
 import com.sasaj.graphics.drawingapp.authentication.viewmodels.VerifyViewModel
 import com.sasaj.graphics.drawingapp.drawing.DrawingNavigationViewModel
 import com.sasaj.graphics.drawingapp.drawing.DrawingViewModel
-import com.sasaj.graphics.drawingapp.main.DrawingListViewModel
+import com.sasaj.graphics.drawingapp.main.DrawingListNavigationViewModel
 import com.sasaj.graphics.drawingapp.main.MainViewModel
 import com.sasaj.graphics.drawingapp.splash.SplashViewModel
 import dagger.Component
@@ -22,7 +22,7 @@ interface ViewModelInjector {
     /**
      * Injects required dependencies into the specified ViewModel.
      */
-    fun inject(drawingListViewModel: DrawingListViewModel)
+    fun inject(drawingListNavigationViewModel: DrawingListNavigationViewModel)
     fun inject(drawingViewModel: DrawingViewModel)
     fun inject(splashViewModel: SplashViewModel)
     fun inject(loginViewModel: LoginViewModel)

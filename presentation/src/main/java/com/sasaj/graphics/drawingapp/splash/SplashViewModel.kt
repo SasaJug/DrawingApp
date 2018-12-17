@@ -36,7 +36,7 @@ class SplashViewModel : BaseViewModel() {
                             splashLiveData.value = splashLiveData.value?.copy(loading = false, username = "")
                             errorState.value = e
                         },
-                        { Log.e(TAG, "completed") }
+                        { Log.i(TAG, "Check user logged in completed") }
                 )
         )
     }

@@ -2,7 +2,7 @@
 
 ### Drawing Application  ###
 
-Android app for on-screen drawing
+Android app for on-screen drawing.
 
 * Kotlin
 * Clean architecture
@@ -23,7 +23,7 @@ Screenshots:
 ### AWS  Instructions ###
 
 AWS is used for user management and for syncing data between devices.
-In order to use app it is necessary to add config/amazon.properties 
+In order to use the app it is necessary to add config/amazon.properties 
 file to the data module. The amazon.properties file must have following structure:
 
 USER_POOL_ID = String#"YOUR_USER_POOL_ID"

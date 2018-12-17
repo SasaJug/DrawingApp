@@ -3,19 +3,27 @@ package com.sasaj.graphics.drawingapp.main
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
+import android.net.Uri
+import android.os.Build
 import android.os.Bundle
+import android.support.v4.content.FileProvider
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
-import com.sasaj.graphics.drawingapp.common.BaseActivity
+import com.sasaj.graphics.drawingapp.BuildConfig
 import com.sasaj.graphics.drawingapp.R
-import com.sasaj.graphics.drawingapp.splash.SplashActivity
+import com.sasaj.graphics.drawingapp.common.BaseActivity
 import com.sasaj.graphics.drawingapp.drawing.DrawingActivity
+import com.sasaj.graphics.drawingapp.entities.DrawingUI
+import com.sasaj.graphics.drawingapp.splash.SplashActivity
 import kotlinx.android.synthetic.main.activity_main.*
+import java.io.File
 
 class MainActivity : BaseActivity() {
 
     private lateinit var vm: MainViewModel
+
+    private lateinit var vmNavigation: DrawingListNavigationViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -23,6 +31,8 @@ class MainActivity : BaseActivity() {
         setSupportActionBar(toolbar)
 
         vm = ViewModelProviders.of(this).get(MainViewModel::class.java)
+        vmNavigation = ViewModelProviders.of(this).get(DrawingListNavigationViewModel::class.java)
+
         vm.mainLiveData.observe(this, Observer { mainState -> handleResponse(mainState) })
         vm.errorState.observe(this, Observer { throwable ->
             throwable?.let {
@@ -30,9 +40,20 @@ class MainActivity : BaseActivity() {
             }
         })
 
+        vmNavigation.drawingsListLiveData.observe(this, Observer { if (it != null) handleNavigationState(it) })
+
+
+        if (savedInstanceState == null) {
+            supportFragmentManager.beginTransaction()
+                    .replace(R.id.container, DrawingsListFragment(), LIST_FRAGMENT_TAG)
+                    .commitNow()
+        }
+
         setFabButton()
         vm.syncData()
+        vm.getDrawings()
     }
+
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu_main, menu)
@@ -60,9 +81,22 @@ class MainActivity : BaseActivity() {
     private fun handleResponse(mainViewState: MainViewState?) {
         when (mainViewState?.state) {
             MainViewState.LOADING -> renderLoadingState()
+            MainViewState.DRAWINGS_LOADED -> renderShowList(mainViewState.drawingsList)
             MainViewState.SIGNOUT_SUCCESSFUL -> renderSuccessSignOutState()
             MainViewState.SYNC_SUCCESSFUL -> renderSuccessSyncDataState()
         }
+    }
+
+    private fun handleNavigationState(navigationViewState: DrawingsListNavigationViewState) {
+        navigationViewState.imagePath?.let {
+            renderItemClicked(navigationViewState.imagePath!!)
+        }
+    }
+
+    private fun renderShowList(list: List<DrawingUI>?) {
+        val navigationViewState = DrawingsListNavigationViewState(list = list)
+        vmNavigation.drawingsListLiveData.value = navigationViewState
+        hideProgress()
     }
 
     private fun renderSuccessSyncDataState() {
@@ -86,6 +120,25 @@ class MainActivity : BaseActivity() {
         showDialogMessage("Error ", throwable.toString())
     }
 
+
+    private fun renderItemClicked(imagePath: String) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
+            val intent = Intent()
+            intent.action = Intent.ACTION_VIEW
+            intent.setDataAndType(Uri.parse("file://" + imagePath), "image/*")
+            startActivity(intent)
+        } else {
+            val intent = Intent()
+            intent.action = Intent.ACTION_VIEW
+            val photoUri = FileProvider.getUriForFile(this, BuildConfig.APPLICATION_ID + ".provider",
+                    File(imagePath))
+            intent.data = photoUri
+            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+            startActivity(intent)
+        }
+    }
+
+
     private fun setFabButton() {
 
         speedDial.inflate(R.menu.menu_speed_dial)
@@ -108,7 +161,14 @@ class MainActivity : BaseActivity() {
         }
     }
 
+    override fun onDestroy() {
+        vm.onCleared()
+        vmNavigation.onCleared()
+        super.onDestroy()
+    }
+
     companion object {
         private val TAG = MainActivity::class.java.simpleName
+        const val LIST_FRAGMENT_TAG = "drawingsListFragment"
     }
 }

@@ -19,6 +19,7 @@ import kotlinx.android.synthetic.main.select_brush_view_layout.view.*
 /**
  * Created by sjugurdzija on 6/25/2016.
  */
+
 class SelectBrushView : LinearLayout {
 
     companion object {

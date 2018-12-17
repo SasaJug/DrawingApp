@@ -15,6 +15,7 @@ import com.sasaj.graphics.drawingapp.common.setPaintParameters
 import com.sasaj.graphics.drawingapp.entities.BrushUI
 import kotlinx.android.synthetic.main.fragment_drawing.*
 
+
 class DrawingFragment : Fragment() {
 
     lateinit var drawingNavigationViewModel: DrawingNavigationViewModel
@@ -31,7 +32,6 @@ class DrawingFragment : Fragment() {
             drawingNavigationViewModel = ViewModelProviders.of(it).get(DrawingNavigationViewModel::class.java)
         }
     }
-
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
@@ -51,9 +51,8 @@ class DrawingFragment : Fragment() {
         drawing?.setPaint(paint)
     }
 
-
-    private fun handleViewState(drawingNavigationViewState: DrawingNavigationViewState) {
-        drawingNavigationViewState.brushUI?.let {
+    private fun handleViewState(drawingNavigationViewState: DrawingNavigationViewState?) {
+        drawingNavigationViewState?.brushUI?.let {
             currentBrushUI = drawingNavigationViewState.brushUI!!
             paint.setPaintParameters(currentBrushUI)
             drawing?.setPaint(paint)

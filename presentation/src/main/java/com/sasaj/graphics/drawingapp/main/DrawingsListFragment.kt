@@ -14,12 +14,10 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.sasaj.domain.entities.Drawing
 import com.sasaj.graphics.drawingapp.BuildConfig
 import com.sasaj.graphics.drawingapp.R
 import com.sasaj.graphics.drawingapp.entities.DrawingUI
 import com.sasaj.graphics.drawingapp.main.adapter.DrawingsListAdapter
-import io.reactivex.disposables.Disposable
 import java.io.File
 
 
@@ -30,7 +28,7 @@ class DrawingsListFragment : Fragment() {
         private const val NUMBER_OF_COLUMNS_LANDSCAPE = 5
     }
 
-    private lateinit var vm: DrawingListViewModel
+    private var vm: DrawingListNavigationViewModel? = null
     private lateinit var drawingsList: RecyclerView
     private var adapter: DrawingsListAdapter? = null
 
@@ -56,7 +54,7 @@ class DrawingsListFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        vm = ViewModelProviders.of(this)[DrawingListViewModel::class.java]
+        vm = activity?.let { ViewModelProviders.of(it)[DrawingListNavigationViewModel::class.java] }
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -81,16 +79,12 @@ class DrawingsListFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        vm.drawingsListLiveData.observe(this, Observer { drawingListViewState -> handleViewState(drawingListViewState!!) })
-
-        vm.getDrawings()
+        vm?.drawingsListLiveData?.observe(this, Observer { drawingListNavigationViewState -> handleViewState(drawingListNavigationViewState!!) })
     }
 
-    private fun handleViewState(drawingListViewState : DrawingsListViewState) {
-        if (drawingListViewState.loading)
-//            vmNavigation.loadingData()
-        else if (drawingListViewState.isLoaded) {
-            adapter?.setDrawings(drawingListViewState.list!!)
+    private fun handleViewState(drawingsListNavigationViewState: DrawingsListNavigationViewState) {
+        if (drawingsListNavigationViewState.list != null){
+            adapter?.setDrawings(drawingsListNavigationViewState.list!!)
         }
     }
 

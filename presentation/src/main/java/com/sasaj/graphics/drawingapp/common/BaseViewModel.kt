@@ -9,7 +9,7 @@ import com.sasaj.graphics.drawingapp.authentication.viewmodels.RegisterViewModel
 import com.sasaj.graphics.drawingapp.authentication.viewmodels.VerifyViewModel
 import com.sasaj.graphics.drawingapp.drawing.DrawingNavigationViewModel
 import com.sasaj.graphics.drawingapp.drawing.DrawingViewModel
-import com.sasaj.graphics.drawingapp.main.DrawingListViewModel
+import com.sasaj.graphics.drawingapp.main.DrawingListNavigationViewModel
 import com.sasaj.graphics.drawingapp.main.MainViewModel
 import com.sasaj.graphics.drawingapp.splash.SplashViewModel
 import io.reactivex.disposables.CompositeDisposable
@@ -26,7 +26,7 @@ abstract class BaseViewModel : ViewModel() {
      */
     private fun inject() {
         when (this) {
-            is DrawingListViewModel -> injector.inject(this)
+            is DrawingListNavigationViewModel -> injector.inject(this)
             is DrawingViewModel -> injector.inject(this)
             is SplashViewModel -> injector.inject(this)
             is LoginViewModel -> injector.inject(this)
@@ -46,7 +46,12 @@ abstract class BaseViewModel : ViewModel() {
         compositeDisposable.add(disposable)
     }
 
-    fun clearDisposables() {
+    private fun clearDisposables() {
         compositeDisposable.clear()
     }
+
+    public override fun onCleared() {
+        clearDisposables()
+    }
+
 }

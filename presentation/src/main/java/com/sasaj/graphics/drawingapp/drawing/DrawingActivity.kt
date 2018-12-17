@@ -21,7 +21,7 @@ class DrawingActivity : BaseActivity(){
     private lateinit var vmNavigation: DrawingNavigationViewModel
 
     companion object {
-        val TAG = DrawingActivity::class.java.simpleName
+        val TAG : String = DrawingActivity::class.java.simpleName
         const val DRAWING_FRAGMENT_TAG = "drawingFragment"
         const val DIALOG_FRAGMENT_TAG = "dialogFragment"
 

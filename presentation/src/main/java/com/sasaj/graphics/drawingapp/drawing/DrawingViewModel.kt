@@ -50,7 +50,7 @@ class DrawingViewModel : BaseViewModel() {
                             drawingLiveData.value = drawingLiveData.value?.copy(loading = false, bitmapSaved = false)
                             errorState.value = e
                         },
-                        { Log.i(TAG, "Login completed") }
+                        { Log.i(TAG, "Drawing saved") }
                 )
         )
     }
@@ -93,7 +93,6 @@ class DrawingViewModel : BaseViewModel() {
                 )
         )
     }
-
 
     companion object {
         private val TAG = DrawingViewModel::class.java.simpleName
