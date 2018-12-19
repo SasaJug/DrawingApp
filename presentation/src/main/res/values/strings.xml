@@ -41,4 +41,7 @@
     <string name="save_menu_option">Save</string>
     <string name="button_cancel">cancel</string>
     <string name="button_set">set</string>
+
+    <string name="progress_dialog_message">Wait...</string>
+
 </resources>

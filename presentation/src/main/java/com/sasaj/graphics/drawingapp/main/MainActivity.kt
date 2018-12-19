@@ -104,7 +104,7 @@ class MainActivity : BaseActivity() {
     }
 
     private fun renderLoadingState() {
-        showProgress("wait...")
+        showProgress()
     }
 
     private fun renderSuccessSignOutState() {
@@ -125,7 +125,7 @@ class MainActivity : BaseActivity() {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
             val intent = Intent()
             intent.action = Intent.ACTION_VIEW
-            intent.setDataAndType(Uri.parse("file://" + imagePath), "image/*")
+            intent.setDataAndType(Uri.parse("file://$imagePath"), "image/*")
             startActivity(intent)
         } else {
             val intent = Intent()

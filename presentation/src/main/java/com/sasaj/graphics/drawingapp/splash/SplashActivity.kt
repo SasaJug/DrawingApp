@@ -76,7 +76,7 @@ class SplashActivity : BaseActivity() {
     }
 
     private fun renderLoadingState() {
-        showProgress("wait...")
+        showProgress()
     }
 
     private fun renderAlreadyLoggedInState(username: String?) {

@@ -54,7 +54,7 @@ class AuthenticationActivity : BaseActivity() {
 
 
     private fun renderLoadingState() {
-        showProgress("wait...")
+        showProgress()
     }
 
     private fun renderSucessLoggingInState(username: String?) {
