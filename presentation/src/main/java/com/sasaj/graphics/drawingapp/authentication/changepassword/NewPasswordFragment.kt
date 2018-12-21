@@ -1,4 +1,4 @@
-package com.sasaj.graphics.drawingapp.authentication
+package com.sasaj.graphics.drawingapp.authentication.changepassword
 
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
@@ -8,16 +8,19 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.sasaj.graphics.drawingapp.R
-import com.sasaj.graphics.drawingapp.authentication.states.PasswordChangeViewState
-import com.sasaj.graphics.drawingapp.authentication.viewmodels.AuthenticationNavigationViewModel
-import com.sasaj.graphics.drawingapp.authentication.viewmodels.ChangePasswordViewModel
+import com.sasaj.graphics.drawingapp.authentication.AuthenticationNavigationViewModel
 import kotlinx.android.synthetic.main.fragment_new_password.*
+import javax.inject.Inject
 
 
 class NewPasswordFragment : Fragment() {
+
+    @Inject
+    lateinit var forgotPasswordVMFactory: ForgotPasswordVMFactory
+
     private var username: String? = null
 
-    private lateinit var vmChangePassword: ChangePasswordViewModel
+    private lateinit var vmForgotPassword: ForgotPasswordViewModel
     private lateinit var vmNavigation: AuthenticationNavigationViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -27,7 +30,7 @@ class NewPasswordFragment : Fragment() {
             username = it.getString(USERNAME)
         }
 
-        vmChangePassword = ViewModelProviders.of(this).get(ChangePasswordViewModel::class.java)
+        vmForgotPassword = ViewModelProviders.of(this, forgotPasswordVMFactory).get(ForgotPasswordViewModel::class.java)
         activity?.let {
             vmNavigation = ViewModelProviders.of(it).get(AuthenticationNavigationViewModel::class.java)
         }
@@ -36,10 +39,10 @@ class NewPasswordFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        vmChangePassword.passwordChangeLiveData.observe(this, Observer {
+        vmForgotPassword.forgotPasswordLiveData.observe(this, Observer {
             if (it != null) handleViewState(it)
         })
-        vmChangePassword.errorState.observe(this, Observer { throwable ->
+        vmForgotPassword.errorState.observe(this, Observer { throwable ->
             throwable?.let {
                 vmNavigation.error(it)
             }
@@ -56,11 +59,11 @@ class NewPasswordFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        username?.let { vmChangePassword.changePassword(username!!) }
+        username?.let { vmForgotPassword.changePassword(username!!) }
 
         changePasswordButton.setOnClickListener {
             if (newPassword.text.toString().equals(confirmPassword.text.toString())) {
-                vmChangePassword.newPassword(newPassword.text.toString(), newPasswordCode.text.toString())
+                vmForgotPassword.newPassword(newPassword.text.toString(), newPasswordCode.text.toString())
             } else {
                 vmNavigation.error(RuntimeException("Passwords do not match"))
             }
@@ -68,16 +71,16 @@ class NewPasswordFragment : Fragment() {
     }
 
 
-    private fun handleViewState(passwordChangeViewState: PasswordChangeViewState) {
+    private fun handleViewState(forgotPasswordViewState: ForgotPasswordViewState) {
         when {
-            passwordChangeViewState.passwordChangeStarted.not() -> return
-            passwordChangeViewState.loading -> {
+            forgotPasswordViewState.passwordChangeStarted.not() -> return
+            forgotPasswordViewState.loading -> {
                 vmNavigation.loadingData(); return
             }
-            passwordChangeViewState.isPasswordChangeRequested -> {
+            forgotPasswordViewState.isPasswordChangeRequested -> {
                 vmNavigation.passwordChangeRequested(); return
             }
-            passwordChangeViewState.isPasswordChanged -> {
+            forgotPasswordViewState.isPasswordChanged -> {
                 vmNavigation.passwordChangeSuccessful(); return
             }
         }

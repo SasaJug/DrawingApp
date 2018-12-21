@@ -1,4 +1,4 @@
-package com.sasaj.graphics.drawingapp.authentication
+package com.sasaj.graphics.drawingapp.authentication.register
 
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
@@ -9,14 +9,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.sasaj.graphics.drawingapp.R
-import com.sasaj.graphics.drawingapp.authentication.states.RegisterViewState
-import com.sasaj.graphics.drawingapp.authentication.viewmodels.AuthenticationNavigationViewModel
-import com.sasaj.graphics.drawingapp.authentication.viewmodels.RegisterViewModel
+import com.sasaj.graphics.drawingapp.authentication.AuthenticationNavigationViewModel
 import kotlinx.android.synthetic.main.fragment_register.*
+import javax.inject.Inject
 
 
 class RegisterFragment : Fragment() {
 
+    @Inject
+    lateinit var registerVMFactory: RegisterVMFactory
 
     private lateinit var vmRegister: RegisterViewModel
     private lateinit var vmNavigation: AuthenticationNavigationViewModel
@@ -24,7 +25,7 @@ class RegisterFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        vmRegister = ViewModelProviders.of(this).get(RegisterViewModel::class.java)
+        vmRegister = ViewModelProviders.of(this, registerVMFactory).get(RegisterViewModel::class.java)
         activity?.let {
             vmNavigation = ViewModelProviders.of(it).get(AuthenticationNavigationViewModel::class.java)
         }

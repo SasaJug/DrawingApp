@@ -1,4 +1,4 @@
-package com.sasaj.graphics.drawingapp.authentication
+package com.sasaj.graphics.drawingapp.authentication.register
 
 
 import android.arch.lifecycle.Observer
@@ -10,12 +10,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.sasaj.graphics.drawingapp.R
-import com.sasaj.graphics.drawingapp.authentication.states.VerifyViewState
-import com.sasaj.graphics.drawingapp.authentication.viewmodels.AuthenticationNavigationViewModel
-import com.sasaj.graphics.drawingapp.authentication.viewmodels.VerifyViewModel
+import com.sasaj.graphics.drawingapp.authentication.AuthenticationNavigationViewModel
 import kotlinx.android.synthetic.main.fragment_verify.*
+import javax.inject.Inject
 
 class VerifyFragment : Fragment() {
+
+    @Inject
+    lateinit var verifyVMFactory: VerifyVMFactory
 
     private lateinit var vmVerify: VerifyViewModel
     private lateinit var vmNavigation: AuthenticationNavigationViewModel
@@ -23,7 +25,7 @@ class VerifyFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        vmVerify = ViewModelProviders.of(this).get(VerifyViewModel::class.java)
+        vmVerify = ViewModelProviders.of(this, verifyVMFactory).get(VerifyViewModel::class.java)
         activity?.let {
             vmNavigation = ViewModelProviders.of(it).get(AuthenticationNavigationViewModel::class.java)
         }

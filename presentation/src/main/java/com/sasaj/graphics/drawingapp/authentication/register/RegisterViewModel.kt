@@ -1,17 +1,12 @@
-package com.sasaj.graphics.drawingapp.authentication.viewmodels
+package com.sasaj.graphics.drawingapp.authentication.register
 
 import android.arch.lifecycle.MutableLiveData
 import android.util.Log
 import com.sasaj.domain.usecases.SignUp
-import com.sasaj.graphics.drawingapp.authentication.states.RegisterViewState
 import com.sasaj.graphics.drawingapp.common.BaseViewModel
 import com.sasaj.graphics.drawingapp.common.SingleLiveEvent
-import javax.inject.Inject
 
-class RegisterViewModel : BaseViewModel() {
-
-    @Inject
-    lateinit var signUpUseCase : SignUp
+class RegisterViewModel(private val signUpUseCase : SignUp) : BaseViewModel() {
 
     val registerLiveData: MutableLiveData<RegisterViewState> = MutableLiveData()
     var errorState: SingleLiveEvent<Throwable?> = SingleLiveEvent()

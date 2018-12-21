@@ -1,4 +1,4 @@
-package com.sasaj.graphics.drawingapp.authentication.states
+package com.sasaj.graphics.drawingapp.authentication
 
 data class AuthenticationNavigationViewState(
         var state: Int = -1,

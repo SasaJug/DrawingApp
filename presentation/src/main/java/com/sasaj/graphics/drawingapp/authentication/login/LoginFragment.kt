@@ -1,4 +1,4 @@
-package com.sasaj.graphics.drawingapp.authentication
+package com.sasaj.graphics.drawingapp.authentication.login
 
 
 import android.arch.lifecycle.Observer
@@ -10,20 +10,19 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.sasaj.graphics.drawingapp.R
-import com.sasaj.graphics.drawingapp.authentication.states.LoginViewState
-import com.sasaj.graphics.drawingapp.authentication.viewmodels.AuthenticationNavigationViewModel
-import com.sasaj.graphics.drawingapp.authentication.viewmodels.LoginViewModel
+import com.sasaj.graphics.drawingapp.authentication.AuthenticationNavigationViewModel
 import kotlinx.android.synthetic.main.fragment_login.*
 
 class LoginFragment : Fragment() {
 
+    lateinit var loginVMFactory: LoginVMFactory
     private lateinit var vmLogin: LoginViewModel
     private lateinit var vmNavigation: AuthenticationNavigationViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        vmLogin = ViewModelProviders.of(this).get(LoginViewModel::class.java)
+        vmLogin = ViewModelProviders.of(this, loginVMFactory).get(LoginViewModel::class.java)
         activity?.let {
             vmNavigation = ViewModelProviders.of(it).get(AuthenticationNavigationViewModel::class.java)
         }

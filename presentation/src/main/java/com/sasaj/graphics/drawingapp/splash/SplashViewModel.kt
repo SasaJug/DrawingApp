@@ -7,10 +7,7 @@ import com.sasaj.graphics.drawingapp.common.SingleLiveEvent
 import com.sasaj.graphics.drawingapp.common.BaseViewModel
 import javax.inject.Inject
 
-class SplashViewModel : BaseViewModel() {
-
-    @Inject
-    lateinit var checkIfLoggedIn: CheckIfLoggedIn
+class SplashViewModel(private val checkIfLoggedIn: CheckIfLoggedIn) : BaseViewModel() {
 
     private val splashLiveData: MutableLiveData<SplashViewState> = MutableLiveData()
     var errorState: SingleLiveEvent<Throwable?> = SingleLiveEvent()

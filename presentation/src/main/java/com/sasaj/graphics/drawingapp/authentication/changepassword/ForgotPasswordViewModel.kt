@@ -1,28 +1,21 @@
-package com.sasaj.graphics.drawingapp.authentication.viewmodels
+package com.sasaj.graphics.drawingapp.authentication.changepassword
 
 import android.arch.lifecycle.MutableLiveData
 import android.util.Log
 import com.sasaj.domain.usecases.ChangePassword
 import com.sasaj.domain.usecases.NewPassword
-import com.sasaj.graphics.drawingapp.authentication.states.PasswordChangeViewState
 import com.sasaj.graphics.drawingapp.common.BaseViewModel
 import com.sasaj.graphics.drawingapp.common.SingleLiveEvent
-import javax.inject.Inject
 
 
-class ChangePasswordViewModel : BaseViewModel() {
+class ForgotPasswordViewModel(private val changePasswordUseCase: ChangePassword, private val newPasswordUseCase: NewPassword) : BaseViewModel() {
 
-    @Inject
-    lateinit var changePasswordUseCase: ChangePassword
 
-    @Inject
-    lateinit var newPasswordUseCase: NewPassword
-
-    val passwordChangeLiveData: MutableLiveData<PasswordChangeViewState> = MutableLiveData()
+    val forgotPasswordLiveData: MutableLiveData<ForgotPasswordViewState> = MutableLiveData()
     var errorState: SingleLiveEvent<Throwable?> = SingleLiveEvent()
 
     init {
-        passwordChangeLiveData.value = PasswordChangeViewState()
+        forgotPasswordLiveData.value = ForgotPasswordViewState()
     }
 
     fun changePassword(username: String) {
@@ -30,11 +23,11 @@ class ChangePasswordViewModel : BaseViewModel() {
                 .subscribe(
                         { b: Boolean ->
                             if (b) {
-                                val newPasswordChangeViewState = passwordChangeLiveData.value?.copy(passwordChangeStarted = true,
+                                val newPasswordChangeViewState = forgotPasswordLiveData.value?.copy(passwordChangeStarted = true,
                                         loading = false,
                                         isPasswordChangeRequested = true,
                                         isPasswordChanged = false)
-                                passwordChangeLiveData.value = newPasswordChangeViewState
+                                forgotPasswordLiveData.value = newPasswordChangeViewState
                                 errorState.value = null
                             }
                         },
@@ -45,20 +38,20 @@ class ChangePasswordViewModel : BaseViewModel() {
 
 
     fun newPassword(password: String, code: String) {
-        val passwordChangeViewState = passwordChangeLiveData.value?.copy(passwordChangeStarted = true,
+        val passwordChangeViewState = forgotPasswordLiveData.value?.copy(passwordChangeStarted = true,
                 loading = true,
                 isPasswordChangeRequested = true,
                 isPasswordChanged = false)
-        passwordChangeLiveData.value = passwordChangeViewState
+        forgotPasswordLiveData.value = passwordChangeViewState
         addDisposable(newPasswordUseCase.newPassword(password, code)
                 .subscribe(
                         { b: Boolean ->
                             if (b) {
-                                val newPasswordChangeViewState = passwordChangeLiveData.value?.copy(passwordChangeStarted = true,
+                                val newPasswordChangeViewState = forgotPasswordLiveData.value?.copy(passwordChangeStarted = true,
                                         loading = false,
                                         isPasswordChangeRequested = false,
                                         isPasswordChanged = true)
-                                passwordChangeLiveData.value = newPasswordChangeViewState
+                                forgotPasswordLiveData.value = newPasswordChangeViewState
                                 errorState.value = null
                             }
                         },
@@ -67,14 +60,9 @@ class ChangePasswordViewModel : BaseViewModel() {
                 ))
     }
 
-    fun resetLiveData() {
-        passwordChangeLiveData.value = null
-    }
-
-
     companion object {
 
-        private val TAG = ChangePasswordViewModel::class.java.simpleName
+        private val TAG = ForgotPasswordViewModel::class.java.simpleName
     }
 
 }

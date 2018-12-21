@@ -3,8 +3,8 @@ package com.sasaj.graphics.drawingapp
 import android.app.Application
 import android.util.Log
 import com.sasaj.graphics.drawingapp.di.ApplicationModule
-import com.sasaj.graphics.drawingapp.di.DaggerViewModelInjector
-import com.sasaj.graphics.drawingapp.di.ViewModelInjector
+import com.sasaj.graphics.drawingapp.di.DaggerMainComponent
+import com.sasaj.graphics.drawingapp.di.MainComponent
 import io.reactivex.plugins.RxJavaPlugins
 
 
@@ -15,13 +15,13 @@ import io.reactivex.plugins.RxJavaPlugins
 
 class DrawingApplication : Application(){
     companion object {
-        lateinit var injector: ViewModelInjector
+        lateinit var injector: MainComponent
     }
 
     override fun onCreate() {
         super.onCreate()
         RxJavaPlugins.setErrorHandler { e -> Log.e("App", e.message, e)}
-        injector = DaggerViewModelInjector.builder()
+        injector = DaggerMainComponent.builder()
                 .applicationModule(ApplicationModule(applicationContext))
                 .build()
     }

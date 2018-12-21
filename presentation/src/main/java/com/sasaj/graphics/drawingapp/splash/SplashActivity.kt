@@ -14,6 +14,7 @@ import android.util.Log
 import com.sasaj.graphics.drawingapp.common.BaseActivity
 import com.sasaj.graphics.drawingapp.authentication.AuthenticationActivity
 import com.sasaj.graphics.drawingapp.main.MainActivity
+import javax.inject.Inject
 
 /**
  * Created by sjugurdzija on 4/22/2017
@@ -21,11 +22,14 @@ import com.sasaj.graphics.drawingapp.main.MainActivity
 
 class SplashActivity : BaseActivity() {
 
+    @Inject
+    lateinit var splashVMFactory: SplashVMFactory
+
     private lateinit var vm: SplashViewModel
 
     public override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        vm = ViewModelProviders.of(this).get(SplashViewModel::class.java)
+        vm = ViewModelProviders.of(this, splashVMFactory).get(SplashViewModel::class.java)
         vm.getSplashLiveData().observe(this, Observer {
             if (it != null) handleViewState(it)
         })
@@ -68,7 +72,7 @@ class SplashActivity : BaseActivity() {
         vm.checkIfLoggedIn()
     }
 
-    private fun handleViewState(splashViewState : SplashViewState) {
+    private fun handleViewState(splashViewState: SplashViewState) {
         if (splashViewState.loading)
             renderLoadingState()
         else

@@ -50,7 +50,7 @@ class MainActivity : BaseActivity() {
         }
 
         setFabButton()
-        vm.syncData()
+//        vm.syncData()
         vm.getDrawings()
     }
 

@@ -1,4 +1,4 @@
-package com.sasaj.graphics.drawingapp.authentication.states
+package com.sasaj.graphics.drawingapp.authentication.register
 
 data class RegisterViewState(
         var registrationStarted : Boolean  = false,

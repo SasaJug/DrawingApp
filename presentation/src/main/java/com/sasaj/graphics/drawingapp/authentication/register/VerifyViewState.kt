@@ -1,4 +1,4 @@
-package com.sasaj.graphics.drawingapp.authentication.states
+package com.sasaj.graphics.drawingapp.authentication.register
 
 data class VerifyViewState(
         var verificationStarted : Boolean  = false,

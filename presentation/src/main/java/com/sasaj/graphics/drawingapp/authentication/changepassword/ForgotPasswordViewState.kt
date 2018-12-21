@@ -1,6 +1,6 @@
-package com.sasaj.graphics.drawingapp.authentication.states
+package com.sasaj.graphics.drawingapp.authentication.changepassword
 
-data class PasswordChangeViewState(
+data class ForgotPasswordViewState(
         var passwordChangeStarted : Boolean  = false,
         var loading : Boolean = false,
         var isPasswordChangeRequested : Boolean = false,

@@ -1,17 +1,13 @@
-package com.sasaj.graphics.drawingapp.authentication.viewmodels
+package com.sasaj.graphics.drawingapp.authentication.register
 
 import android.arch.lifecycle.MutableLiveData
 import android.util.Log
 import com.sasaj.domain.usecases.VerifyUser
-import com.sasaj.graphics.drawingapp.authentication.states.VerifyViewState
 import com.sasaj.graphics.drawingapp.common.BaseViewModel
 import com.sasaj.graphics.drawingapp.common.SingleLiveEvent
 import javax.inject.Inject
 
-class VerifyViewModel : BaseViewModel() {
-
-    @Inject
-    lateinit var verifyUserUseCase: VerifyUser
+class VerifyViewModel(private val verifyUserUseCase: VerifyUser) : BaseViewModel() {
 
     val verifyLiveData: MutableLiveData<VerifyViewState> = MutableLiveData()
     var errorState: SingleLiveEvent<Throwable?> = SingleLiveEvent()
