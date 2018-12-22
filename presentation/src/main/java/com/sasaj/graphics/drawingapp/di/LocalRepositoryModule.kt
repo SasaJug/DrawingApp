@@ -10,20 +10,20 @@ import com.sasaj.data.mappers.DrawingEntityToDataMapper
 import com.sasaj.data.repositories.LocalRepository
 import dagger.Module
 import dagger.Provides
-import dagger.Reusable
+import javax.inject.Singleton
 
 @Module
 class LocalRepositoryModule {
 
     @Provides
-    @Reusable
+    @Singleton
     fun providesAppDatabase(context: Context): AppDb {
         return Room.databaseBuilder(context, AppDb::class.java, "DrawingAppDb").fallbackToDestructiveMigration().build()
     }
 
 
     @Provides
-    @Reusable
+    @Singleton
     fun providesLocalRepository(db: AppDb): LocalRepository {
         return LocalRepository(BrushEntityToDataMapper(), BrushDataToEntityMapper(), DrawingDataToEntityMapper(), DrawingEntityToDataMapper(), db)
     }

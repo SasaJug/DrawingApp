@@ -16,16 +16,10 @@ import com.sasaj.graphics.drawingapp.mappers.BrushEntityToUIMapper
 import com.sasaj.graphics.drawingapp.mappers.BrushUIToEntityMapper
 import javax.inject.Inject
 
-class DrawingViewModel : BaseViewModel() {
+class DrawingViewModel(private val saveDrawing: SaveDrawing,
+                       private val getBrush: GetBrush,
+                       private val saveBrush: SaveBrush): BaseViewModel() {
 
-    @Inject
-    lateinit var saveDrawing: SaveDrawing
-
-    @Inject
-    lateinit var getBrush: GetBrush
-
-    @Inject
-    lateinit var saveBrush: SaveBrush
 
     val drawingLiveData: MutableLiveData<DrawingViewState> = MutableLiveData()
     var errorState: SingleLiveEvent<Throwable?> = SingleLiveEvent()

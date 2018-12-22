@@ -9,6 +9,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.sasaj.graphics.drawingapp.DrawingApplication
 import com.sasaj.graphics.drawingapp.R
 import com.sasaj.graphics.drawingapp.authentication.AuthenticationNavigationViewModel
 import kotlinx.android.synthetic.main.fragment_verify.*
@@ -24,6 +25,8 @@ class VerifyFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        (activity?.application as DrawingApplication).createVerifyComponenet().inject(this)
 
         vmVerify = ViewModelProviders.of(this, verifyVMFactory).get(VerifyViewModel::class.java)
         activity?.let {
@@ -68,6 +71,11 @@ class VerifyFragment : Fragment() {
                 vmNavigation.verifyConfirmed()
             }
         }
+    }
+
+    override fun onDestroy() {
+        (activity?.application as DrawingApplication).releaseVerifyComponent()
+        super.onDestroy()
     }
 
     companion object {

@@ -7,25 +7,26 @@ import com.sasaj.domain.UserRepository
 import dagger.Module
 import dagger.Provides
 import dagger.Reusable
+import javax.inject.Singleton
 
 @Module
 class RepositoryModule {
 
 
     @Provides
-    @Reusable
+    @Singleton
     fun providesDrawingRepository(localRepository: LocalRepository, remoteRepository: RemoteRepository): DrawingRepository {
         return DrawingRepositoryImpl(localRepository, remoteRepository)
     }
 
     @Provides
-    @Reusable
+    @Singleton
     fun providesUserRepository(awsHelper: AWSHelper, localRepository: LocalRepository): UserRepository {
         return UserRepositoryImpl(awsHelper, localRepository)
     }
 
     @Provides
-    @Reusable
+    @Singleton
     fun providesBrushRepository(localRepository: LocalRepository): com.sasaj.domain.BrushRepository {
         return BrushRepositoryImpl(localRepository)
     }

@@ -11,18 +11,19 @@ import com.sasaj.data.repositories.RemoteRepository
 import dagger.Module
 import dagger.Provides
 import dagger.Reusable
+import javax.inject.Singleton
 
 @Module
 class RemoteRepositoryModule {
 
     @Provides
-    @Reusable
+    @Singleton
     fun providesCognitoHelper(context: Context): AWSHelper {
         return AWSHelper(context)
     }
 
     @Provides
-    @Reusable
+    @Singleton
     fun providesAppSyncClient(context: Context, awsHelper: AWSHelper): AWSAppSyncClient {
         return AppSyncClientFactory(context, awsHelper).client
     }

@@ -11,6 +11,7 @@ import android.os.Bundle
 import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
 import android.util.Log
+import com.sasaj.graphics.drawingapp.DrawingApplication
 import com.sasaj.graphics.drawingapp.common.BaseActivity
 import com.sasaj.graphics.drawingapp.authentication.AuthenticationActivity
 import com.sasaj.graphics.drawingapp.main.MainActivity
@@ -29,6 +30,9 @@ class SplashActivity : BaseActivity() {
 
     public override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        (application as DrawingApplication).createSplashComponenet().inject(this)
+
         vm = ViewModelProviders.of(this, splashVMFactory).get(SplashViewModel::class.java)
         vm.getSplashLiveData().observe(this, Observer {
             if (it != null) handleViewState(it)
@@ -102,6 +106,11 @@ class SplashActivity : BaseActivity() {
         hideProgress()
         Log.e(TAG, "Error checking logIn status: ", throwable)
         showDialogMessage("Error checking logIn status", throwable.toString())
+    }
+
+    override fun onDestroy() {
+        (application as DrawingApplication).releaseSplashComponent()
+        super.onDestroy()
     }
 
 

@@ -10,18 +10,22 @@ import android.support.v7.app.AlertDialog
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import com.sasaj.graphics.drawingapp.DrawingApplication
 import com.sasaj.graphics.drawingapp.R
 import com.sasaj.graphics.drawingapp.common.BaseActivity
-import com.sasaj.graphics.drawingapp.drawing.brushselector.utilities.BrushAdapter.brush
 import kotlinx.android.synthetic.main.activity_drawing.*
+import javax.inject.Inject
 
-class DrawingActivity : BaseActivity(){
+class DrawingActivity : BaseActivity() {
+
+    @Inject
+    lateinit var drawingVMFactory: DrawingVMFactory
 
     private lateinit var vmDrawing: DrawingViewModel
     private lateinit var vmNavigation: DrawingNavigationViewModel
 
     companion object {
-        val TAG : String = DrawingActivity::class.java.simpleName
+        val TAG: String = DrawingActivity::class.java.simpleName
         const val DRAWING_FRAGMENT_TAG = "drawingFragment"
         const val DIALOG_FRAGMENT_TAG = "dialogFragment"
 
@@ -40,11 +44,13 @@ class DrawingActivity : BaseActivity(){
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        (application as DrawingApplication).createMainComponenet().inject(this)
+
         setScreenOrientation(intent.getIntExtra(ORIENTATION, PORTRAIT))
         setContentView(R.layout.activity_drawing)
         setSupportActionBar(toolbar_drawing)
 
-        vmDrawing = ViewModelProviders.of(this).get(DrawingViewModel::class.java)
+        vmDrawing = ViewModelProviders.of(this, drawingVMFactory).get(DrawingViewModel::class.java)
         vmNavigation = ViewModelProviders.of(this).get(DrawingNavigationViewModel::class.java)
 
         vmDrawing.drawingLiveData.observe(this, Observer {
@@ -121,7 +127,7 @@ class DrawingActivity : BaseActivity(){
                 hideProgress()
                 vmNavigation.drawingNavigationLiveData.value = DrawingNavigationViewState(brushUI = localBrush)
             }
-            drawingViewState.brushSaved-> {
+            drawingViewState.brushSaved -> {
                 hideProgress()
                 Log.i(TAG, "Brush saved successfully")
             }
@@ -147,6 +153,11 @@ class DrawingActivity : BaseActivity(){
         } else {
             ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
         }
+    }
+
+    override fun onDestroy() {
+        (application as DrawingApplication).releaseMainComponent()
+        super.onDestroy()
     }
 }
 

@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.sasaj.graphics.drawingapp.DrawingApplication
 import com.sasaj.graphics.drawingapp.R
 import com.sasaj.graphics.drawingapp.authentication.AuthenticationNavigationViewModel
 import kotlinx.android.synthetic.main.fragment_new_password.*
@@ -25,6 +26,7 @@ class NewPasswordFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        (activity?.application as DrawingApplication).createForgotPasswordComponenet().inject(this)
 
         arguments?.let {
             username = it.getString(USERNAME)
@@ -84,6 +86,11 @@ class NewPasswordFragment : Fragment() {
                 vmNavigation.passwordChangeSuccessful(); return
             }
         }
+    }
+
+    override fun onDestroy() {
+        (activity?.application as DrawingApplication).releaseforgotPasswordComponent()
+        super.onDestroy()
     }
 
 

@@ -9,27 +9,36 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.sasaj.graphics.drawingapp.DrawingApplication
 import com.sasaj.graphics.drawingapp.R
 import com.sasaj.graphics.drawingapp.authentication.AuthenticationNavigationViewModel
 import kotlinx.android.synthetic.main.fragment_login.*
+import javax.inject.Inject
 
 class LoginFragment : Fragment() {
 
+    @Inject
     lateinit var loginVMFactory: LoginVMFactory
+
     private lateinit var vmLogin: LoginViewModel
     private lateinit var vmNavigation: AuthenticationNavigationViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        vmLogin = ViewModelProviders.of(this, loginVMFactory).get(LoginViewModel::class.java)
-        activity?.let {
-            vmNavigation = ViewModelProviders.of(it).get(AuthenticationNavigationViewModel::class.java)
-        }
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+
+        (activity?.application as DrawingApplication).createLoginComponenet().inject(this)
+
+
+        vmLogin = ViewModelProviders.of(this, loginVMFactory).get(LoginViewModel::class.java)
+        activity?.let {
+            vmNavigation = ViewModelProviders.of(it).get(AuthenticationNavigationViewModel::class.java)
+        }
+
         vmLogin.loginLiveData.observe(this, Observer { loginViewState -> handleViewState(loginViewState!!) })
         vmLogin.loginLiveData.observe(this, Observer {
             if (it != null) handleViewState(it)
@@ -76,6 +85,10 @@ class LoginFragment : Fragment() {
         }
     }
 
+    override fun onDestroy() {
+        (activity?.application as DrawingApplication).releaseLoginComponent()
+        super.onDestroy()
+    }
     companion object {
         private val TAG = LoginFragment::class.java.simpleName
     }

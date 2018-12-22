@@ -12,19 +12,10 @@ import com.sasaj.graphics.drawingapp.entities.DrawingUI
 import com.sasaj.graphics.drawingapp.mappers.DrawingEntityToUIMapper
 import javax.inject.Inject
 
-class MainViewModel : BaseViewModel() {
-
-    @Inject
-    lateinit var signOutUseCase: SignOut
-
-    @Inject
-    lateinit var syncDrawings: SyncDrawings
-
-    @Inject
-    lateinit var getDrawings: GetDrawings
-
-    @Inject
-    lateinit var drawingEntityToUIMapper: DrawingEntityToUIMapper
+class MainViewModel(private val signOutUseCase: SignOut,
+                    private val syncDrawings: SyncDrawings,
+                    private val getDrawings: GetDrawings,
+                    private val drawingEntityToUIMapper: DrawingEntityToUIMapper) : BaseViewModel() {
 
     val mainLiveData: MutableLiveData<MainViewState> = MutableLiveData()
     var errorState: SingleLiveEvent<Throwable?> = SingleLiveEvent()

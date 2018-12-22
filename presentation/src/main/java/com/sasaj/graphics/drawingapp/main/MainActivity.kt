@@ -11,6 +11,7 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import com.sasaj.graphics.drawingapp.BuildConfig
+import com.sasaj.graphics.drawingapp.DrawingApplication
 import com.sasaj.graphics.drawingapp.R
 import com.sasaj.graphics.drawingapp.common.BaseActivity
 import com.sasaj.graphics.drawingapp.drawing.DrawingActivity
@@ -18,8 +19,12 @@ import com.sasaj.graphics.drawingapp.entities.DrawingUI
 import com.sasaj.graphics.drawingapp.splash.SplashActivity
 import kotlinx.android.synthetic.main.activity_main.*
 import java.io.File
+import javax.inject.Inject
 
 class MainActivity : BaseActivity() {
+
+    @Inject
+    lateinit var mainVMFactory: MainVMFactory
 
     private lateinit var vm: MainViewModel
 
@@ -27,10 +32,13 @@ class MainActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        (application as DrawingApplication).createMainComponenet().inject(this)
+
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
 
-        vm = ViewModelProviders.of(this).get(MainViewModel::class.java)
+        vm = ViewModelProviders.of(this, mainVMFactory).get(MainViewModel::class.java)
         vmNavigation = ViewModelProviders.of(this).get(DrawingListNavigationViewModel::class.java)
 
         vm.mainLiveData.observe(this, Observer { mainState -> handleResponse(mainState) })
@@ -50,7 +58,7 @@ class MainActivity : BaseActivity() {
         }
 
         setFabButton()
-//        vm.syncData()
+        vm.syncData()
         vm.getDrawings()
     }
 
@@ -164,6 +172,7 @@ class MainActivity : BaseActivity() {
     override fun onDestroy() {
         vm.onCleared()
         vmNavigation.onCleared()
+        (application as DrawingApplication).releaseMainComponent()
         super.onDestroy()
     }
 
