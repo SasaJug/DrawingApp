@@ -5,7 +5,7 @@ import com.sasaj.domain.common.Transformer
 import io.reactivex.Observable
 import java.util.HashMap
 
-class ChangePassword(
+class ChangePasswordUseCase(
         transformer: Transformer<Boolean>,
         private val userRepository: UserRepository) : UseCase<Boolean>(transformer) {
 

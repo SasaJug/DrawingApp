@@ -9,7 +9,6 @@ dependencies {
     //Rx
     implementation "io.reactivex.rxjava2:rxjava:$rootProject.ext.rxJavaVersion"
 
-
     //Mockito
     testImplementation "org.mockito:mockito-core:$rootProject.MockitoVersion"
 

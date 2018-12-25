@@ -1,7 +1,7 @@
 package com.sasaj.graphics.drawingapp.authentication.changepassword.di
 
 import com.sasaj.domain.UserRepository
-import com.sasaj.domain.usecases.ChangePassword
+import com.sasaj.domain.usecases.ChangePasswordUseCase
 import com.sasaj.domain.usecases.NewPassword
 import com.sasaj.graphics.drawingapp.authentication.changepassword.ForgotPasswordVMFactory
 import com.sasaj.graphics.drawingapp.common.ASyncTransformer
@@ -13,8 +13,8 @@ class ForgotPasswordModule {
 
     @Provides
     @ForgotPasswordScope
-    fun provideChangePassword(userRepository: UserRepository): ChangePassword {
-        return ChangePassword(ASyncTransformer(), userRepository)
+    fun provideChangePassword(userRepository: UserRepository): ChangePasswordUseCase {
+        return ChangePasswordUseCase(ASyncTransformer(), userRepository)
     }
 
 
@@ -26,7 +26,7 @@ class ForgotPasswordModule {
 
     @Provides
     @ForgotPasswordScope
-    fun provideChangePasswordVMFactory(changePasswordUseCase: ChangePassword, newPasswordUseCase: NewPassword): ForgotPasswordVMFactory {
+    fun provideChangePasswordVMFactory(changePasswordUseCase: ChangePasswordUseCase, newPasswordUseCase: NewPassword): ForgotPasswordVMFactory {
         return ForgotPasswordVMFactory(changePasswordUseCase, newPasswordUseCase)
     }
 

@@ -2,13 +2,13 @@ package com.sasaj.graphics.drawingapp.authentication.changepassword
 
 import android.arch.lifecycle.MutableLiveData
 import android.util.Log
-import com.sasaj.domain.usecases.ChangePassword
+import com.sasaj.domain.usecases.ChangePasswordUseCase
 import com.sasaj.domain.usecases.NewPassword
 import com.sasaj.graphics.drawingapp.common.BaseViewModel
 import com.sasaj.graphics.drawingapp.common.SingleLiveEvent
 
 
-class ForgotPasswordViewModel(private val changePasswordUseCase: ChangePassword, private val newPasswordUseCase: NewPassword) : BaseViewModel() {
+class ForgotPasswordViewModel(private val changePasswordUseCase: ChangePasswordUseCase, private val newPasswordUseCase: NewPassword) : BaseViewModel() {
 
 
     val forgotPasswordLiveData: MutableLiveData<ForgotPasswordViewState> = MutableLiveData()
