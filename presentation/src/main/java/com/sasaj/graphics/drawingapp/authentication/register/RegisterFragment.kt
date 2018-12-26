@@ -61,11 +61,16 @@ class RegisterFragment : Fragment() {
         signUpButton!!.setOnClickListener {
             if (username?.text != null && username.text.toString() != ""
                     && email?.text != null && email.text.toString() != ""
-                    && password?.text != null && password.text.toString() != "") {
-                vmNavigation.loadingData()
-                vmRegister.register(username?.text.toString(), password?.text.toString(), email?.text.toString())
+                    && password?.text != null && password.text.toString() != ""
+                    && confirmPassword.text != null && confirmPassword.text.toString() != "") {
+                if (password.text.toString() == confirmPassword.text.toString()) {
+                    vmNavigation.loadingData()
+                    vmRegister.register(username?.text.toString(), password?.text.toString(), email?.text.toString())
+                } else {
+                    vmNavigation.error(RuntimeException(getString(R.string.passwords_do_not_match_error)))
+                }
             } else
-                vmNavigation.error(RuntimeException("Username, email and password must not be empty!"))
+                vmNavigation.error(RuntimeException(getString(R.string.fields_empty_error_message)))
         }
     }
 
