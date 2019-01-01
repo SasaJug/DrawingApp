@@ -33,7 +33,7 @@ class MainActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        (application as DrawingApplication).createMainComponenet().inject(this)
+        (application as DrawingApplication).createMainComponent().inject(this)
 
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)

@@ -6,13 +6,14 @@ import com.sasaj.domain.usecases.ChangePasswordUseCase
 import com.sasaj.domain.usecases.NewPassword
 import com.sasaj.graphics.drawingapp.common.BaseViewModel
 import com.sasaj.graphics.drawingapp.common.SingleLiveEvent
+import com.sasaj.graphics.drawingapp.common.UIException
 
 
 class ForgotPasswordViewModel(private val changePasswordUseCase: ChangePasswordUseCase, private val newPasswordUseCase: NewPassword) : BaseViewModel() {
 
 
     val forgotPasswordLiveData: MutableLiveData<ForgotPasswordViewState> = MutableLiveData()
-    var errorState: SingleLiveEvent<Throwable?> = SingleLiveEvent()
+    var errorState: SingleLiveEvent<UIException> = SingleLiveEvent()
 
     init {
         forgotPasswordLiveData.value = ForgotPasswordViewState()
@@ -31,7 +32,7 @@ class ForgotPasswordViewModel(private val changePasswordUseCase: ChangePasswordU
                                 errorState.value = null
                             }
                         },
-                        { e -> errorState.value = e },
+                        { e -> errorState.value = UIException(cause = e) },
                         { Log.i(TAG, "Password change requested") }
                 ))
     }
@@ -55,7 +56,7 @@ class ForgotPasswordViewModel(private val changePasswordUseCase: ChangePasswordU
                                 errorState.value = null
                             }
                         },
-                        { e -> errorState.value = e },
+                        { e -> errorState.value = UIException(cause = e)  },
                         { Log.e(TAG, "Password changed successfully") }
                 ))
     }

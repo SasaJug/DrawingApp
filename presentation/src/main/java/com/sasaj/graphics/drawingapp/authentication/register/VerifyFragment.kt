@@ -26,7 +26,7 @@ class VerifyFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        (activity?.application as DrawingApplication).createVerifyComponenet().inject(this)
+        (activity?.application as DrawingApplication).createVerifyComponent().inject(this)
 
         vmVerify = ViewModelProviders.of(this, verifyVMFactory).get(VerifyViewModel::class.java)
         activity?.let {

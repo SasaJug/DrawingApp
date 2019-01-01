@@ -11,6 +11,7 @@ import android.view.ViewGroup
 import com.sasaj.graphics.drawingapp.DrawingApplication
 import com.sasaj.graphics.drawingapp.R
 import com.sasaj.graphics.drawingapp.authentication.AuthenticationNavigationViewModel
+import com.sasaj.graphics.drawingapp.common.UIException
 import kotlinx.android.synthetic.main.fragment_register.*
 import javax.inject.Inject
 
@@ -26,7 +27,7 @@ class RegisterFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        (activity?.application as DrawingApplication).createRegisterComponenet().inject(this)
+        (activity?.application as DrawingApplication).createRegisterComponent().inject(this)
 
 
         vmRegister = ViewModelProviders.of(this, registerVMFactory).get(RegisterViewModel::class.java)
@@ -37,7 +38,6 @@ class RegisterFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        vmRegister.registerLiveData.observe(this, Observer { registerViewState -> handleViewState(registerViewState!!) })
         vmRegister.registerLiveData.observe(this, Observer {
             if (it != null) handleViewState(it)
         })
@@ -67,10 +67,10 @@ class RegisterFragment : Fragment() {
                     vmNavigation.loadingData()
                     vmRegister.register(username?.text.toString(), password?.text.toString(), email?.text.toString())
                 } else {
-                    vmNavigation.error(RuntimeException(getString(R.string.passwords_do_not_match_error)))
+                    vmNavigation.error(UIException(getString(R.string.passwords_do_not_match_error), IllegalArgumentException()))
                 }
             } else
-                vmNavigation.error(RuntimeException(getString(R.string.fields_empty_error_message)))
+                vmNavigation.error(UIException(getString(R.string.fields_empty_error_message), IllegalArgumentException()))
         }
     }
 

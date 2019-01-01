@@ -5,12 +5,13 @@ import android.util.Log
 import com.sasaj.domain.usecases.VerifyUser
 import com.sasaj.graphics.drawingapp.common.BaseViewModel
 import com.sasaj.graphics.drawingapp.common.SingleLiveEvent
+import com.sasaj.graphics.drawingapp.common.UIException
 import javax.inject.Inject
 
 class VerifyViewModel(private val verifyUserUseCase: VerifyUser) : BaseViewModel() {
 
     val verifyLiveData: MutableLiveData<VerifyViewState> = MutableLiveData()
-    var errorState: SingleLiveEvent<Throwable?> = SingleLiveEvent()
+    var errorState: SingleLiveEvent<UIException> = SingleLiveEvent()
 
     init {
         verifyLiveData.value = VerifyViewState()
@@ -29,7 +30,7 @@ class VerifyViewModel(private val verifyUserUseCase: VerifyUser) : BaseViewModel
                                 errorState.value = null
                             }
                         },
-                        { e -> errorState.value = e },
+                        { e -> errorState.value = UIException( cause = e) },
                         { Log.i(TAG, "Verification completed") }
                 )
         )

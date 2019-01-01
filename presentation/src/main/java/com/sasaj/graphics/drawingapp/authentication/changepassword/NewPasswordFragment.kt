@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import com.sasaj.graphics.drawingapp.DrawingApplication
 import com.sasaj.graphics.drawingapp.R
 import com.sasaj.graphics.drawingapp.authentication.AuthenticationNavigationViewModel
+import com.sasaj.graphics.drawingapp.common.UIException
 import kotlinx.android.synthetic.main.fragment_new_password.*
 import javax.inject.Inject
 
@@ -26,7 +27,7 @@ class NewPasswordFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        (activity?.application as DrawingApplication).createForgotPasswordComponenet().inject(this)
+        (activity?.application as DrawingApplication).createForgotPasswordComponent().inject(this)
 
         arguments?.let {
             username = it.getString(USERNAME)
@@ -67,7 +68,7 @@ class NewPasswordFragment : Fragment() {
             if (newPassword.text.toString().equals(confirmPassword.text.toString())) {
                 vmForgotPassword.newPassword(newPassword.text.toString(), newPasswordCode.text.toString())
             } else {
-                vmNavigation.error(RuntimeException("Passwords do not match"))
+                vmNavigation.error(UIException("Passwords do not match", IllegalArgumentException()))
             }
         }
     }
@@ -89,7 +90,7 @@ class NewPasswordFragment : Fragment() {
     }
 
     override fun onDestroy() {
-        (activity?.application as DrawingApplication).releaseforgotPasswordComponent()
+        (activity?.application as DrawingApplication).releaseForgotPasswordComponent()
         super.onDestroy()
     }
 

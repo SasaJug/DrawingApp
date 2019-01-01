@@ -31,7 +31,7 @@ class SplashActivity : BaseActivity() {
     public override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        (application as DrawingApplication).createSplashComponenet().inject(this)
+        (application as DrawingApplication).createSplashComponent().inject(this)
 
         vm = ViewModelProviders.of(this, splashVMFactory).get(SplashViewModel::class.java)
         vm.getSplashLiveData().observe(this, Observer {

@@ -44,7 +44,7 @@ class DrawingActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        (application as DrawingApplication).createMainComponenet().inject(this)
+        (application as DrawingApplication).createMainComponent().inject(this)
 
         setScreenOrientation(intent.getIntExtra(ORIENTATION, PORTRAIT))
         setContentView(R.layout.activity_drawing)

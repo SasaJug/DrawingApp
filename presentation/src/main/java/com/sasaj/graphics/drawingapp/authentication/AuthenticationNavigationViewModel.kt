@@ -1,14 +1,14 @@
 package com.sasaj.graphics.drawingapp.authentication
 
 import android.arch.lifecycle.MutableLiveData
-import com.sasaj.graphics.drawingapp.authentication.AuthenticationNavigationViewState
 import com.sasaj.graphics.drawingapp.common.BaseViewModel
 import com.sasaj.graphics.drawingapp.common.SingleLiveEvent
+import com.sasaj.graphics.drawingapp.common.UIException
 
 class AuthenticationNavigationViewModel : BaseViewModel(){
 
     val navigationLiveData: MutableLiveData<AuthenticationNavigationViewState> = MutableLiveData()
-    var errorState: SingleLiveEvent<Throwable?> = SingleLiveEvent()
+    var errorState: SingleLiveEvent<UIException> = SingleLiveEvent()
 
     init {
         val authenticationNavigationViewState = AuthenticationNavigationViewState()
@@ -21,11 +21,6 @@ class AuthenticationNavigationViewModel : BaseViewModel(){
         errorState.value = null
     }
 
-    fun loginSuccessful(username: String){
-        val newNavigationState = navigationLiveData.value?.copy(state = AuthenticationNavigationViewState.LOGIN_SUCCESSFUL, data = username)
-        navigationLiveData.value = newNavigationState
-        errorState.value = null
-    }
 
     fun registerConfirmed(){
         val newNavigationState = navigationLiveData.value?.copy(state = AuthenticationNavigationViewState.REGISTRATION_CONFIRMED)
@@ -45,8 +40,13 @@ class AuthenticationNavigationViewModel : BaseViewModel(){
         errorState.value = null
     }
 
-    fun error(throwable: Throwable){
-        errorState.value = throwable
+    fun error(uiException: UIException){
+        errorState.value = uiException
+    }
+
+    fun goToMain() {
+        val newNavigationState = navigationLiveData.value?.copy(state = AuthenticationNavigationViewState.GO_TO_MAIN)
+        navigationLiveData.value = newNavigationState
     }
 
     fun goToRegister() {

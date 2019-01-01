@@ -50,7 +50,7 @@ class UserRepositoryImpl(private val AWSHelper: AWSHelper, private val localRepo
         }
 
         override fun authenticationChallenge(continuation: ChallengeContinuation) {
-            Log.i(TAG, "gauthenticationChallenge")
+            Log.i(TAG, "getAuthenticationChallenge")
         }
 
         override fun onFailure(exception: Exception) {
@@ -117,14 +117,12 @@ class UserRepositoryImpl(private val AWSHelper: AWSHelper, private val localRepo
 
         override fun onFailure(exception: Exception?) {
             changePasswordSubject.onError(exception as Throwable)
-//            newPasswordSubject.onError(exception as Throwable)
         }
     }
 
     override fun checkIfLoggedIn(): Observable<String> {
         checkLoggedInSubject = PublishSubject.create<String>()
         val user = AWSHelper?.userPool?.currentUser
-        val username = user?.userId
         user.getSessionInBackground(checkHandler)
 
         return checkLoggedInSubject

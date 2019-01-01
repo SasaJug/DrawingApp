@@ -45,7 +45,7 @@ class DrawingApplication : Application() {
     }
 
 
-    fun createSplashComponenet(): SplashSubcomponent {
+    fun createSplashComponent(): SplashSubcomponent {
         splashComponent = appComponent.plus(SplashModule())
         return splashComponent!!
     }
@@ -55,7 +55,7 @@ class DrawingApplication : Application() {
     }
 
 
-    fun createLoginComponenet(): LoginSubcomponent {
+    fun createLoginComponent(): LoginSubcomponent {
         loginComponent = appComponent.plus(LoginModule())
         return loginComponent!!
     }
@@ -64,7 +64,7 @@ class DrawingApplication : Application() {
         loginComponent = null
     }
 
-    fun createRegisterComponenet(): RegisterSubcomponent {
+    fun createRegisterComponent(): RegisterSubcomponent {
         registerComponent = appComponent.plus(RegisterModule())
         return registerComponent!!
     }
@@ -73,7 +73,7 @@ class DrawingApplication : Application() {
         registerComponent = null
     }
 
-    fun createVerifyComponenet(): VerifySubcomponent {
+    fun createVerifyComponent(): VerifySubcomponent {
         verifyComponent = appComponent.plus(VerifyModule())
         return verifyComponent!!
     }
@@ -82,16 +82,16 @@ class DrawingApplication : Application() {
         verifyComponent = null
     }
 
-    fun createForgotPasswordComponenet(): ForgotPasswordSubcomponent {
+    fun createForgotPasswordComponent(): ForgotPasswordSubcomponent {
         forgotPasswordComponent = appComponent.plus(ForgotPasswordModule())
         return forgotPasswordComponent!!
     }
 
-    fun releaseforgotPasswordComponent() {
+    fun releaseForgotPasswordComponent() {
         forgotPasswordComponent = null
     }
 
-    fun createMainComponenet(): MainSubcomponent {
+    fun createMainComponent(): MainSubcomponent {
         mainComponent = appComponent.plus(MainModule())
         return mainComponent!!
     }

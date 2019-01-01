@@ -51,6 +51,8 @@ ext {
 
     JUnitVersion = "4.12"
     MockitoVersion = "2.15.0"
+    EspressoVersion = "3.1.1"
+    AndroidXVersion = "1.1.1"
 
     awsVersion = "2.6.+"
 }

@@ -4,12 +4,13 @@ import android.arch.lifecycle.MutableLiveData
 import android.util.Log
 import com.sasaj.domain.usecases.LogIn
 import com.sasaj.graphics.drawingapp.common.BaseViewModel
+import com.sasaj.graphics.drawingapp.common.UIException
 import com.sasaj.graphics.drawingapp.common.SingleLiveEvent
 
 class LoginViewModel(private val logInUseCase: LogIn) : BaseViewModel() {
 
     val loginLiveData: MutableLiveData<LoginViewState> = MutableLiveData()
-    var errorState: SingleLiveEvent<Throwable?> = SingleLiveEvent()
+    var errorState: SingleLiveEvent<UIException?> = SingleLiveEvent()
 
     init {
         val loginViewState = LoginViewState()
@@ -17,17 +18,31 @@ class LoginViewModel(private val logInUseCase: LogIn) : BaseViewModel() {
     }
 
     fun logIn(username: String, password: String = "") {
-        loginLiveData.value = loginLiveData.value?.copy(loading = true, username = "")
+
+        if (username.trim() == "" || password.trim() == "") {
+            var errorCode = 0
+            loginLiveData.value = loginLiveData.value?.copy(loading = false, completed = false)
+            if (username.trim() == "") {
+                errorCode = errorCode or UIException.EMPTY_USERNAME
+            }
+            if (password.trim() == "") {
+                errorCode = errorCode or UIException.EMPTY_PASSWORD
+            }
+            errorState.value = UIException("User and password must be provided", IllegalArgumentException(), errorCode)
+            return
+        }
+
+        loginLiveData.value = loginLiveData.value?.copy(loading = true, completed = false)
         addDisposable(logInUseCase.logIn(username, password)
                 .subscribe(
                         { s: String ->
-                            val newLoginViewState = loginLiveData.value?.copy(loading = false, username = s)
+                            val newLoginViewState = loginLiveData.value?.copy(loading = false, completed = true)
                             loginLiveData.value = newLoginViewState
                             errorState.value = null
                         },
                         { e ->
-                            loginLiveData.value = loginLiveData.value?.copy(loading = false, username = "")
-                            errorState.value = e
+                            loginLiveData.value = loginLiveData.value?.copy(loading = false, completed = false)
+                            errorState.value = UIException(cause = e)
                         },
                         { Log.i(TAG, "Login completed") }
                 )

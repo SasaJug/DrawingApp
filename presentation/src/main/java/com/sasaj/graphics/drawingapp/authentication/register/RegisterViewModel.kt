@@ -5,11 +5,12 @@ import android.util.Log
 import com.sasaj.domain.usecases.SignUp
 import com.sasaj.graphics.drawingapp.common.BaseViewModel
 import com.sasaj.graphics.drawingapp.common.SingleLiveEvent
+import com.sasaj.graphics.drawingapp.common.UIException
 
 class RegisterViewModel(private val signUpUseCase : SignUp) : BaseViewModel() {
 
     val registerLiveData: MutableLiveData<RegisterViewState> = MutableLiveData()
-    var errorState: SingleLiveEvent<Throwable?> = SingleLiveEvent()
+    var errorState: SingleLiveEvent<UIException> = SingleLiveEvent()
 
     init {
         registerLiveData.value = RegisterViewState()
@@ -27,7 +28,7 @@ class RegisterViewModel(private val signUpUseCase : SignUp) : BaseViewModel() {
                             errorState.value = null
                         },
                         { e ->
-                            errorState.value = e
+                            errorState.value = UIException(cause = e)
                         },
                         { Log.i(TAG, "Registration completed") }
                 )
