@@ -15,12 +15,6 @@ class AuthenticationNavigationViewModel : BaseViewModel(){
         navigationLiveData.value = authenticationNavigationViewState
     }
 
-    fun loadingData(){
-        val newNavigationState = navigationLiveData.value?.copy(state = AuthenticationNavigationViewState.LOADING)
-        navigationLiveData.value = newNavigationState
-        errorState.value = null
-    }
-
     fun error(uiException: UIException){
         errorState.value = uiException
     }
@@ -46,16 +40,6 @@ class AuthenticationNavigationViewModel : BaseViewModel(){
 
     fun getCode(username: String) {
         val newNavigationState = navigationLiveData.value?.copy(state = AuthenticationNavigationViewState.GO_TO_NEW_PASSWORD, data = username)
-        navigationLiveData.value = newNavigationState
-    }
-
-    fun passwordChangeRequested() {
-        val newNavigationState = navigationLiveData.value?.copy(state = AuthenticationNavigationViewState.PASSWORD_CHANGE_REQUESTED)
-        navigationLiveData.value = newNavigationState
-    }
-
-    fun passwordChangeSuccessful() {
-        val newNavigationState = navigationLiveData.value?.copy(state = AuthenticationNavigationViewState.PASSWORD_CHANGE_SUCCESSFUL)
         navigationLiveData.value = newNavigationState
     }
 }

@@ -24,6 +24,7 @@ class VerifyFragment : Fragment() {
     private lateinit var vmVerify: VerifyViewModel
     private lateinit var vmNavigation: AuthenticationNavigationViewModel
 
+    //region lifecycle callbacks
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -47,7 +48,6 @@ class VerifyFragment : Fragment() {
         })
     }
 
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_verify, container, false)
@@ -65,7 +65,9 @@ class VerifyFragment : Fragment() {
         (activity?.application as DrawingApplication).releaseVerifyComponent()
         super.onDestroy()
     }
+    //endregion
 
+    //region view state and error handlers
     private fun handleViewState(verifyViewState: VerifyViewState) {
         when {
             verifyViewState.verificationStarted.not() -> return
@@ -80,6 +82,7 @@ class VerifyFragment : Fragment() {
 
     private fun handleError(customUIException: UIException?) {
         showProgress(false)
+        resetErrors()
         if (customUIException?.errorCode!! > 0) {
             val code = customUIException.errorCode
             if (code and UIException.EMPTY_USERNAME == UIException.EMPTY_USERNAME)
@@ -87,11 +90,12 @@ class VerifyFragment : Fragment() {
             if (code and (UIException.EMPTY_CODE) == UIException.EMPTY_CODE)
                 showCodeError(getString(R.string.code_missing_error_message))
         } else {
-            resetErrors()
             vmNavigation.error(customUIException)
         }
     }
+    //endregion
 
+    //region rendering
     private fun showProgress(show: Boolean) {
         if (show)
             verifyProgress.visibility = View.VISIBLE
@@ -100,17 +104,18 @@ class VerifyFragment : Fragment() {
     }
 
     private fun showUsernameError(message: String?) {
-        verifyUsername.error = message
+        verifyUsernameLayout.error = message
     }
 
     private fun showCodeError(message: String?) {
-        verifyCode.error = message
+        verifyCodeLayout.error = message
     }
 
     private fun resetErrors() {
-        verifyUsername.error = null
-        verifyCode.error = null
+        showUsernameError(null)
+        showCodeError(null)
     }
+    //endregion
 
     companion object {
         private val TAG = VerifyFragment::class.java.simpleName

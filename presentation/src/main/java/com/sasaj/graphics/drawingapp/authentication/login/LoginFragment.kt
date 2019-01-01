@@ -26,17 +26,20 @@ class LoginFragment : Fragment() {
     private lateinit var vmLogin: LoginViewModel
     private lateinit var vmNavigation: AuthenticationNavigationViewModel
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
+    //region lifecycle callbacks
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
 
         (activity?.application as DrawingApplication).createLoginComponent().inject(this)
-
 
         vmLogin = ViewModelProviders.of(this, loginVMFactory).get(LoginViewModel::class.java)
         activity?.let {
             vmNavigation = ViewModelProviders.of(it).get(AuthenticationNavigationViewModel::class.java)
         }
+    }
 
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
         vmLogin.loginLiveData.observe(this, Observer {
             if (it != null) handleViewState(it)
         })
@@ -66,9 +69,15 @@ class LoginFragment : Fragment() {
         }
     }
 
+    override fun onDestroy() {
+        (activity?.application as DrawingApplication).releaseLoginComponent()
+        super.onDestroy()
+    }
+    //endregion
+
+    //region view state and error handlers
     private fun handleViewState(loginViewState: LoginViewState) {
-        showUsernameError(null)
-        showPasswordError(null)
+        resetErrors()
         if (loginViewState.loading)
             showProgress(true)
         else if (loginViewState.completed) {
@@ -80,6 +89,7 @@ class LoginFragment : Fragment() {
 
     private fun handleError(customUIException: UIException?) {
         showProgress(false)
+        resetErrors()
         if (customUIException?.errorCode!! > 0) {
             when {
                 customUIException.errorCode == UIException.EMPTY_USERNAME + UIException.EMPTY_PASSWORD -> {
@@ -90,12 +100,12 @@ class LoginFragment : Fragment() {
                 else -> showPasswordError(getString(R.string.password_missing_error_message))
             }
         } else {
-            showUsernameError(null)
-            showPasswordError(null)
             vmNavigation.error(customUIException)
         }
     }
+    //endregion
 
+    //region rendering
     private fun showProgress(show: Boolean) {
         if (show)
             loginProgress.visibility = VISIBLE
@@ -104,17 +114,19 @@ class LoginFragment : Fragment() {
     }
 
     private fun showUsernameError(message:String?){
-        username.error = message
+        usernameLayout.error = message
     }
 
     private fun showPasswordError(message:String?){
-        password.error = message
+        passwordLayout.error = message
     }
 
-    override fun onDestroy() {
-        (activity?.application as DrawingApplication).releaseLoginComponent()
-        super.onDestroy()
+
+    private fun resetErrors(){
+        showUsernameError(null)
+        showPasswordError(null)
     }
+    //endregion
 
     companion object {
         private val TAG = LoginFragment::class.java.simpleName

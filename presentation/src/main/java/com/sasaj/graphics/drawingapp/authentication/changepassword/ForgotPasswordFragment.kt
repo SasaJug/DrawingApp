@@ -15,6 +15,7 @@ class ForgotPasswordFragment : Fragment() {
 
     private lateinit var vmNavigation: AuthenticationNavigationViewModel
 
+    //region lifecycle callbacks
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -35,5 +36,5 @@ class ForgotPasswordFragment : Fragment() {
             vmNavigation.getCode(forgotPasswordUsername.text.toString())
         }
     }
-
+    //endregion
 }

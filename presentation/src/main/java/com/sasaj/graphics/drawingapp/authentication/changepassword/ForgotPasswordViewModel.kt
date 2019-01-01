@@ -11,7 +11,6 @@ import com.sasaj.graphics.drawingapp.common.UIException
 
 class ForgotPasswordViewModel(private val changePasswordUseCase: ChangePasswordUseCase, private val newPasswordUseCase: NewPassword) : BaseViewModel() {
 
-
     val forgotPasswordLiveData: MutableLiveData<ForgotPasswordViewState> = MutableLiveData()
     var errorState: SingleLiveEvent<UIException> = SingleLiveEvent()
 
@@ -37,8 +36,23 @@ class ForgotPasswordViewModel(private val changePasswordUseCase: ChangePasswordU
                 ))
     }
 
+    fun newPassword(code: String, password: String, confirmPassword: String) {
+        var errorCode = 0
 
-    fun newPassword(password: String, code: String) {
+        if (code.trim() == "")
+            errorCode = errorCode or UIException.EMPTY_CODE
+        if (password.trim() == "")
+            errorCode = errorCode or UIException.EMPTY_PASSWORD
+        if (confirmPassword.trim() == "")
+            errorCode = errorCode or UIException.EMPTY_CONFIRM_PASSWORD
+        if (password != confirmPassword)
+            errorCode = errorCode or UIException.PASSWORDS_DO_NOT_MATCH
+
+        if (errorCode > 0) {
+            errorState.value = UIException("All entries must be valid", IllegalArgumentException(), errorCode)
+            return
+        }
+
         val passwordChangeViewState = forgotPasswordLiveData.value?.copy(passwordChangeStarted = true,
                 loading = true,
                 isPasswordChangeRequested = true,
@@ -56,7 +70,7 @@ class ForgotPasswordViewModel(private val changePasswordUseCase: ChangePasswordU
                                 errorState.value = null
                             }
                         },
-                        { e -> errorState.value = UIException(cause = e)  },
+                        { e -> errorState.value = UIException(cause = e) },
                         { Log.e(TAG, "Password changed successfully") }
                 ))
     }

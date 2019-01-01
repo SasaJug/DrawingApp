@@ -24,6 +24,7 @@ class RegisterFragment : Fragment() {
     private lateinit var vmRegister: RegisterViewModel
     private lateinit var vmNavigation: AuthenticationNavigationViewModel
 
+    //region lifecycle callbacks
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -66,7 +67,9 @@ class RegisterFragment : Fragment() {
         (activity?.application as DrawingApplication).releaseRegisterComponent()
         super.onDestroy()
     }
+    //endregion
 
+    //region view state and error handlers
     private fun handleViewState(registerViewState: RegisterViewState) {
         when {
             registerViewState.registrationStarted.not() -> return
@@ -86,6 +89,7 @@ class RegisterFragment : Fragment() {
 
     private fun handleError(customUIException: UIException?) {
         showProgress(false)
+        resetErrors()
         if (customUIException?.errorCode!! > 0) {
             val code = customUIException.errorCode
             if (code and UIException.EMPTY_USERNAME == UIException.EMPTY_USERNAME)
@@ -101,12 +105,12 @@ class RegisterFragment : Fragment() {
                 showConfirmPasswordError(getString(R.string.passwords_do_not_match_error))
             }
         } else {
-            resetErrors()
             vmNavigation.error(customUIException)
         }
     }
+    //endregion
 
-
+    //region rendering
     private fun showProgress(show: Boolean) {
         if (show)
             registerProgress.visibility = View.VISIBLE
@@ -115,19 +119,19 @@ class RegisterFragment : Fragment() {
     }
 
     private fun showUsernameError(message: String?) {
-        usernameRegister.error = message
+        usernameRegisterLayout.error = message
     }
 
     private fun showEmailError(message: String?) {
-        emailRegister.error = message
+        emailRegisterLayout.error = message
     }
 
     private fun showPasswordError(message: String?) {
-        passwordRegister.error = message
+        passwordRegisterLayout.error = message
     }
 
     private fun showConfirmPasswordError(message: String?) {
-        confirmPasswordRegister.error = message
+        confirmPasswordRegisterLayout.error = message
     }
 
     private fun resetErrors(){
@@ -136,7 +140,7 @@ class RegisterFragment : Fragment() {
         showPasswordError(null)
         showConfirmPasswordError(null)
     }
-
+    //endregion
 
     companion object {
         private val TAG = RegisterFragment::class.java.simpleName

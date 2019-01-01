@@ -43,39 +43,13 @@ class AuthenticationActivity : BaseActivity() {
 
     private fun handleResponse(navigationState: AuthenticationNavigationViewState?) {
         when (navigationState?.state) {
-            AuthenticationNavigationViewState.LOADING -> renderLoadingState()
-            AuthenticationNavigationViewState.VERIFICATION_CONFIRMED -> renderVerificationConfirmedState()
 
             AuthenticationNavigationViewState.GO_TO_MAIN -> goToMain()
             AuthenticationNavigationViewState.GO_TO_REGISTER -> goToRegister()
             AuthenticationNavigationViewState.GO_TO_VERIFY -> goToVerify()
             AuthenticationNavigationViewState.GO_TO_FORGOT_PASSWORD -> goToForgotPasswordFragment()
             AuthenticationNavigationViewState.GO_TO_NEW_PASSWORD -> goToNewPassword(navigationState.data)
-            AuthenticationNavigationViewState.PASSWORD_CHANGE_REQUESTED -> renderChangePasswordRequested()
-            AuthenticationNavigationViewState.PASSWORD_CHANGE_SUCCESSFUL -> renderChangePasswordSuccessful()
         }
-    }
-
-    private fun renderLoadingState() {
-        showProgress()
-    }
-
-    private fun renderVerificationConfirmedState() {
-        hideProgress()
-        val intent = Intent(this@AuthenticationActivity, MainActivity::class.java)
-        startActivity(intent)
-        finish()
-    }
-
-    private fun renderChangePasswordRequested() {
-        hideProgress()
-    }
-
-    private fun renderChangePasswordSuccessful() {
-        hideProgress()
-        val intent = Intent(this@AuthenticationActivity, MainActivity::class.java)
-        startActivity(intent)
-        finish()
     }
 
     private fun renderErrorState(uiException: UIException) {

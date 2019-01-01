@@ -16,6 +16,7 @@
             android:orientation="vertical">
 
             <android.support.design.widget.TextInputLayout
+                android:id="@+id/usernameRegisterLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
@@ -32,6 +33,7 @@
             </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
+                android:id="@+id/emailRegisterLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
@@ -47,6 +49,7 @@
             </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
+                android:id="@+id/passwordRegisterLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
@@ -64,6 +67,7 @@
             </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
+                android:id="@+id/confirmPasswordRegisterLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 

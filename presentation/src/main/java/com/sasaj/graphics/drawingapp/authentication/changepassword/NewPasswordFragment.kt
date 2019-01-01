@@ -25,6 +25,8 @@ class NewPasswordFragment : Fragment() {
     private lateinit var vmForgotPassword: ForgotPasswordViewModel
     private lateinit var vmNavigation: AuthenticationNavigationViewModel
 
+    //region lifecycle callbacks
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         (activity?.application as DrawingApplication).createForgotPasswordComponent().inject(this)
@@ -45,9 +47,9 @@ class NewPasswordFragment : Fragment() {
         vmForgotPassword.forgotPasswordLiveData.observe(this, Observer {
             if (it != null) handleViewState(it)
         })
-        vmForgotPassword.errorState.observe(this, Observer { throwable ->
-            throwable?.let {
-                vmNavigation.error(it)
+        vmForgotPassword.errorState.observe(this, Observer { uiException ->
+           uiException.let {
+                handleError(it)
             }
         })
     }
@@ -57,42 +59,86 @@ class NewPasswordFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_new_password, container, false)
     }
 
-    override fun onDestroy() {
-        (activity?.application as DrawingApplication).releaseForgotPasswordComponent()
-        super.onDestroy()
-    }
-
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         username?.let { vmForgotPassword.changePassword(username!!) }
 
         changePasswordButton.setOnClickListener {
-            if (newPassword.text.toString().equals(confirmPassword.text.toString())) {
-                vmForgotPassword.newPassword(newPassword.text.toString(), newPasswordCode.text.toString())
-            } else {
-                vmNavigation.error(UIException("Passwords do not match", IllegalArgumentException()))
-            }
+            vmForgotPassword.newPassword(newPasswordCode.text.toString(), newPassword.text.toString(), confirmNewPassword.text.toString())
         }
     }
 
+    override fun onDestroy() {
+        (activity?.application as DrawingApplication).releaseForgotPasswordComponent()
+        super.onDestroy()
+    }
+//endregion
+
+    //region view state and error handlers
 
     private fun handleViewState(forgotPasswordViewState: ForgotPasswordViewState) {
         when {
             forgotPasswordViewState.passwordChangeStarted.not() -> return
             forgotPasswordViewState.loading -> {
-                vmNavigation.loadingData(); return
+                showProgress(true)
             }
             forgotPasswordViewState.isPasswordChangeRequested -> {
-                vmNavigation.passwordChangeRequested(); return
+                showProgress(true)
             }
             forgotPasswordViewState.isPasswordChanged -> {
-                vmNavigation.passwordChangeSuccessful(); return
+                vmNavigation.goToMain()
             }
         }
     }
 
+    private fun handleError(customUIException: UIException?) {
+        showProgress(false)
+        resetErrors()
+        if (customUIException?.errorCode!! > 0) {
+            val code = customUIException.errorCode
+            if (code and UIException.EMPTY_CODE == UIException.EMPTY_CODE)
+                showCodeError(getString(R.string.code_missing_error_message))
+            if (code and (UIException.EMPTY_PASSWORD) == UIException.EMPTY_PASSWORD)
+                showPasswordError(getString(R.string.password_missing_error_message))
+            if (code and (UIException.EMPTY_CONFIRM_PASSWORD) == UIException.EMPTY_CONFIRM_PASSWORD)
+                showConfirmPasswordError(getString(R.string.confirm_password_missing_error_message))
+            if (code and (UIException.PASSWORDS_DO_NOT_MATCH) == UIException.PASSWORDS_DO_NOT_MATCH) {
+                showPasswordError(getString(R.string.passwords_do_not_match_error))
+                showConfirmPasswordError(getString(R.string.passwords_do_not_match_error))
+            }
+        } else {
+            vmNavigation.error(customUIException)
+        }
+    }
+    //endregion
+
+    //region rendering
+    private fun showProgress(show: Boolean) {
+        if (show)
+            changePasswordProgress.visibility = View.VISIBLE
+        else
+            changePasswordProgress.visibility = View.GONE
+    }
+
+    private fun showCodeError(message: String?) {
+        newPasswordCodeLayout.error = message
+    }
+
+    private fun showPasswordError(message: String?) {
+        newPasswordLayout.error = message
+    }
+
+    private fun showConfirmPasswordError(message: String?) {
+        confirmNewPasswordLayout.error = message
+    }
+
+    private fun resetErrors() {
+        newPasswordCodeLayout.error = null
+        newPasswordLayout.error = null
+        confirmNewPasswordLayout.error = null
+    }
+    //endregion
 
     companion object {
         private const val USERNAME = "username"
