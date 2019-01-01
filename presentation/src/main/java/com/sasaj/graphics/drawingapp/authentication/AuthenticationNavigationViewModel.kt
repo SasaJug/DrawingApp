@@ -21,25 +21,6 @@ class AuthenticationNavigationViewModel : BaseViewModel(){
         errorState.value = null
     }
 
-
-    fun registerConfirmed(){
-        val newNavigationState = navigationLiveData.value?.copy(state = AuthenticationNavigationViewState.REGISTRATION_CONFIRMED)
-        navigationLiveData.value = newNavigationState
-        errorState.value = null
-    }
-
-    fun registerNotConfirmed(){
-        val newNavigationState = navigationLiveData.value?.copy(state = AuthenticationNavigationViewState.REGISTRATION_NOT_CONFIRMED)
-        navigationLiveData.value = newNavigationState
-        errorState.value = null
-    }
-
-    fun verifyConfirmed() {
-        val newNavigationState = navigationLiveData.value?.copy(state = AuthenticationNavigationViewState.VERIFICATION_CONFIRMED)
-        navigationLiveData.value = newNavigationState
-        errorState.value = null
-    }
-
     fun error(uiException: UIException){
         errorState.value = uiException
     }
@@ -51,6 +32,11 @@ class AuthenticationNavigationViewModel : BaseViewModel(){
 
     fun goToRegister() {
         val newNavigationState = navigationLiveData.value?.copy(state = AuthenticationNavigationViewState.GO_TO_REGISTER)
+        navigationLiveData.value = newNavigationState
+    }
+
+    fun goToVerifyRegistration() {
+        val newNavigationState = navigationLiveData.value?.copy(state = AuthenticationNavigationViewState.GO_TO_VERIFY)
         navigationLiveData.value = newNavigationState
     }
 
@@ -72,5 +58,4 @@ class AuthenticationNavigationViewModel : BaseViewModel(){
         val newNavigationState = navigationLiveData.value?.copy(state = AuthenticationNavigationViewState.PASSWORD_CHANGE_SUCCESSFUL)
         navigationLiveData.value = newNavigationState
     }
-
 }

@@ -11,7 +11,7 @@ import com.sasaj.graphics.drawingapp.R
 import com.sasaj.graphics.drawingapp.authentication.AuthenticationNavigationViewModel
 import kotlinx.android.synthetic.main.fragment_forgot_pasword.*
 
-class ForgotPaswordFragment : Fragment() {
+class ForgotPasswordFragment : Fragment() {
 
     private lateinit var vmNavigation: AuthenticationNavigationViewModel
 
@@ -25,7 +25,6 @@ class ForgotPaswordFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_forgot_pasword, container, false)
     }
 

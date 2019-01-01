@@ -7,7 +7,7 @@ import com.sasaj.graphics.drawingapp.common.BaseViewModel
 import com.sasaj.graphics.drawingapp.common.SingleLiveEvent
 import com.sasaj.graphics.drawingapp.common.UIException
 
-class RegisterViewModel(private val signUpUseCase : SignUp) : BaseViewModel() {
+class RegisterViewModel(private val signUpUseCase: SignUp) : BaseViewModel() {
 
     val registerLiveData: MutableLiveData<RegisterViewState> = MutableLiveData()
     var errorState: SingleLiveEvent<UIException> = SingleLiveEvent()
@@ -16,21 +16,40 @@ class RegisterViewModel(private val signUpUseCase : SignUp) : BaseViewModel() {
         registerLiveData.value = RegisterViewState()
     }
 
-    fun register (username: String, password: String = "", email : String = "") {
-        var registerViewState = registerLiveData.value?.copy(registrationStarted = true, loading = true, isConfirmed = false)
+    fun register(username: String, email: String, password: String, confirmPassword: String) {
+        var errorCode = 0
+
+        if (username.trim() == "")
+            errorCode = errorCode or UIException.EMPTY_USERNAME
+        if (email.trim() == "")
+            errorCode = errorCode or UIException.EMPTY_EMAIL
+        if (password.trim() == "")
+            errorCode = errorCode or UIException.EMPTY_PASSWORD
+        if (confirmPassword.trim() == "")
+            errorCode = errorCode or UIException.EMPTY_CONFIRM_PASSWORD
+        if (password != confirmPassword)
+            errorCode = errorCode or UIException.PASSWORDS_DO_NOT_MATCH
+
+        if (errorCode > 0) {
+            errorState.value = UIException("All entries must be valid", IllegalArgumentException(), errorCode)
+            return
+        }
+
+        val registerViewState = registerLiveData.value?.copy(registrationStarted = true, loading = true, isConfirmed = false)
         registerLiveData.value = registerViewState
 
         addDisposable(signUpUseCase.signUp(username, password, email)
                 .subscribe(
-                        { s: Boolean ->
-                            val newRegisterViewState = registerLiveData.value?.copy(loading = false, isConfirmed = s)
+                        { b: Boolean ->
+                            val newRegisterViewState = registerLiveData.value?.copy(loading = false, isConfirmed = b)
                             registerLiveData.value = newRegisterViewState
                             errorState.value = null
                         },
                         { e ->
+                            registerLiveData.value = registerLiveData.value?.copy(loading = false, isConfirmed = false)
                             errorState.value = UIException(cause = e)
                         },
-                        { Log.i(TAG, "Registration completed") }
+                        { Log.i(TAG, "Registration started") }
                 )
         )
     }

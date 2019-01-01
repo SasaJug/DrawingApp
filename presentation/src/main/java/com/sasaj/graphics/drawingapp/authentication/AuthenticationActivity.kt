@@ -6,7 +6,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import com.sasaj.graphics.drawingapp.R
-import com.sasaj.graphics.drawingapp.authentication.changepassword.ForgotPaswordFragment
+import com.sasaj.graphics.drawingapp.authentication.changepassword.ForgotPasswordFragment
 import com.sasaj.graphics.drawingapp.authentication.changepassword.NewPasswordFragment
 import com.sasaj.graphics.drawingapp.authentication.login.LoginFragment
 import com.sasaj.graphics.drawingapp.authentication.register.RegisterFragment
@@ -44,12 +44,11 @@ class AuthenticationActivity : BaseActivity() {
     private fun handleResponse(navigationState: AuthenticationNavigationViewState?) {
         when (navigationState?.state) {
             AuthenticationNavigationViewState.LOADING -> renderLoadingState()
-            AuthenticationNavigationViewState.REGISTRATION_CONFIRMED -> renderRegistrationConfirmedState()
-            AuthenticationNavigationViewState.REGISTRATION_NOT_CONFIRMED -> renderRegistrationNotConfirmedState()
             AuthenticationNavigationViewState.VERIFICATION_CONFIRMED -> renderVerificationConfirmedState()
 
             AuthenticationNavigationViewState.GO_TO_MAIN -> goToMain()
             AuthenticationNavigationViewState.GO_TO_REGISTER -> goToRegister()
+            AuthenticationNavigationViewState.GO_TO_VERIFY -> goToVerify()
             AuthenticationNavigationViewState.GO_TO_FORGOT_PASSWORD -> goToForgotPasswordFragment()
             AuthenticationNavigationViewState.GO_TO_NEW_PASSWORD -> goToNewPassword(navigationState.data)
             AuthenticationNavigationViewState.PASSWORD_CHANGE_REQUESTED -> renderChangePasswordRequested()
@@ -57,23 +56,8 @@ class AuthenticationActivity : BaseActivity() {
         }
     }
 
-
     private fun renderLoadingState() {
         showProgress()
-    }
-
-    private fun renderRegistrationConfirmedState() {
-        hideProgress()
-        val intent = Intent(this@AuthenticationActivity, MainActivity::class.java)
-        startActivity(intent)
-        finish()
-    }
-
-    private fun renderRegistrationNotConfirmedState() {
-        hideProgress()
-        supportFragmentManager.beginTransaction()
-                .replace(R.id.container, VerifyFragment(), "verify")
-                .commitNow()
     }
 
     private fun renderVerificationConfirmedState() {
@@ -116,7 +100,14 @@ class AuthenticationActivity : BaseActivity() {
     private fun goToForgotPasswordFragment() {
         hideProgress()
         supportFragmentManager.beginTransaction()
-                .replace(R.id.container, ForgotPaswordFragment(), "forgotPassword")
+                .replace(R.id.container, ForgotPasswordFragment(), "forgotPassword")
+                .commitNow()
+    }
+
+    private fun goToVerify() {
+        hideProgress()
+        supportFragmentManager.beginTransaction()
+                .replace(R.id.container, VerifyFragment(), "verify")
                 .commitNow()
     }
 

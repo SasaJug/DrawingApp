@@ -17,7 +17,7 @@ class LoginViewModel(private val logInUseCase: LogIn) : BaseViewModel() {
         loginLiveData.value = loginViewState
     }
 
-    fun logIn(username: String, password: String = "") {
+    fun logIn(username: String, password: String) {
 
         if (username.trim() == "" || password.trim() == "") {
             var errorCode = 0

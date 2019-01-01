@@ -29,7 +29,6 @@ class RegisterFragment : Fragment() {
 
         (activity?.application as DrawingApplication).createRegisterComponent().inject(this)
 
-
         vmRegister = ViewModelProviders.of(this, registerVMFactory).get(RegisterViewModel::class.java)
         activity?.let {
             vmNavigation = ViewModelProviders.of(it).get(AuthenticationNavigationViewModel::class.java)
@@ -41,51 +40,25 @@ class RegisterFragment : Fragment() {
         vmRegister.registerLiveData.observe(this, Observer {
             if (it != null) handleViewState(it)
         })
-        vmRegister.errorState.observe(this, Observer { throwable ->
-            throwable?.let {
-                vmNavigation.error(it)
-            }
+        vmRegister.errorState.observe(this, Observer { uiException ->
+            handleError(uiException)
         })
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_register, container, false)
     }
-
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         signUpButton!!.setOnClickListener {
-            if (username?.text != null && username.text.toString() != ""
-                    && email?.text != null && email.text.toString() != ""
-                    && password?.text != null && password.text.toString() != ""
-                    && confirmPassword.text != null && confirmPassword.text.toString() != "") {
-                if (password.text.toString() == confirmPassword.text.toString()) {
-                    vmNavigation.loadingData()
-                    vmRegister.register(username?.text.toString(), password?.text.toString(), email?.text.toString())
-                } else {
-                    vmNavigation.error(UIException(getString(R.string.passwords_do_not_match_error), IllegalArgumentException()))
-                }
-            } else
-                vmNavigation.error(UIException(getString(R.string.fields_empty_error_message), IllegalArgumentException()))
-        }
-    }
-
-    private fun handleViewState(registerViewState: RegisterViewState) {
-        when {
-            registerViewState.registrationStarted.not() -> return
-            registerViewState.loading -> vmNavigation.loadingData()
-            registerViewState.isConfirmed -> {
-                Log.i(TAG, "Registration Confirmed")
-                vmNavigation.registerConfirmed()
-            }
-            else -> {
-                Log.i(TAG, "Registration NotConfirmed")
-                vmNavigation.registerNotConfirmed()
-            }
+            vmRegister.register(
+                    usernameRegister?.text.toString(),
+                    emailRegister?.text.toString(),
+                    passwordRegister?.text.toString(),
+                    confirmPasswordRegister?.text.toString())
         }
     }
 
@@ -93,6 +66,77 @@ class RegisterFragment : Fragment() {
         (activity?.application as DrawingApplication).releaseRegisterComponent()
         super.onDestroy()
     }
+
+    private fun handleViewState(registerViewState: RegisterViewState) {
+        when {
+            registerViewState.registrationStarted.not() -> return
+            registerViewState.loading -> showProgress(true)
+            registerViewState.isConfirmed -> {
+                showProgress(false)
+                Log.i(TAG, "Registration Confirmed")
+                vmNavigation.goToMain()
+            }
+            else -> {
+                showProgress(false)
+                Log.i(TAG, "Registration NotConfirmed")
+                vmNavigation.goToVerifyRegistration()
+            }
+        }
+    }
+
+    private fun handleError(customUIException: UIException?) {
+        showProgress(false)
+        if (customUIException?.errorCode!! > 0) {
+            val code = customUIException.errorCode
+            if (code and UIException.EMPTY_USERNAME == UIException.EMPTY_USERNAME)
+                showUsernameError(getString(R.string.username_missing_error_message))
+            if (code and (UIException.EMPTY_EMAIL) == UIException.EMPTY_EMAIL)
+                showEmailError(getString(R.string.email_missing_error_message))
+            if (code and (UIException.EMPTY_PASSWORD) == UIException.EMPTY_PASSWORD)
+                showPasswordError(getString(R.string.password_missing_error_message))
+            if (code and (UIException.EMPTY_CONFIRM_PASSWORD) == UIException.EMPTY_CONFIRM_PASSWORD)
+                showConfirmPasswordError(getString(R.string.confirm_password_missing_error_message))
+            if (code and (UIException.PASSWORDS_DO_NOT_MATCH) == UIException.PASSWORDS_DO_NOT_MATCH) {
+                showPasswordError(getString(R.string.passwords_do_not_match_error))
+                showConfirmPasswordError(getString(R.string.passwords_do_not_match_error))
+            }
+        } else {
+            resetErrors()
+            vmNavigation.error(customUIException)
+        }
+    }
+
+
+    private fun showProgress(show: Boolean) {
+        if (show)
+            registerProgress.visibility = View.VISIBLE
+        else
+            registerProgress.visibility = View.GONE
+    }
+
+    private fun showUsernameError(message: String?) {
+        usernameRegister.error = message
+    }
+
+    private fun showEmailError(message: String?) {
+        emailRegister.error = message
+    }
+
+    private fun showPasswordError(message: String?) {
+        passwordRegister.error = message
+    }
+
+    private fun showConfirmPasswordError(message: String?) {
+        confirmPasswordRegister.error = message
+    }
+
+    private fun resetErrors(){
+        showUsernameError(null)
+        showEmailError(null)
+        showPasswordError(null)
+        showConfirmPasswordError(null)
+    }
+
 
     companion object {
         private val TAG = RegisterFragment::class.java.simpleName

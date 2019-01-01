@@ -12,6 +12,7 @@ import android.view.ViewGroup
 import com.sasaj.graphics.drawingapp.DrawingApplication
 import com.sasaj.graphics.drawingapp.R
 import com.sasaj.graphics.drawingapp.authentication.AuthenticationNavigationViewModel
+import com.sasaj.graphics.drawingapp.common.UIException
 import kotlinx.android.synthetic.main.fragment_verify.*
 import javax.inject.Inject
 
@@ -39,9 +40,9 @@ class VerifyFragment : Fragment() {
         vmVerify.verifyLiveData.observe(this, Observer {
             if (it != null) handleViewState(it)
         })
-        vmVerify.errorState.observe(this, Observer { throwable ->
-            throwable?.let {
-                vmNavigation.error(it)
+        vmVerify.errorState.observe(this, Observer { uiException ->
+            uiException?.let {
+                handleError(it)
             }
         })
     }
@@ -49,7 +50,6 @@ class VerifyFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_verify, container, false)
     }
 
@@ -57,25 +57,59 @@ class VerifyFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         verifyButton?.setOnClickListener {
-            vmVerify.verify(verifyUsername!!.text.toString(), verificationCode!!.text.toString())
-        }
-    }
-
-
-    private fun handleViewState(verifyViewState: VerifyViewState) {
-        when {
-            verifyViewState.verificationStarted.not() -> return
-            verifyViewState.loading -> vmNavigation.loadingData()
-            verifyViewState.isVerified -> {
-                Log.i(TAG, "Verification Confirmed")
-                vmNavigation.verifyConfirmed()
-            }
+            vmVerify.verify(verifyUsername!!.text.toString(), verifyCode!!.text.toString())
         }
     }
 
     override fun onDestroy() {
         (activity?.application as DrawingApplication).releaseVerifyComponent()
         super.onDestroy()
+    }
+
+    private fun handleViewState(verifyViewState: VerifyViewState) {
+        when {
+            verifyViewState.verificationStarted.not() -> return
+            verifyViewState.loading -> showProgress(true)
+            verifyViewState.isVerified -> {
+                showProgress(false)
+                Log.i(TAG, "Verification Confirmed")
+                vmNavigation.goToMain()
+            }
+        }
+    }
+
+    private fun handleError(customUIException: UIException?) {
+        showProgress(false)
+        if (customUIException?.errorCode!! > 0) {
+            val code = customUIException.errorCode
+            if (code and UIException.EMPTY_USERNAME == UIException.EMPTY_USERNAME)
+                showUsernameError(getString(R.string.username_missing_error_message))
+            if (code and (UIException.EMPTY_CODE) == UIException.EMPTY_CODE)
+                showCodeError(getString(R.string.code_missing_error_message))
+        } else {
+            resetErrors()
+            vmNavigation.error(customUIException)
+        }
+    }
+
+    private fun showProgress(show: Boolean) {
+        if (show)
+            verifyProgress.visibility = View.VISIBLE
+        else
+            verifyProgress.visibility = View.GONE
+    }
+
+    private fun showUsernameError(message: String?) {
+        verifyUsername.error = message
+    }
+
+    private fun showCodeError(message: String?) {
+        verifyCode.error = message
+    }
+
+    private fun resetErrors() {
+        verifyUsername.error = null
+        verifyCode.error = null
     }
 
     companion object {

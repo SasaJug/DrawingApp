@@ -54,8 +54,12 @@ class NewPasswordFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-
         return inflater.inflate(R.layout.fragment_new_password, container, false)
+    }
+
+    override fun onDestroy() {
+        (activity?.application as DrawingApplication).releaseForgotPasswordComponent()
+        super.onDestroy()
     }
 
 
@@ -89,14 +93,8 @@ class NewPasswordFragment : Fragment() {
         }
     }
 
-    override fun onDestroy() {
-        (activity?.application as DrawingApplication).releaseForgotPasswordComponent()
-        super.onDestroy()
-    }
-
 
     companion object {
-
         private const val USERNAME = "username"
 
         @JvmStatic
