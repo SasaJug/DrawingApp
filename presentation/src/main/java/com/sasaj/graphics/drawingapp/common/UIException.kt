@@ -1,7 +1,9 @@
 package com.sasaj.graphics.drawingapp.common
 
 
-class UIException(message: String = "Something went wrong", cause: Throwable = Exception()) : RuntimeException(message, cause) {
+class UIException(override val message: String = "Something went wrong",
+                  override val cause: Throwable = Exception(),
+                  val errorCode: Int = -1) : RuntimeException(message, cause) {
 
     companion object {
         const val EMPTY_USERNAME : Int = 1
@@ -12,11 +14,4 @@ class UIException(message: String = "Something went wrong", cause: Throwable = E
         const val EMPTY_CODE: Int = 32
     }
 
-   var errorCode: Int = -1
-
-    constructor(message: String, cause: Throwable, errorCode: Int) : this(message, cause){
-        this.errorCode = errorCode
-    }
-
-    constructor(errorCode: Int) : this()
 }

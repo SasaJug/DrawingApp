@@ -28,14 +28,14 @@ class LoginViewModel(private val logInUseCase: LogIn) : BaseViewModel() {
             if (password.trim() == "") {
                 errorCode = errorCode or UIException.EMPTY_PASSWORD
             }
-            errorState.value = UIException("User and password must be provided", IllegalArgumentException(), errorCode)
+            errorState.value = UIException("Username and password must be provided", IllegalArgumentException(), errorCode)
             return
         }
 
         loginLiveData.value = loginLiveData.value?.copy(loading = true, completed = false)
         addDisposable(logInUseCase.logIn(username, password)
                 .subscribe(
-                        { s: String ->
+                        { b: Boolean ->
                             val newLoginViewState = loginLiveData.value?.copy(loading = false, completed = true)
                             loginLiveData.value = newLoginViewState
                             errorState.value = null

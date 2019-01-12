@@ -11,6 +11,7 @@ import com.sasaj.data.remote.AWSHelper
 import com.sasaj.domain.UserRepository
 import io.reactivex.Observable
 import io.reactivex.subjects.PublishSubject
+import io.reactivex.subjects.ReplaySubject
 
 
 class UserRepositoryImpl(private val AWSHelper: AWSHelper, private val localRepository: LocalRepository) : UserRepository {
@@ -19,7 +20,7 @@ class UserRepositoryImpl(private val AWSHelper: AWSHelper, private val localRepo
         val TAG: String = UserRepositoryImpl::class.java.simpleName
     }
 
-    private lateinit var loginSubject: PublishSubject<String>
+    private lateinit var loginSubject: ReplaySubject<Boolean>
     private lateinit var checkLoggedInSubject: PublishSubject<String>
     private lateinit var registerSubject: PublishSubject<Boolean>
     private lateinit var verifySubject: PublishSubject<Boolean>
@@ -32,7 +33,7 @@ class UserRepositoryImpl(private val AWSHelper: AWSHelper, private val localRepo
     private var loginHandler: AuthenticationHandler? = object : AuthenticationHandler {
         override fun onSuccess(userSession: CognitoUserSession, newDevice: CognitoDevice?) {
             Log.i(TAG, "Login success: ")
-            loginSubject.onNext(userSession.username)
+            loginSubject.onNext(true)
         }
 
         override fun getAuthenticationDetails(authenticationContinuation: AuthenticationContinuation, userId: String?) {
@@ -106,7 +107,7 @@ class UserRepositoryImpl(private val AWSHelper: AWSHelper, private val localRepo
         }
     }
 
-    val forgotPasswordHandler: ForgotPasswordHandler = object : ForgotPasswordHandler {
+    private val forgotPasswordHandler: ForgotPasswordHandler = object : ForgotPasswordHandler {
         override fun onSuccess() {
             changePasswordSubject.onNext(true)
         }
@@ -128,8 +129,8 @@ class UserRepositoryImpl(private val AWSHelper: AWSHelper, private val localRepo
         return checkLoggedInSubject
     }
 
-    override fun logIn(username: String?, password: String?): Observable<String> {
-        loginSubject = PublishSubject.create<String>()
+    override fun logIn(username: String?, password: String?): Observable<Boolean> {
+        loginSubject = ReplaySubject.create<Boolean>()
         this.password = password
         val user = AWSHelper?.userPool?.getUser(username)
         if (user?.userId != null) {
