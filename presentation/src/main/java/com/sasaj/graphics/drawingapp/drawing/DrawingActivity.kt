@@ -10,9 +10,11 @@ import android.support.v7.app.AlertDialog
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import com.sasaj.graphics.drawingapp.DrawingApplication
 import com.sasaj.graphics.drawingapp.R
 import com.sasaj.graphics.drawingapp.common.BaseActivity
+import com.sasaj.graphics.drawingapp.common.UIException
 import kotlinx.android.synthetic.main.activity_drawing.*
 import javax.inject.Inject
 
@@ -24,23 +26,7 @@ class DrawingActivity : BaseActivity() {
     private lateinit var vmDrawing: DrawingViewModel
     private lateinit var vmNavigation: DrawingNavigationViewModel
 
-    companion object {
-        val TAG: String = DrawingActivity::class.java.simpleName
-        const val DRAWING_FRAGMENT_TAG = "drawingFragment"
-        const val DIALOG_FRAGMENT_TAG = "dialogFragment"
-
-        const val ORIENTATION = "ORIENTATION"
-        const val LANDSCAPE = 0
-        const val PORTRAIT = 1
-
-
-        fun createIntent(context: Context, orientation: Int): Intent {
-            val intent = Intent(context, DrawingActivity::class.java)
-            intent.putExtra(ORIENTATION, orientation)
-            return intent
-        }
-    }
-
+    //region activity callbacks
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -57,6 +43,9 @@ class DrawingActivity : BaseActivity() {
             if (it != null) handleViewState(it)
         })
 
+        vmDrawing.errorState.observe(this, Observer {
+            if (it != null) handleError(it)
+        })
 
         vmNavigation.drawingNavigationLiveData.observe(this, Observer {
             if (it != null) handleNavigationState(it)
@@ -71,6 +60,10 @@ class DrawingActivity : BaseActivity() {
         vmDrawing.getLastBrush()
     }
 
+    override fun onDestroy() {
+        (application as DrawingApplication).releaseMainComponent()
+        super.onDestroy()
+    }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu_drawing, menu)
@@ -90,7 +83,44 @@ class DrawingActivity : BaseActivity() {
             else -> super.onOptionsItemSelected(item)
         }
     }
+    //endregion
 
+    //region view state and error handlers
+    private fun handleViewState(drawingViewState: DrawingViewState) {
+        showProgress(false)
+        when {
+            drawingViewState.initialized.not() -> return
+            drawingViewState.loading -> showProgress(true)
+            drawingViewState.brush != null -> {
+                val localBrush = drawingViewState.brush
+                hideProgress()
+                vmNavigation.drawingNavigationLiveData.value = DrawingNavigationViewState(brushUI = localBrush)
+            }
+            drawingViewState.brushSaved -> {
+                showProgress(false)
+                Log.i(TAG, "Brush saved successfully")
+            }
+            drawingViewState.bitmapSaved -> {
+                showProgress(false)
+                Log.i(TAG, "Bitmap saved successfully")
+                finish()
+            }
+        }
+    }
+
+    private fun handleError(uiException: UIException?) {
+        showProgress(false)
+        showDialogMessage("Error ", uiException!!.cause.toString())
+    }
+
+    private fun handleNavigationState(navigationViewState: DrawingNavigationViewState) {
+        navigationViewState.brushUI?.let {
+            vmDrawing.saveBrush(navigationViewState.brushUI!!)
+        }
+    }
+    //endregion
+
+    //region rendering
 
     private fun startToolsDialog() {
         val currentBrush = (supportFragmentManager.findFragmentByTag(DRAWING_FRAGMENT_TAG) as DrawingFragment).currentBrushUI
@@ -114,38 +144,14 @@ class DrawingActivity : BaseActivity() {
     }
 
     private fun saveDrawing() {
-        vmDrawing?.saveDrawing((supportFragmentManager.findFragmentByTag(DRAWING_FRAGMENT_TAG) as DrawingFragment).bitmap)
+        vmDrawing.saveDrawing((supportFragmentManager.findFragmentByTag(DRAWING_FRAGMENT_TAG) as DrawingFragment).bitmap)
     }
-
-
-    private fun handleViewState(drawingViewState: DrawingViewState) {
-        when {
-            drawingViewState.initialized.not() -> return
-            drawingViewState.loading -> showProgress()
-            drawingViewState.brush != null -> {
-                val localBrush = drawingViewState.brush
-                hideProgress()
-                vmNavigation.drawingNavigationLiveData.value = DrawingNavigationViewState(brushUI = localBrush)
-            }
-            drawingViewState.brushSaved -> {
-                hideProgress()
-                Log.i(TAG, "Brush saved successfully")
-            }
-            drawingViewState.bitmapSaved -> {
-                hideProgress()
-                Log.i(TAG, "Bitmap saved successfully")
-                finish()
-            }
-        }
+    private fun showProgress(show: Boolean) {
+        if (show)
+            progressDrawingActivity.visibility = View.VISIBLE
+        else
+            progressDrawingActivity.visibility = View.GONE
     }
-
-
-    private fun handleNavigationState(navigationViewState: DrawingNavigationViewState) {
-        navigationViewState.brushUI?.let {
-            vmDrawing.saveBrush(navigationViewState.brushUI!!)
-        }
-    }
-
 
     private fun setScreenOrientation(orientation: Int) {
         requestedOrientation = if (orientation == PORTRAIT) {
@@ -154,10 +160,23 @@ class DrawingActivity : BaseActivity() {
             ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
         }
     }
+    //endregion
 
-    override fun onDestroy() {
-        (application as DrawingApplication).releaseMainComponent()
-        super.onDestroy()
+    companion object {
+        val TAG: String = DrawingActivity::class.java.simpleName
+        const val DRAWING_FRAGMENT_TAG = "drawingFragment"
+        const val DIALOG_FRAGMENT_TAG = "dialogFragment"
+
+        const val ORIENTATION = "ORIENTATION"
+        const val LANDSCAPE = 0
+        const val PORTRAIT = 1
+
+
+        fun createIntent(context: Context, orientation: Int): Intent {
+            val intent = Intent(context, DrawingActivity::class.java)
+            intent.putExtra(ORIENTATION, orientation)
+            return intent
+        }
     }
 }
 

@@ -41,7 +41,7 @@ class RemoteRepository(private val s3: AmazonS3Client,
                 .id("empty")
                 .title(drawing?.fileName)
                 .description(drawing?.lastModified.toString())
-                .userId(AWSHelper!!.userPool.currentUser.userId)
+                .userId(AWSHelper.userPool.currentUser.userId)
                 .fileName(drawing?.fileName)
                 .build()
 
@@ -76,7 +76,7 @@ class RemoteRepository(private val s3: AmazonS3Client,
     private val addDrawingsCallback = object : GraphQLCall.Callback<CreateDrawingMutation.Data>() {
         override fun onResponse(response: Response<CreateDrawingMutation.Data>) {
             if (response.hasErrors()) {
-                Log.i(TAG, "onResponse: error")
+                Log.e(TAG, "onResponse: error")
             } else {
                 Log.i(TAG, "onResponse: success")
             }
@@ -85,29 +85,6 @@ class RemoteRepository(private val s3: AmazonS3Client,
         override fun onFailure(e: ApolloException) {
             Log.e(TAG, "Failed to make drawings api call", e)
             Log.e(TAG, e.message)
-        }
-    }
-
-
-    private fun generatePresignedUrl(bucketName: String, objectKey: String?) {
-
-        try {
-            // Set the presigned URL to expire after one hour.
-            val expiration = java.util.Date()
-            var expTimeMillis = expiration.time
-            expTimeMillis += (1000 * 60 * 60).toLong()
-            expiration.time = expTimeMillis
-
-            val generatePresignedUrlRequest = GeneratePresignedUrlRequest(bucketName, objectKey)
-                    .withMethod(HttpMethod.GET)
-                    .withExpiration(expiration)
-            val url = s3.generatePresignedUrl(generatePresignedUrlRequest)
-
-            Log.e(TAG, "Pre-Signed URL: " + url.toString())
-        } catch (e: AmazonServiceException) {
-            // The call was transmitted successfully, but Amazon S3 couldn't process
-            // it, so it returned an error response.
-            e.printStackTrace()
         }
     }
 

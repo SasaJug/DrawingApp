@@ -4,8 +4,8 @@ import android.arch.lifecycle.MutableLiveData
 import android.util.Log
 import com.sasaj.domain.usecases.LogIn
 import com.sasaj.graphics.drawingapp.common.BaseViewModel
-import com.sasaj.graphics.drawingapp.common.UIException
 import com.sasaj.graphics.drawingapp.common.SingleLiveEvent
+import com.sasaj.graphics.drawingapp.common.UIException
 
 class LoginViewModel(private val logInUseCase: LogIn) : BaseViewModel() {
 

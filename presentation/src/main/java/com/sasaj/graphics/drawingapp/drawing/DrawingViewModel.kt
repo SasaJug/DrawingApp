@@ -11,18 +11,17 @@ import com.sasaj.domain.usecases.SaveDrawing
 import com.sasaj.graphics.drawingapp.common.BaseViewModel
 import com.sasaj.graphics.drawingapp.common.BitmapManager
 import com.sasaj.graphics.drawingapp.common.SingleLiveEvent
+import com.sasaj.graphics.drawingapp.common.UIException
 import com.sasaj.graphics.drawingapp.entities.BrushUI
 import com.sasaj.graphics.drawingapp.mappers.BrushEntityToUIMapper
 import com.sasaj.graphics.drawingapp.mappers.BrushUIToEntityMapper
-import javax.inject.Inject
 
 class DrawingViewModel(private val saveDrawing: SaveDrawing,
                        private val getBrush: GetBrush,
-                       private val saveBrush: SaveBrush): BaseViewModel() {
-
+                       private val saveBrush: SaveBrush) : BaseViewModel() {
 
     val drawingLiveData: MutableLiveData<DrawingViewState> = MutableLiveData()
-    var errorState: SingleLiveEvent<Throwable?> = SingleLiveEvent()
+    var errorState: SingleLiveEvent<UIException?> = SingleLiveEvent()
 
     init {
         drawingLiveData.value = DrawingViewState()
@@ -42,7 +41,7 @@ class DrawingViewModel(private val saveDrawing: SaveDrawing,
                         },
                         { e ->
                             drawingLiveData.value = drawingLiveData.value?.copy(loading = false, bitmapSaved = false)
-                            errorState.value = e
+                            errorState.value = UIException(cause = e)
                         },
                         { Log.i(TAG, "Drawing saved") }
                 )
@@ -55,14 +54,21 @@ class DrawingViewModel(private val saveDrawing: SaveDrawing,
         addDisposable(getBrush.getLastBrush()
                 .subscribe(
                         { s: Optional<Brush> ->
-                            val brushUI: BrushUI = BrushEntityToUIMapper().mapFrom(s.value!!)
-                            val newDrawingViewState = drawingLiveData.value?.copy(loading = false, brush = brushUI)
-                            drawingLiveData.value = newDrawingViewState
-                            errorState.value = null
+
+                            when {
+                                s.value != null ->{
+                                    val brushUI: BrushUI = BrushEntityToUIMapper().mapFrom(s.value!!)
+                                    val newDrawingViewState = drawingLiveData.value?.copy(loading = false, brush = brushUI)
+                                    drawingLiveData.value = newDrawingViewState
+                                }
+                                else -> {
+                                    val newDrawingViewState = drawingLiveData.value?.copy(loading = false, brush = null)
+                                    drawingLiveData.value = newDrawingViewState
+                                }
+                            }
                         },
                         { e ->
-                            drawingLiveData.value = drawingLiveData.value?.copy(loading = false)
-                            errorState.value = e
+                            errorState.value = UIException(cause = e)
                         },
                         { Log.i(TAG, "Brush retrieved") }
                 )
@@ -81,7 +87,7 @@ class DrawingViewModel(private val saveDrawing: SaveDrawing,
                         },
                         { e ->
                             drawingLiveData.value = drawingLiveData.value?.copy(loading = false, brushSaved = false)
-                            errorState.value = e
+                            errorState.value = UIException(cause = e)
                         },
                         { Log.i(TAG, "Brush saved") }
                 )

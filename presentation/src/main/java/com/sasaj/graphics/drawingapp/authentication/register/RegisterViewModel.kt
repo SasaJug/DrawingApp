@@ -43,10 +43,8 @@ class RegisterViewModel(private val signUpUseCase: SignUp) : BaseViewModel() {
                         { b: Boolean ->
                             val newRegisterViewState = registerLiveData.value?.copy(loading = false, isConfirmed = b)
                             registerLiveData.value = newRegisterViewState
-                            errorState.value = null
                         },
                         { e ->
-                            registerLiveData.value = registerLiveData.value?.copy(loading = false, isConfirmed = false)
                             errorState.value = UIException(cause = e)
                         },
                         { Log.i(TAG, "Registration started") }
