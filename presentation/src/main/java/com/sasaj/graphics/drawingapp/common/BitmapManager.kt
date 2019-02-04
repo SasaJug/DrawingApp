@@ -16,10 +16,10 @@ class BitmapManager : LocalFileManager{
 
     var bitmap : Bitmap? = null
 
-    override fun saveFileLocallyAndReturnEntity(): Drawing? {
+    override fun saveFileLocallyAndReturnEntity(directory : File): Drawing? {
         val timestamp = createTimestamp()
         val filename = "drawing_$timestamp.jpg"
-        val imageFile = getImageFile(filename)
+        val imageFile = getImageFile(filename, directory)
         val imagePath = imageFile.absolutePath
 
         val fos = FileOutputStream(imagePath)
@@ -35,32 +35,13 @@ class BitmapManager : LocalFileManager{
         }
     }
 
+    private fun getImageFile(filename : String, directory : File): File {
 
-    private fun getImageFile(filename : String): File {
-        val ext = albumStorageDir()
-        val extPath = ext.path
-        val dir = File(extPath)
-
-        if (!dir.exists()) {
-            try {
-                dir.mkdir()
-            } catch (se: SecurityException) {
-            }
-
-        }
-        val file = File(dir, filename)
+        val file = File(directory, filename)
         if (file.exists()) {
             file.delete()
         }
         file.createNewFile()
-        return file
-    }
-
-    private fun albumStorageDir(): File {
-        val file = File(Environment.getExternalStoragePublicDirectory(
-                Environment.DIRECTORY_PICTURES), "DrawingApp")
-        if (!file.mkdirs()) {
-        }
         return file
     }
 

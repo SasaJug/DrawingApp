@@ -1,5 +1,4 @@
 apply plugin: 'com.android.library'
-apply plugin: 'com.amazonaws.appsync'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
 
@@ -62,7 +61,6 @@ dependencies {
     implementation "com.amazonaws:aws-android-sdk-cognitoidentityprovider:$rootProject.ext.awsVersion"
     implementation "com.amazonaws:aws-android-sdk-s3:$rootProject.ext.awsVersion"
     implementation "com.amazonaws:aws-android-sdk-ddb:$rootProject.ext.awsVersion"
-    implementation "com.amazonaws:aws-android-sdk-appsync:$rootProject.ext.awsVersion"
 
     //Mockito
     testImplementation "org.mockito:mockito-core:$rootProject.MockitoVersion"

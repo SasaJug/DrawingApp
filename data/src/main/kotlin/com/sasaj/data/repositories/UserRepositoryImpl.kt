@@ -1,6 +1,5 @@
 package com.sasaj.data.repositories
 
-import android.util.Log
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.*
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.continuations.*
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.handlers.AuthenticationHandler
@@ -32,12 +31,10 @@ class UserRepositoryImpl(private val AWSHelper: AWSHelper, private val localRepo
 
     private var loginHandler: AuthenticationHandler? = object : AuthenticationHandler {
         override fun onSuccess(userSession: CognitoUserSession, newDevice: CognitoDevice?) {
-            Log.i(TAG, "Login success: ")
             loginSubject.onNext(true)
         }
 
         override fun getAuthenticationDetails(authenticationContinuation: AuthenticationContinuation, userId: String?) {
-            Log.i(TAG, "getAuthenticationDetails")
             if (password != null) {
                 val authenticationDetails = AuthenticationDetails(userId, password, null)
                 password = null
@@ -47,40 +44,32 @@ class UserRepositoryImpl(private val AWSHelper: AWSHelper, private val localRepo
         }
 
         override fun getMFACode(continuation: MultiFactorAuthenticationContinuation) {
-            Log.i(TAG, "getMFACode")
         }
 
         override fun authenticationChallenge(continuation: ChallengeContinuation) {
-            Log.i(TAG, "getAuthenticationChallenge")
         }
 
         override fun onFailure(exception: Exception) {
-            Log.e(TAG, "Login failure: ", exception)
             loginSubject.onError(exception)
         }
     }
 
     private var checkHandler: AuthenticationHandler? = object : AuthenticationHandler {
         override fun onSuccess(userSession: CognitoUserSession, newDevice: CognitoDevice?) {
-            Log.i(TAG, "Check logged in success: ")
             checkLoggedInSubject.onNext(userSession.username)
         }
 
         override fun getAuthenticationDetails(authenticationContinuation: AuthenticationContinuation, userId: String?) {
-            Log.i(TAG, "getAuthenticationDetails")
             checkLoggedInSubject.onNext("")
         }
 
         override fun getMFACode(continuation: MultiFactorAuthenticationContinuation) {
-            Log.i(TAG, "getMFACode")
         }
 
         override fun authenticationChallenge(continuation: ChallengeContinuation) {
-            Log.i(TAG, "getAuthenticationChallenge")
         }
 
         override fun onFailure(exception: Exception) {
-            Log.e(TAG, "Login failure: ${exception.message}")
             checkLoggedInSubject.onError(exception)
         }
     }
@@ -91,14 +80,12 @@ class UserRepositoryImpl(private val AWSHelper: AWSHelper, private val localRepo
         }
 
         override fun onFailure(exception: Exception) {
-            Log.e(TAG, "Signup Failure: ", exception)
             registerSubject.onError(exception)
         }
     }
 
     private val genericHandler = object : GenericHandler {
         override fun onSuccess() {
-            Log.i(TAG, "Verification success!")
             verifySubject.onNext(true)
         }
 
@@ -132,7 +119,7 @@ class UserRepositoryImpl(private val AWSHelper: AWSHelper, private val localRepo
     override fun logIn(username: String?, password: String?): Observable<Boolean> {
         loginSubject = ReplaySubject.create<Boolean>()
         this.password = password
-        val user = AWSHelper?.userPool?.getUser(username)
+        val user = AWSHelper.userPool.getUser(username)
         if (user?.userId != null) {
             user.getSessionInBackground(loginHandler)
         }

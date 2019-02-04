@@ -11,4 +11,11 @@ class DrawingDataToEntityMapper() : Mapper<DrawingDb, Drawing>() {
                 from.imagePath,
                 from.lastModified)
     }
+
+
+   fun mapFromList(list : List<DrawingDb>) : List<Drawing>{
+        val finalList = mutableListOf<Drawing>()
+        list.forEach{drawingDb -> finalList.add(mapFrom(drawingDb))}
+        return finalList
+    }
 }
