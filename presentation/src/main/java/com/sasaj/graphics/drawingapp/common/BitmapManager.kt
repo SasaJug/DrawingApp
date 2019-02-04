@@ -35,7 +35,6 @@ class BitmapManager : LocalFileManager{
         }
     }
 
-
     private fun getImageFile(filename : String, directory : File): File {
 
         val file = File(directory, filename)

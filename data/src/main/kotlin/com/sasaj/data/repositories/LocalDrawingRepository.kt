@@ -1,6 +1,6 @@
 package com.sasaj.data.repositories
 
-import android.util.Log
+
 import com.sasaj.data.database.AppDb
 import com.sasaj.data.mappers.DrawingDataToEntityMapper
 import com.sasaj.data.mappers.DrawingEntityToDataMapper

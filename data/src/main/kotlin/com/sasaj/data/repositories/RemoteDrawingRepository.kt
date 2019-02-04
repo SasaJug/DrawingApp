@@ -1,7 +1,5 @@
 package com.sasaj.data.repositories
 
-import android.util.Log
-import com.amazonaws.mobileconnectors.appsync.AWSAppSyncClient
 import com.amazonaws.mobileconnectors.s3.transferutility.TransferListener
 import com.amazonaws.mobileconnectors.s3.transferutility.TransferState
 import com.amazonaws.mobileconnectors.s3.transferutility.TransferUtility
@@ -28,17 +26,14 @@ class RemoteDrawingRepository(private val s3: AmazonS3Client,
         uploadObserver.setTransferListener(object : TransferListener {
             override fun onStateChanged(id: Int, state: TransferState) {
                 if (state == TransferState.COMPLETED) {
-                    Log.i(RemoteRepository.TAG, "onStateChanged: Completed")
-                } else if (state == TransferState.FAILED)
-                    Log.i(RemoteRepository.TAG, "onStateChanged: upload failed")
+                } else if (state == TransferState.FAILED) {
+                }
             }
 
             override fun onProgressChanged(id: Int, bytesCurrent: Long, bytesTotal: Long) {
-                Log.i(RemoteRepository.TAG, "onProgressChanged: $id")
             }
 
             override fun onError(id: Int, ex: Exception) {
-                Log.e(RemoteRepository.TAG, "onError: ", ex)
             }
         })
     }
@@ -52,18 +47,16 @@ class RemoteDrawingRepository(private val s3: AmazonS3Client,
         downloadObserver.setTransferListener(object : TransferListener {
             override fun onStateChanged(id: Int, state: TransferState) {
                 if (state == TransferState.COMPLETED) {
-                    Log.i(RemoteRepository.TAG, "onStateChanged: Completed")
                     downloadSubject.onNext(Drawing(fileName = drawing.fileName, imagePath = imageFile.absolutePath, lastModified = drawing.lastModified))
-                } else if (state == TransferState.FAILED)
-                    Log.i(RemoteRepository.TAG, "onStateChanged: download failed")
+                } else if (state == TransferState.FAILED) {
+
+                }
             }
 
             override fun onProgressChanged(id: Int, bytesCurrent: Long, bytesTotal: Long) {
-                Log.i(RemoteRepository.TAG, "onProgressChanged: $id")
             }
 
             override fun onError(id: Int, ex: Exception) {
-                Log.e(RemoteRepository.TAG, "onError: ", ex)
             }
         })
 

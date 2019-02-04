@@ -1,7 +1,6 @@
 package com.sasaj.data.repositories
 
 
-import android.util.Log
 import com.sasaj.domain.DrawingRepository
 import com.sasaj.domain.LocalFileManager
 import com.sasaj.domain.entities.Drawing
@@ -49,9 +48,6 @@ class DrawingRepositoryImpl(private val networkManager: NetworkManager,
             toUpload = HashSet<Drawing>(localSet)
             toUpload.removeAll(remoteSet)
 
-            Log.e(TAG,"To download: " + toDownload.toString())
-            Log.e(TAG,"To upload: " + toUpload.toString())
-
            toDownload.forEach { drawing -> remoteDrawingRepository.downloadDrawing(drawing)
                    .observeOn(Schedulers.io())
                    .subscribe(
@@ -59,9 +55,9 @@ class DrawingRepositoryImpl(private val networkManager: NetworkManager,
                        localDrawingRepository.saveDrawingToDb(d)
                    },
                    { e ->
-                       Log.e(TAG,"Error downloading file",e)
+
                    },
-                   { Log.i(TAG, "Drawing saved") }
+                   { }
            )}
 
 

@@ -29,7 +29,7 @@ class LocalRepositoryModule {
     @Provides
     @Singleton
     fun providesLocalRepository(db: AppDb): LocalRepository {
-        return LocalRepository(BrushEntityToDataMapper(), BrushDataToEntityMapper(), DrawingDataToEntityMapper(), DrawingEntityToDataMapper(), db)
+        return LocalRepository(db)
     }
 
     @Provides
