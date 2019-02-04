@@ -2,21 +2,23 @@ package com.sasaj.graphics.drawingapp.di
 
 import com.sasaj.data.remote.AWSHelper
 import com.sasaj.data.repositories.*
+import com.sasaj.domain.BrushRepository
 import com.sasaj.domain.DrawingRepository
 import com.sasaj.domain.UserRepository
+import com.sasaj.domain.usecases.NetworkManager
 import dagger.Module
 import dagger.Provides
-import dagger.Reusable
 import javax.inject.Singleton
 
 @Module
 class RepositoryModule {
 
-
     @Provides
     @Singleton
-    fun providesDrawingRepository(localRepository: LocalRepository, remoteRepository: RemoteRepository): DrawingRepository {
-        return DrawingRepositoryImpl(localRepository, remoteRepository)
+    fun providesDrawingRepository(networkManager: NetworkManager,
+                                  localDrawingRepository: LocalDrawingRepository,
+                                  remoteDrawingRepository: RemoteDrawingRepository): DrawingRepository {
+        return DrawingRepositoryImpl(networkManager, localDrawingRepository, remoteDrawingRepository)
     }
 
     @Provides
@@ -25,10 +27,13 @@ class RepositoryModule {
         return UserRepositoryImpl(awsHelper, localRepository)
     }
 
+
     @Provides
     @Singleton
-    fun providesBrushRepository(localRepository: LocalRepository): com.sasaj.domain.BrushRepository {
-        return BrushRepositoryImpl(localRepository)
+    fun providesBrushRepository(localBrushRepository: LocalBrushRepository): BrushRepository {
+        return BrushRepositoryImpl(localBrushRepository)
     }
+
+
 
 }

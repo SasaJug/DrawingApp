@@ -132,7 +132,7 @@ class UserRepositoryImpl(private val AWSHelper: AWSHelper, private val localRepo
     override fun logIn(username: String?, password: String?): Observable<Boolean> {
         loginSubject = ReplaySubject.create<Boolean>()
         this.password = password
-        val user = AWSHelper?.userPool?.getUser(username)
+        val user = AWSHelper.userPool.getUser(username)
         if (user?.userId != null) {
             user.getSessionInBackground(loginHandler)
         }

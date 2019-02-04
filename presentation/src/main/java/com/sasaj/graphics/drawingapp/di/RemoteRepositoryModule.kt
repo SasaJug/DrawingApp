@@ -1,26 +1,23 @@
 package com.sasaj.graphics.drawingapp.di
 
 import android.content.Context
+import android.os.Environment
 import com.amazonaws.mobileconnectors.appsync.AWSAppSyncClient
 import com.amazonaws.mobileconnectors.s3.transferutility.TransferUtility
 import com.amazonaws.regions.Region
 import com.amazonaws.services.s3.AmazonS3Client
 import com.sasaj.data.remote.AWSHelper
 import com.sasaj.data.remote.AppSyncClientFactory
+import com.sasaj.data.repositories.RemoteDrawingRepository
 import com.sasaj.data.repositories.RemoteRepository
 import dagger.Module
 import dagger.Provides
 import dagger.Reusable
+import java.io.File
 import javax.inject.Singleton
 
 @Module
 class RemoteRepositoryModule {
-
-    @Provides
-    @Singleton
-    fun providesCognitoHelper(context: Context): AWSHelper {
-        return AWSHelper(context)
-    }
 
     @Provides
     @Singleton
@@ -50,11 +47,10 @@ class RemoteRepositoryModule {
 
     @Provides
     @Reusable
-    fun providesRemoteRepository(s3: AmazonS3Client,
-                                 transferUtility: TransferUtility,
-                                 appSyncClient: AWSAppSyncClient,
-                                 awsHelper: AWSHelper): RemoteRepository {
-        return RemoteRepository(s3, transferUtility, appSyncClient, awsHelper)
+    fun providesRemoteDrawingRepository(s3: AmazonS3Client,
+                                        transferUtility: TransferUtility,
+                                        awsHelper: AWSHelper): RemoteDrawingRepository {
+        return RemoteDrawingRepository(s3, transferUtility, awsHelper)
     }
 
 }

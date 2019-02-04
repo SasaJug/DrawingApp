@@ -1,25 +1,30 @@
 package com.sasaj.data.repositories
 
 
+import android.util.Log
 import com.sasaj.domain.DrawingRepository
 import com.sasaj.domain.LocalFileManager
 import com.sasaj.domain.entities.Drawing
+import com.sasaj.domain.usecases.NetworkManager
 import io.reactivex.Observable
+import io.reactivex.schedulers.Schedulers
 
-class DrawingRepositoryImpl(private val localRepository : LocalRepository,
-                            private val remoteRepository: RemoteRepository) : DrawingRepository{
+class DrawingRepositoryImpl(private val networkManager: NetworkManager,
+                            private val localDrawingRepository: LocalDrawingRepository,
+                            private val remoteDrawingRepository: RemoteDrawingRepository) : DrawingRepository {
 
-    override fun saveDrawing(localFileManager: LocalFileManager): Observable<Boolean>{
+    override fun saveDrawing(localFileManager: LocalFileManager): Observable<Boolean> {
         return Observable.fromCallable {
-            val drawing = localFileManager.saveFileLocallyAndReturnEntity()
-            localRepository.saveDrawing(drawing)
-            remoteRepository.uploadWithTransferUtility(drawing!!)
+            val drawing = localDrawingRepository.saveDrawing(localFileManager)
+            if (networkManager.isConnected()) {
+                remoteDrawingRepository.uploadDrawing(drawing)
+            }
             true
         }
     }
 
     override fun getDrawings(): Observable<List<Drawing>> {
-        return localRepository.getDrawings()
+        return localDrawingRepository.getDrawings()
     }
 
     override fun getDrawingDetails(id: Long): Observable<Drawing> {
@@ -28,7 +33,45 @@ class DrawingRepositoryImpl(private val localRepository : LocalRepository,
 
     override fun syncDrawings(): Observable<Boolean> {
         return Observable.fromCallable {
-            remoteRepository.syncDrawings(localRepository)
+
+            var toUpload = hashSetOf<Drawing>()
+            var toDownload = hashSetOf<Drawing>()
+
+            val localDrawings = localDrawingRepository.getDrawingsFromDirectory()
+            val remoteDrawings = remoteDrawingRepository.getListOfRemoteDrawings().blockingFirst()
+
+            val localSet = localDrawings.toHashSet()
+            val remoteSet = remoteDrawings.toHashSet()
+
+            toDownload = HashSet<Drawing>(remoteSet)
+            toDownload.removeAll(localSet)
+
+            toUpload = HashSet<Drawing>(localSet)
+            toUpload.removeAll(remoteSet)
+
+            Log.e(TAG,"To download: " + toDownload.toString())
+            Log.e(TAG,"To upload: " + toUpload.toString())
+
+           toDownload.forEach { drawing -> remoteDrawingRepository.downloadDrawing(drawing)
+                   .observeOn(Schedulers.io())
+                   .subscribe(
+                   { d: Drawing ->
+                       localDrawingRepository.saveDrawingToDb(d)
+                   },
+                   { e ->
+                       Log.e(TAG,"Error downloading file",e)
+                   },
+                   { Log.i(TAG, "Drawing saved") }
+           )}
+
+
+            toUpload.forEach { drawing -> remoteDrawingRepository.uploadDrawing(drawing)}
+
+            true
         }
+    }
+
+    companion object {
+        private val TAG = DrawingRepositoryImpl::class.java.simpleName
     }
 }
