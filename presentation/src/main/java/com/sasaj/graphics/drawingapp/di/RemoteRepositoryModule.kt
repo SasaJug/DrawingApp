@@ -1,26 +1,18 @@
 package com.sasaj.graphics.drawingapp.di
 
 import android.content.Context
-import com.amazonaws.mobileconnectors.appsync.AWSAppSyncClient
 import com.amazonaws.mobileconnectors.s3.transferutility.TransferUtility
 import com.amazonaws.regions.Region
 import com.amazonaws.services.s3.AmazonS3Client
 import com.sasaj.data.remote.AWSHelper
-import com.sasaj.data.remote.AppSyncClientFactory
 import com.sasaj.data.repositories.RemoteDrawingRepository
 import dagger.Module
 import dagger.Provides
 import dagger.Reusable
-import javax.inject.Singleton
 
 @Module
 class RemoteRepositoryModule {
 
-    @Provides
-    @Singleton
-    fun providesAppSyncClient(context: Context, awsHelper: AWSHelper): AWSAppSyncClient {
-        return AppSyncClientFactory(context, awsHelper).client
-    }
 
     @Provides
     @Reusable

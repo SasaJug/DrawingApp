@@ -7,7 +7,6 @@ import com.sasaj.data.mappers.DrawingEntityToDataMapper
 import com.sasaj.data.remote.AWSHelper
 import com.sasaj.domain.LocalFileManager
 import com.sasaj.domain.entities.Drawing
-import com.sasaj.domain.entities.Optional
 import io.reactivex.Observable
 
 class LocalDrawingRepository(private val awsHelper: AWSHelper,
@@ -17,13 +16,6 @@ class LocalDrawingRepository(private val awsHelper: AWSHelper,
 
     fun getDrawings(): Observable<List<Drawing>> {
         return db.drawingDao().getAll().map { list -> drawingDataToEntityMapper.mapFromList(list) }.toObservable()
-    }
-
-    fun getDrawingByFilename(filename: String): Optional<Drawing> {
-        val drawingDb = db.drawingDao().getByFilename(filename)
-        drawingDb?.let {
-            return Optional.of(drawingDataToEntityMapper.mapFrom(it))
-        } ?: return Optional.empty()
     }
 
     fun getDrawingsFromDirectory(): List<Drawing> {
@@ -45,13 +37,13 @@ class LocalDrawingRepository(private val awsHelper: AWSHelper,
     fun saveDrawing(localFileManager: LocalFileManager): Drawing {
         val drawing = localFileManager.saveFileLocallyAndReturnEntity(awsHelper.storageDirectory())
         val drawingDb = drawingEntityToDataMapper.mapFrom(drawing!!)
-        val drawingId = db.drawingDao().insert(drawingDb)
+        db.drawingDao().insert(drawingDb)
         return drawing
     }
 
     fun saveDrawingToDb(drawing: Drawing): Drawing {
-        val drawingDb = drawingEntityToDataMapper.mapFrom(drawing!!)
-        val drawingId = db.drawingDao().insert(drawingDb)
+        val drawingDb = drawingEntityToDataMapper.mapFrom(drawing)
+        db.drawingDao().insert(drawingDb)
         return drawing
     }
 
