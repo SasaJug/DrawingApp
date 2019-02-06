@@ -1,6 +1,7 @@
 package com.sasaj.graphics.drawingapp.di
 
-import com.sasaj.data.remote.AWSHelper
+import com.sasaj.data.aws.AWSHelper
+import com.sasaj.graphics.drawingapp.common.AWSHelperImpl
 import com.sasaj.data.repositories.*
 import com.sasaj.domain.BrushRepository
 import com.sasaj.domain.DrawingRepository

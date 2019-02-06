@@ -2,11 +2,12 @@ package com.sasaj.graphics.drawingapp.di
 
 import android.content.Context
 import android.net.ConnectivityManager
+import com.sasaj.data.aws.AWSHelper
 import com.sasaj.data.mappers.BrushDataToEntityMapper
 import com.sasaj.data.mappers.BrushEntityToDataMapper
 import com.sasaj.data.mappers.DrawingDataToEntityMapper
 import com.sasaj.data.mappers.DrawingEntityToDataMapper
-import com.sasaj.data.remote.AWSHelper
+import com.sasaj.graphics.drawingapp.common.AWSHelperImpl
 import com.sasaj.domain.usecases.NetworkManager
 import com.sasaj.graphics.drawingapp.common.NetworkManagerImpl
 import com.sasaj.graphics.drawingapp.mappers.DrawingEntityToUIMapper
@@ -38,7 +39,7 @@ class ApplicationModule(val context: Context) {
     @Provides
     @Singleton
     fun providesAWSHelper(context: Context): AWSHelper {
-        return AWSHelper(context)
+        return AWSHelperImpl(context)
     }
 
     @Provides

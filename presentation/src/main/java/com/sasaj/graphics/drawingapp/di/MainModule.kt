@@ -1,5 +1,6 @@
 package com.sasaj.graphics.drawingapp.di
 
+import com.sasaj.domain.BrushRepository
 import com.sasaj.domain.DrawingRepository
 import com.sasaj.domain.UserRepository
 import com.sasaj.domain.usecases.*
@@ -15,13 +16,13 @@ class MainModule {
 
     @Provides
     @MainScope
-    fun provideGetBrushUseCase(brushRepository: com.sasaj.domain.BrushRepository): GetBrush {
+    fun provideGetBrushUseCase(brushRepository: BrushRepository): GetBrush {
         return GetBrush(ASyncTransformer(), brushRepository)
     }
 
     @Provides
     @MainScope
-    fun provideSaveBrushUseCase(brushRepository: com.sasaj.domain.BrushRepository): SaveBrush {
+    fun provideSaveBrushUseCase(brushRepository: BrushRepository): SaveBrush {
         return SaveBrush(ASyncTransformer(), brushRepository)
     }
 
