@@ -6,7 +6,6 @@ import android.arch.persistence.room.OnConflictStrategy
 import android.arch.persistence.room.Query
 import com.sasaj.data.entities.DrawingDb
 import io.reactivex.Flowable
-import io.reactivex.Observable
 
 @Dao
 interface DrawingDao {
