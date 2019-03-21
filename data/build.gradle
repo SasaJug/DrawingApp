@@ -52,15 +52,15 @@ dependencies {
     implementation "io.reactivex.rxjava2:rxjava:$rootProject.ext.rxJavaVersion"
 
     //Room
-    implementation "android.arch.persistence.room:runtime:$rootProject.archVersion"
-    implementation "android.arch.persistence.room:rxjava2:$rootProject.archVersion"
+    api "android.arch.persistence.room:runtime:$rootProject.archVersion"
+    api "android.arch.persistence.room:rxjava2:$rootProject.archVersion"
     kapt "android.arch.persistence.room:compiler:$rootProject.archVersion"
 
     //aws
-    implementation "com.amazonaws:aws-android-sdk-core:$rootProject.ext.awsVersion"
-    implementation "com.amazonaws:aws-android-sdk-cognitoidentityprovider:$rootProject.ext.awsVersion"
-    implementation "com.amazonaws:aws-android-sdk-s3:$rootProject.ext.awsVersion"
-    implementation "com.amazonaws:aws-android-sdk-ddb:$rootProject.ext.awsVersion"
+    api "com.amazonaws:aws-android-sdk-core:$rootProject.ext.awsVersion"
+    api "com.amazonaws:aws-android-sdk-cognitoidentityprovider:$rootProject.ext.awsVersion"
+    api "com.amazonaws:aws-android-sdk-s3:$rootProject.ext.awsVersion"
+    api "com.amazonaws:aws-android-sdk-ddb:$rootProject.ext.awsVersion"
 
     //Mockito
     testImplementation "org.mockito:mockito-core:$rootProject.MockitoVersion"

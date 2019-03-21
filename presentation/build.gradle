@@ -68,10 +68,6 @@ dependencies {
     annotationProcessor "android.arch.lifecycle:compiler:$rootProject.ext.archRuntimeVersion"
     androidTestImplementation "android.arch.core:core-testing:1.1.1"
 
-    //Room
-    implementation "android.arch.persistence.room:runtime:$rootProject.archVersion"
-    implementation "android.arch.persistence.room:rxjava2:$rootProject.archVersion"
-    kapt "android.arch.persistence.room:compiler:$rootProject.archVersion"
 
     //Dagger
     implementation "com.google.dagger:dagger:$rootProject.ext.daggerVersion"
@@ -80,12 +76,6 @@ dependencies {
     annotationProcessor "com.google.dagger:dagger-compiler:$rootProject.ext.daggerVersion"
     kapt "com.google.dagger:dagger-compiler:$rootProject.ext.daggerVersion"
     implementation "javax.annotation:jsr250-api:$rootProject.ext.jsr250Version"
-
-    //aws
-    implementation "com.amazonaws:aws-android-sdk-core:$rootProject.ext.awsVersion"
-    implementation "com.amazonaws:aws-android-sdk-cognitoidentityprovider:$rootProject.ext.awsVersion"
-    implementation "com.amazonaws:aws-android-sdk-s3:$rootProject.ext.awsVersion"
-    implementation "com.amazonaws:aws-android-sdk-ddb:$rootProject.ext.awsVersion"
 
     //DebugDb
     debugImplementation "com.amitshekhar.android:debug-db:$rootProject.debugDbVersion"
