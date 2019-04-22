@@ -39,6 +39,7 @@ class AuthenticationActivity : BaseActivity() {
                     .replace(R.id.container, LoginFragment(), "login")
                     .commitNow()
         }
+        supportActionBar?.setTitle(R.string.login_title)
     }
 
     private fun handleResponse(navigationState: AuthenticationNavigationViewState?) {
@@ -69,6 +70,7 @@ class AuthenticationActivity : BaseActivity() {
         supportFragmentManager.beginTransaction()
                 .replace(R.id.container, RegisterFragment(), "register")
                 .commitNow()
+        supportActionBar?.setTitle(R.string.register_title)
     }
 
     private fun goToForgotPasswordFragment() {
@@ -76,6 +78,7 @@ class AuthenticationActivity : BaseActivity() {
         supportFragmentManager.beginTransaction()
                 .replace(R.id.container, ForgotPasswordFragment(), "forgotPassword")
                 .commitNow()
+        supportActionBar?.setTitle(R.string.forgot_password_title)
     }
 
     private fun goToVerify() {
@@ -83,6 +86,7 @@ class AuthenticationActivity : BaseActivity() {
         supportFragmentManager.beginTransaction()
                 .replace(R.id.container, VerifyFragment(), "verify")
                 .commitNow()
+        supportActionBar?.setTitle(R.string.enter_code_title)
     }
 
     private fun goToNewPassword(username: String) {
@@ -90,6 +94,7 @@ class AuthenticationActivity : BaseActivity() {
         supportFragmentManager.beginTransaction()
                 .replace(R.id.container, NewPasswordFragment.newInstance(username), "newPassword")
                 .commitNow()
+        supportActionBar?.setTitle(R.string.enter_new_password_title)
     }
 
     companion object {

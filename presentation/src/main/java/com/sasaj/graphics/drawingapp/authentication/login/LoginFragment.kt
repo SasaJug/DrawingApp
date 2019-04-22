@@ -13,8 +13,10 @@ import android.view.View.VISIBLE
 import android.view.ViewGroup
 import com.sasaj.graphics.drawingapp.DrawingApplication
 import com.sasaj.graphics.drawingapp.R
+import com.sasaj.graphics.drawingapp.authentication.AuthenticationActivity
 import com.sasaj.graphics.drawingapp.authentication.AuthenticationNavigationViewModel
 import com.sasaj.graphics.drawingapp.common.UIException
+import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_login.*
 import javax.inject.Inject
 
