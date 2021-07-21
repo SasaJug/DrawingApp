@@ -1,19 +1,19 @@
 package com.sasaj.graphics.drawingapp.main
 
-import android.arch.lifecycle.Observer
-import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.content.res.Configuration
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.support.v4.app.Fragment
-import android.support.v4.content.FileProvider
-import android.support.v7.widget.GridLayoutManager
-import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.FileProvider
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.sasaj.graphics.drawingapp.BuildConfig
 import com.sasaj.graphics.drawingapp.R
 import com.sasaj.graphics.drawingapp.entities.DrawingUI
@@ -63,14 +63,14 @@ class DrawingsListFragment : Fragment() {
         val root = inflater.inflate(R.layout.fragment_drawings_list, container, false)
         drawingsList = root.findViewById(R.id.drawings_grid)
 
-        val orientation = activity!!.resources.configuration.orientation
+        val orientation = requireActivity().resources.configuration.orientation
         if (orientation == Configuration.ORIENTATION_PORTRAIT) {
             drawingsList.layoutManager = GridLayoutManager(activity, NUMBER_OF_COLUMNS_PORTRAIT)
         } else {
             drawingsList.layoutManager = GridLayoutManager(activity, NUMBER_OF_COLUMNS_LANDSCAPE)
         }
 
-        adapter = DrawingsListAdapter(activity!!, ArrayList(0), drawingItemListener)
+        adapter = DrawingsListAdapter(requireActivity(), ArrayList(0), drawingItemListener)
         drawingsList.adapter = adapter
 
         return root
@@ -79,7 +79,7 @@ class DrawingsListFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        vm?.drawingsListLiveData?.observe(this, Observer { drawingListNavigationViewState -> handleViewState(drawingListNavigationViewState!!) })
+        vm?.drawingsListLiveData?.observe(viewLifecycleOwner, Observer { drawingListNavigationViewState -> handleViewState(drawingListNavigationViewState!!) })
     }
 
     private fun handleViewState(drawingsListNavigationViewState: DrawingsListNavigationViewState) {

@@ -1,7 +1,7 @@
 package com.sasaj.graphics.drawingapp.main
 
-import android.arch.lifecycle.MutableLiveData
 import android.util.Log
+import androidx.lifecycle.MutableLiveData
 import com.sasaj.domain.entities.Drawing
 import com.sasaj.domain.usecases.GetDrawings
 import com.sasaj.domain.usecases.SignOut
@@ -10,9 +10,11 @@ import com.sasaj.graphics.drawingapp.common.BaseViewModel
 import com.sasaj.graphics.drawingapp.common.SingleLiveEvent
 import com.sasaj.graphics.drawingapp.entities.DrawingUI
 import com.sasaj.graphics.drawingapp.mappers.DrawingEntityToUIMapper
+import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
-class MainViewModel(private val signOutUseCase: SignOut,
+
+class MainViewModel @Inject constructor(private val signOutUseCase: SignOut,
                     private val syncDrawings: SyncDrawings,
                     private val getDrawings: GetDrawings,
                     private val drawingEntityToUIMapper: DrawingEntityToUIMapper) : BaseViewModel() {

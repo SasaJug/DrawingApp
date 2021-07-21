@@ -1,12 +1,11 @@
 package com.sasaj.graphics.drawingapp.main.adapter
 
 import android.content.Context
-import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import com.sasaj.domain.entities.Drawing
+import androidx.recyclerview.widget.RecyclerView
 import com.sasaj.graphics.drawingapp.R
 import com.sasaj.graphics.drawingapp.entities.DrawingUI
 import com.sasaj.graphics.drawingapp.main.DrawingsListFragment
@@ -18,7 +17,8 @@ import java.util.*
  * Created by sjugurdzija on 4/22/2017.
  */
 
-class DrawingsListAdapter(context: Context, list: List<DrawingUI>, private val listener: DrawingsListFragment.DrawingItemListener) : RecyclerView.Adapter<DrawingsListAdapter.ViewHolder>() {
+class DrawingsListAdapter(context: Context, list: List<DrawingUI>,
+                          private val listener: DrawingsListFragment.DrawingItemListener) : RecyclerView.Adapter<DrawingsListAdapter.ViewHolder>() {
     private var data: MutableList<DrawingUI> = ArrayList()
     private val inflater: LayoutInflater = LayoutInflater.from(context)
 

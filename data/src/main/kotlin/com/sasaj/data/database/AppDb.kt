@@ -1,7 +1,7 @@
 package com.sasaj.data.database
 
-import android.arch.persistence.room.Database
-import android.arch.persistence.room.RoomDatabase
+import androidx.room.Database
+import androidx.room.RoomDatabase
 import com.sasaj.data.database.dao.BrushDao
 import com.sasaj.data.database.dao.DrawingDao
 import com.sasaj.data.entities.BrushDb

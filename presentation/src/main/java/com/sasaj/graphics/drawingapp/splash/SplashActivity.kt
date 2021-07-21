@@ -2,25 +2,27 @@ package com.sasaj.graphics.drawingapp.splash
 
 
 import android.Manifest
-import android.arch.lifecycle.Observer
-import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
-import android.support.v4.app.ActivityCompat
-import android.support.v4.content.ContextCompat
 import android.util.Log
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import com.sasaj.graphics.drawingapp.DrawingApplication
 import com.sasaj.graphics.drawingapp.common.BaseActivity
 import com.sasaj.graphics.drawingapp.authentication.AuthenticationActivity
 import com.sasaj.graphics.drawingapp.main.MainActivity
+import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 /**
  * Created by sjugurdzija on 4/22/2017
  */
 
+@AndroidEntryPoint
 class SplashActivity : BaseActivity() {
 
     @Inject
@@ -31,7 +33,7 @@ class SplashActivity : BaseActivity() {
     public override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        (application as DrawingApplication).createSplashComponent().inject(this)
+//        (application as DrawingApplication).createSplashComponent().inject(this)
 
         vm = ViewModelProviders.of(this, splashVMFactory).get(SplashViewModel::class.java)
         vm.getSplashLiveData().observe(this, Observer {
@@ -108,10 +110,10 @@ class SplashActivity : BaseActivity() {
         showDialogMessage("Error checking logIn status", throwable.toString())
     }
 
-    override fun onDestroy() {
-        (application as DrawingApplication).releaseSplashComponent()
-        super.onDestroy()
-    }
+//    override fun onDestroy() {
+//        (application as DrawingApplication).releaseSplashComponent()
+//        super.onDestroy()
+//    }
 
 
     companion object {

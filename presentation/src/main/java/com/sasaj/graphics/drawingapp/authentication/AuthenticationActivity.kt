@@ -1,10 +1,10 @@
 package com.sasaj.graphics.drawingapp.authentication
 
-import android.arch.lifecycle.Observer
-import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import com.sasaj.graphics.drawingapp.R
 import com.sasaj.graphics.drawingapp.authentication.changepassword.ForgotPasswordFragment
 import com.sasaj.graphics.drawingapp.authentication.changepassword.NewPasswordFragment
@@ -14,9 +14,10 @@ import com.sasaj.graphics.drawingapp.authentication.register.VerifyFragment
 import com.sasaj.graphics.drawingapp.common.BaseActivity
 import com.sasaj.graphics.drawingapp.common.UIException
 import com.sasaj.graphics.drawingapp.main.MainActivity
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_main.*
 
-
+@AndroidEntryPoint
 class AuthenticationActivity : BaseActivity() {
 
     private lateinit var vm: AuthenticationNavigationViewModel

@@ -1,5 +1,6 @@
 package com.sasaj.graphics.drawingapp.di
 
+import android.app.Application
 import com.sasaj.domain.BrushRepository
 import com.sasaj.domain.DrawingRepository
 import com.sasaj.domain.UserRepository
@@ -10,52 +11,48 @@ import com.sasaj.graphics.drawingapp.main.MainVMFactory
 import com.sasaj.graphics.drawingapp.mappers.DrawingEntityToUIMapper
 import dagger.Module
 import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.android.components.ActivityComponent
 
 @Module
+@InstallIn(ActivityComponent::class)
 class MainModule {
 
     @Provides
-    @MainScope
     fun provideGetBrushUseCase(brushRepository: BrushRepository): GetBrush {
         return GetBrush(ASyncTransformer(), brushRepository)
     }
 
     @Provides
-    @MainScope
     fun provideSaveBrushUseCase(brushRepository: BrushRepository): SaveBrush {
         return SaveBrush(ASyncTransformer(), brushRepository)
     }
 
 
     @Provides
-    @MainScope
     fun provideSaveDrawingUseCase(drawingRepository: DrawingRepository): SaveDrawing {
         return SaveDrawing(ASyncTransformer(), drawingRepository)
     }
 
 
     @Provides
-    @MainScope
     fun provideGetDrawingsUseCase(drawingRepository: DrawingRepository): GetDrawings {
         return GetDrawings(ASyncTransformer(), drawingRepository)
     }
 
 
     @Provides
-    @MainScope
     fun provideSyncDrawingsUseCase(drawingRepository: DrawingRepository): SyncDrawings {
         return SyncDrawings(ASyncTransformer(), drawingRepository)
     }
 
     @Provides
-    @MainScope
     fun provideSignOutUseCase(userRepository: UserRepository): SignOut {
         return SignOut(ASyncTransformer(), userRepository)
     }
 
 
     @Provides
-    @MainScope
     fun provideMainVMFactory(signOutUseCase: SignOut,
                              syncDrawingsUseCase: SyncDrawings,
                              getDrawingsUseCase : GetDrawings,
@@ -65,7 +62,6 @@ class MainModule {
 
 
     @Provides
-    @MainScope
     fun provideDrawingVMFactory(saveDrawingUseCase: SaveDrawing,
                                 getBrushUseCase: GetBrush,
                                 saveBrushUseCase: SaveBrush): DrawingVMFactory {

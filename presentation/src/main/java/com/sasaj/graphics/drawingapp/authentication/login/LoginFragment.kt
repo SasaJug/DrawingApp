@@ -1,23 +1,24 @@
 package com.sasaj.graphics.drawingapp.authentication.login
 
-
-import android.arch.lifecycle.Observer
-import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
-import android.support.v4.app.Fragment
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import com.sasaj.graphics.drawingapp.DrawingApplication
 import com.sasaj.graphics.drawingapp.R
 import com.sasaj.graphics.drawingapp.authentication.AuthenticationNavigationViewModel
 import com.sasaj.graphics.drawingapp.common.UIException
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_login.*
 import javax.inject.Inject
 
+@AndroidEntryPoint
 class LoginFragment : Fragment() {
 
     @Inject
@@ -30,7 +31,7 @@ class LoginFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        (activity?.application as DrawingApplication).createLoginComponent().inject(this)
+//        (activity?.application as DrawingApplication).createLoginComponent().inject(this)
 
         vmLogin = ViewModelProviders.of(this, loginVMFactory).get(LoginViewModel::class.java)
         activity?.let {
@@ -40,7 +41,7 @@ class LoginFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        vmLogin.loginLiveData.observe(this, Observer {
+        vmLogin.loginLiveData.observe(viewLifecycleOwner, Observer {
             if (it != null) handleViewState(it)
         })
         vmLogin.errorState.observe(this, Observer { customUIException ->
@@ -69,10 +70,10 @@ class LoginFragment : Fragment() {
         }
     }
 
-    override fun onDestroy() {
-        (activity?.application as DrawingApplication).releaseLoginComponent()
-        super.onDestroy()
-    }
+//    override fun onDestroy() {
+//        (activity?.application as DrawingApplication).releaseLoginComponent()
+//        super.onDestroy()
+//    }
     //endregion
 
     //region view state and error handlers

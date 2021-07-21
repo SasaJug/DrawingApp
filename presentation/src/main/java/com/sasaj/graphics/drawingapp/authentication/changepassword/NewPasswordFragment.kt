@@ -1,20 +1,21 @@
 package com.sasaj.graphics.drawingapp.authentication.changepassword
 
-import android.arch.lifecycle.Observer
-import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
-import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import com.sasaj.graphics.drawingapp.DrawingApplication
 import com.sasaj.graphics.drawingapp.R
 import com.sasaj.graphics.drawingapp.authentication.AuthenticationNavigationViewModel
 import com.sasaj.graphics.drawingapp.common.UIException
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_new_password.*
 import javax.inject.Inject
 
-
+@AndroidEntryPoint
 class NewPasswordFragment : Fragment() {
 
     @Inject
@@ -29,7 +30,7 @@ class NewPasswordFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        (activity?.application as DrawingApplication).createForgotPasswordComponent().inject(this)
+//        (activity?.application as DrawingApplication).createForgotPasswordComponent().inject(this)
 
         arguments?.let {
             username = it.getString(USERNAME)
@@ -44,7 +45,7 @@ class NewPasswordFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        vmForgotPassword.forgotPasswordLiveData.observe(this, Observer {
+        vmForgotPassword.forgotPasswordLiveData.observe(viewLifecycleOwner, Observer {
             if (it != null) handleViewState(it)
         })
         vmForgotPassword.errorState.observe(this, Observer { uiException ->
@@ -69,10 +70,10 @@ class NewPasswordFragment : Fragment() {
         }
     }
 
-    override fun onDestroy() {
-        (activity?.application as DrawingApplication).releaseForgotPasswordComponent()
-        super.onDestroy()
-    }
+//    override fun onDestroy() {
+//        (activity?.application as DrawingApplication).releaseForgotPasswordComponent()
+//        super.onDestroy()
+//    }
 //endregion
 
     //region view state and error handlers

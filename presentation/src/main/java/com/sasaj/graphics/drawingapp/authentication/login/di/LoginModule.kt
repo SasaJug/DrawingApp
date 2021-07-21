@@ -7,18 +7,19 @@ import com.sasaj.graphics.drawingapp.authentication.login.LoginVMFactory
 import com.sasaj.graphics.drawingapp.common.ASyncTransformer
 import dagger.Module
 import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.components.SingletonComponent
 
 @Module
+@InstallIn(SingletonComponent::class)
 class LoginModule {
 
     @Provides
-    @LoginScope
     fun provideLoginUseCase(userRepository: UserRepository): LogIn {
         return LogIn(ASyncTransformer(), userRepository)
     }
 
     @Provides
-    @LoginScope
     fun provideLoginVMFactory(loginUseCase: LogIn): LoginVMFactory {
         return LoginVMFactory(loginUseCase)
     }

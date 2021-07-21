@@ -1,7 +1,7 @@
 package com.sasaj.graphics.drawingapp.di
 
-import android.arch.persistence.room.Room
 import android.content.Context
+import androidx.room.Room
 import com.sasaj.data.aws.AWSHelper
 import com.sasaj.data.database.AppDb
 import com.sasaj.data.mappers.BrushDataToEntityMapper
@@ -13,25 +13,26 @@ import com.sasaj.data.repositories.LocalDrawingRepository
 import com.sasaj.data.repositories.LocalRepository
 import dagger.Module
 import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
+import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
 @Module
+@InstallIn(SingletonComponent::class)
 class LocalRepositoryModule {
 
     @Provides
-    @Singleton
-    fun providesAppDatabase(context: Context): AppDb {
+    fun providesAppDatabase(@ApplicationContext context: Context): AppDb {
         return Room.databaseBuilder(context, AppDb::class.java, "DrawingAppDb").fallbackToDestructiveMigration().build()
     }
 
     @Provides
-    @Singleton
     fun providesLocalRepository(db: AppDb): LocalRepository {
         return LocalRepository(db)
     }
 
     @Provides
-    @Singleton
     fun providesLocalDrawingRepository(awsHelper: AWSHelper,
                                        drawingDataToEntityMapper: DrawingDataToEntityMapper,
                                        drawingEntityToDataMapper: DrawingEntityToDataMapper,
@@ -40,7 +41,6 @@ class LocalRepositoryModule {
     }
 
     @Provides
-    @Singleton
     fun providesLocalBrushRepository(brushEntityToDataMapper: BrushEntityToDataMapper,
                                      brushDataToEntityMapper: BrushDataToEntityMapper,
                                      db: AppDb): LocalBrushRepository {

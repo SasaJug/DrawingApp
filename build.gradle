@@ -1,5 +1,6 @@
 buildscript {
-    ext.kotlin_version = '1.2.50'
+    ext.kotlin_version = '1.3.72'
+    ext.hilt_version = '2.36'
 
     repositories {
         jcenter()
@@ -7,8 +8,9 @@ buildscript {
         google()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.1.3'
+        classpath 'com.android.tools.build:gradle:4.2.2'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath "com.google.dagger:hilt-android-gradle-plugin:$hilt_version"
     }
 }
 
@@ -27,12 +29,12 @@ task clean(type: Delete) {
 ext {
     // Sdk and tools
     minSdkVersion = 21
-    targetSdkVersion = 27
-    compileSdkVersion = 27
-    buildToolsVersion = '27.0.3'
+    targetSdkVersion = 28
+    compileSdkVersion = 28
+    buildToolsVersion = '28.0.3'
 
     // App dependencies
-    supportLibraryVersion = '27.1.1'
+//    supportLibraryVersion = '27.1.1'
     daggerVersion = '2.15'
     jsr250Version = '1.0'
     constraintLayoutVersion = '1.1.2'

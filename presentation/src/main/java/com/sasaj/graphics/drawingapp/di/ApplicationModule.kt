@@ -13,20 +13,18 @@ import com.sasaj.graphics.drawingapp.common.NetworkManagerImpl
 import com.sasaj.graphics.drawingapp.mappers.DrawingEntityToUIMapper
 import dagger.Module
 import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
+import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
 @Module
-class ApplicationModule(val context: Context) {
+@InstallIn(SingletonComponent::class)
+class ApplicationModule{
 
     @Provides
     @Singleton
-    fun provideContext(): Context {
-        return context
-    }
-
-    @Provides
-    @Singleton
-    fun provideConnectivityManager(): ConnectivityManager {
+    fun provideConnectivityManager(@ApplicationContext context: Context): ConnectivityManager {
         return context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
     }
 
@@ -38,7 +36,7 @@ class ApplicationModule(val context: Context) {
 
     @Provides
     @Singleton
-    fun providesAWSHelper(context: Context): AWSHelper {
+    fun providesAWSHelper(@ApplicationContext context: Context): AWSHelper {
         return AWSHelperImpl(context)
     }
 

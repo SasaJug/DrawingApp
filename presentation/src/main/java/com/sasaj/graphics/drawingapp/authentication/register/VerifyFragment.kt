@@ -1,21 +1,22 @@
 package com.sasaj.graphics.drawingapp.authentication.register
 
-
-import android.arch.lifecycle.Observer
-import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
-import android.support.v4.app.Fragment
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import com.sasaj.graphics.drawingapp.DrawingApplication
 import com.sasaj.graphics.drawingapp.R
 import com.sasaj.graphics.drawingapp.authentication.AuthenticationNavigationViewModel
 import com.sasaj.graphics.drawingapp.common.UIException
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_verify.*
 import javax.inject.Inject
 
+@AndroidEntryPoint
 class VerifyFragment : Fragment() {
 
     @Inject
@@ -28,7 +29,7 @@ class VerifyFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        (activity?.application as DrawingApplication).createVerifyComponent().inject(this)
+//        (activity?.application as DrawingApplication).createVerifyComponent().inject(this)
 
         vmVerify = ViewModelProviders.of(this, verifyVMFactory).get(VerifyViewModel::class.java)
         activity?.let {
@@ -38,7 +39,7 @@ class VerifyFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        vmVerify.verifyLiveData.observe(this, Observer {
+        vmVerify.verifyLiveData.observe(viewLifecycleOwner, Observer {
             if (it != null) handleViewState(it)
         })
         vmVerify.errorState.observe(this, Observer { uiException ->
@@ -61,10 +62,10 @@ class VerifyFragment : Fragment() {
         }
     }
 
-    override fun onDestroy() {
-        (activity?.application as DrawingApplication).releaseVerifyComponent()
-        super.onDestroy()
-    }
+//    override fun onDestroy() {
+//        (activity?.application as DrawingApplication).releaseVerifyComponent()
+//        super.onDestroy()
+//    }
     //endregion
 
     //region view state and error handlers

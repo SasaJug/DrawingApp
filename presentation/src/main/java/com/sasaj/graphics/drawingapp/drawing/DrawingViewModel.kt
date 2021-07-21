@@ -1,8 +1,8 @@
 package com.sasaj.graphics.drawingapp.drawing
 
-import android.arch.lifecycle.MutableLiveData
 import android.graphics.Bitmap
 import android.util.Log
+import androidx.lifecycle.MutableLiveData
 import com.sasaj.domain.entities.Brush
 import com.sasaj.domain.entities.Optional
 import com.sasaj.domain.usecases.GetBrush

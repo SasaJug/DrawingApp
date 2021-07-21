@@ -1,7 +1,7 @@
 package com.sasaj.graphics.drawingapp.authentication.register
 
-import android.arch.lifecycle.MutableLiveData
 import android.util.Log
+import androidx.lifecycle.MutableLiveData
 import com.sasaj.domain.usecases.VerifyUser
 import com.sasaj.graphics.drawingapp.common.BaseViewModel
 import com.sasaj.graphics.drawingapp.common.SingleLiveEvent

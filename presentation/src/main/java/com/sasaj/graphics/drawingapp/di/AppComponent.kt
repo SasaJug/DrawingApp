@@ -12,19 +12,19 @@ import com.sasaj.graphics.drawingapp.splash.di.SplashModule
 import com.sasaj.graphics.drawingapp.splash.di.SplashSubcomponent
 import dagger.Component
 import javax.inject.Singleton
-
-@Singleton
-@Component(modules = [
-    (ApplicationModule::class),
-    (RemoteRepositoryModule::class),
-    (LocalRepositoryModule::class),
-    (RepositoryModule::class)
-])
-interface AppComponent {
-    fun plus(splashModule: SplashModule): SplashSubcomponent
-    fun plus(loginModule: LoginModule): LoginSubcomponent
-    fun plus(registerModule: RegisterModule): RegisterSubcomponent
-    fun plus(verifyModule: VerifyModule): VerifySubcomponent
-    fun plus(forgotPasswordModule: ForgotPasswordModule): ForgotPasswordSubcomponent
-    fun plus(mainModule: MainModule): MainSubcomponent
-}
+//
+//@Singleton
+//@Component(modules = [
+//    (ApplicationModule::class),
+//    (RemoteRepositoryModule::class),
+//    (LocalRepositoryModule::class),
+//    (RepositoryModule::class)
+//])
+//interface AppComponent {
+//    fun plus(splashModule: SplashModule): SplashSubcomponent
+//    fun plus(loginModule: LoginModule): LoginSubcomponent
+//    fun plus(registerModule: RegisterModule): RegisterSubcomponent
+//    fun plus(verifyModule: VerifyModule): VerifySubcomponent
+//    fun plus(forgotPasswordModule: ForgotPasswordModule): ForgotPasswordSubcomponent
+//    fun plus(mainModule: MainModule): MainSubcomponent
+//}

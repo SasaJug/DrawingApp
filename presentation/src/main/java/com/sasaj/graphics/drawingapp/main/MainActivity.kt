@@ -1,15 +1,15 @@
 package com.sasaj.graphics.drawingapp.main
 
-import android.arch.lifecycle.Observer
-import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.support.v4.content.FileProvider
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import androidx.core.content.FileProvider
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import com.sasaj.graphics.drawingapp.BuildConfig
 import com.sasaj.graphics.drawingapp.DrawingApplication
 import com.sasaj.graphics.drawingapp.R
@@ -17,10 +17,12 @@ import com.sasaj.graphics.drawingapp.common.BaseActivity
 import com.sasaj.graphics.drawingapp.drawing.DrawingActivity
 import com.sasaj.graphics.drawingapp.entities.DrawingUI
 import com.sasaj.graphics.drawingapp.splash.SplashActivity
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_main.*
 import java.io.File
 import javax.inject.Inject
 
+@AndroidEntryPoint
 class MainActivity : BaseActivity() {
 
     @Inject
@@ -33,7 +35,7 @@ class MainActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        (application as DrawingApplication).createMainComponent().inject(this)
+//        (application as DrawingApplication).createMainComponent().inject(this)
 
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
@@ -172,7 +174,7 @@ class MainActivity : BaseActivity() {
     override fun onDestroy() {
         vm.onCleared()
         vmNavigation.onCleared()
-        (application as DrawingApplication).releaseMainComponent()
+//        (application as DrawingApplication).releaseMainComponent()
         super.onDestroy()
     }
 

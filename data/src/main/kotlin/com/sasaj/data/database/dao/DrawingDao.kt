@@ -1,12 +1,11 @@
 package com.sasaj.data.database.dao
 
-import android.arch.persistence.room.Dao
-import android.arch.persistence.room.Insert
-import android.arch.persistence.room.OnConflictStrategy
-import android.arch.persistence.room.Query
+import androidx.room.Dao
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
+import androidx.room.Query
 import com.sasaj.data.entities.DrawingDb
 import io.reactivex.Flowable
-import io.reactivex.Observable
 
 @Dao
 interface DrawingDao {

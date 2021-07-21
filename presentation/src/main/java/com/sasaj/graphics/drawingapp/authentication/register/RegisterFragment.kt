@@ -1,21 +1,22 @@
 package com.sasaj.graphics.drawingapp.authentication.register
 
-import android.arch.lifecycle.Observer
-import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
-import android.support.v4.app.Fragment
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import com.sasaj.graphics.drawingapp.DrawingApplication
 import com.sasaj.graphics.drawingapp.R
 import com.sasaj.graphics.drawingapp.authentication.AuthenticationNavigationViewModel
 import com.sasaj.graphics.drawingapp.common.UIException
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_register.*
 import javax.inject.Inject
 
-
+@AndroidEntryPoint
 class RegisterFragment : Fragment() {
 
     @Inject
@@ -28,7 +29,7 @@ class RegisterFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        (activity?.application as DrawingApplication).createRegisterComponent().inject(this)
+//        (activity?.application as DrawingApplication).createRegisterComponent().inject(this)
 
         vmRegister = ViewModelProviders.of(this, registerVMFactory).get(RegisterViewModel::class.java)
         activity?.let {
@@ -38,7 +39,7 @@ class RegisterFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        vmRegister.registerLiveData.observe(this, Observer {
+        vmRegister.registerLiveData.observe(viewLifecycleOwner, Observer {
             if (it != null) handleViewState(it)
         })
         vmRegister.errorState.observe(this, Observer { uiException ->
@@ -63,10 +64,10 @@ class RegisterFragment : Fragment() {
         }
     }
 
-    override fun onDestroy() {
-        (activity?.application as DrawingApplication).releaseRegisterComponent()
-        super.onDestroy()
-    }
+//    override fun onDestroy() {
+//        (activity?.application as DrawingApplication).releaseRegisterComponent()
+//        super.onDestroy()
+//    }
     //endregion
 
     //region view state and error handlers

@@ -9,13 +9,15 @@ import com.sasaj.domain.UserRepository
 import com.sasaj.domain.usecases.NetworkManager
 import dagger.Module
 import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
 @Module
+@InstallIn(SingletonComponent::class)
 class RepositoryModule {
 
     @Provides
-    @Singleton
     fun providesDrawingRepository(networkManager: NetworkManager,
                                   localDrawingRepository: LocalDrawingRepository,
                                   remoteDrawingRepository: RemoteDrawingRepository): DrawingRepository {
@@ -23,14 +25,12 @@ class RepositoryModule {
     }
 
     @Provides
-    @Singleton
     fun providesUserRepository(awsHelper: AWSHelper, localRepository: LocalRepository): UserRepository {
         return UserRepositoryImpl(awsHelper, localRepository)
     }
 
 
     @Provides
-    @Singleton
     fun providesBrushRepository(localBrushRepository: LocalBrushRepository): BrushRepository {
         return BrushRepositoryImpl(localBrushRepository)
     }

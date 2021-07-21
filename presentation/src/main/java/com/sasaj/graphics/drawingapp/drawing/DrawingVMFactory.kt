@@ -1,7 +1,7 @@
 package com.sasaj.graphics.drawingapp.drawing
 
-import android.arch.lifecycle.ViewModel
-import android.arch.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import com.sasaj.domain.usecases.GetBrush
 import com.sasaj.domain.usecases.SaveBrush
 import com.sasaj.domain.usecases.SaveDrawing

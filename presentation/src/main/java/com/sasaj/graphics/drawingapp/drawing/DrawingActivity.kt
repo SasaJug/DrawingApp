@@ -1,23 +1,25 @@
 package com.sasaj.graphics.drawingapp.drawing
 
-import android.arch.lifecycle.Observer
-import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
 import android.content.Intent
 import android.content.pm.ActivityInfo
 import android.os.Bundle
-import android.support.v7.app.AlertDialog
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import androidx.appcompat.app.AlertDialog
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import com.sasaj.graphics.drawingapp.DrawingApplication
 import com.sasaj.graphics.drawingapp.R
 import com.sasaj.graphics.drawingapp.common.BaseActivity
 import com.sasaj.graphics.drawingapp.common.UIException
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_drawing.*
 import javax.inject.Inject
 
+@AndroidEntryPoint
 class DrawingActivity : BaseActivity() {
 
     @Inject
@@ -30,7 +32,7 @@ class DrawingActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        (application as DrawingApplication).createMainComponent().inject(this)
+//        (application as DrawingApplication).createMainComponent().inject(this)
 
         setScreenOrientation(intent.getIntExtra(ORIENTATION, PORTRAIT))
         setContentView(R.layout.activity_drawing)
@@ -60,10 +62,10 @@ class DrawingActivity : BaseActivity() {
         vmDrawing.getLastBrush()
     }
 
-    override fun onDestroy() {
-        (application as DrawingApplication).releaseMainComponent()
-        super.onDestroy()
-    }
+//    override fun onDestroy() {
+//        (application as DrawingApplication).releaseMainComponent()
+//        super.onDestroy()
+//    }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu_drawing, menu)
