@@ -34,7 +34,8 @@ class MainViewModel @Inject constructor(private val signOutUseCase: SignOut,
         addDisposable(getDrawings.getDrawings()
                 .map { list -> toDrawingsUI(list) }
                 .subscribe(
-                        { list: List<DrawingUI> ->
+                        { list ->
+                            Log.e("MainVM", "drawings: $list")
                             val newDrawingsListViewState = mainLiveData.value?.copy(state = MainViewState.DRAWINGS_LOADED, drawingsList = list)
                             mainLiveData.value = newDrawingsListViewState
                             errorState.value = null
@@ -42,7 +43,7 @@ class MainViewModel @Inject constructor(private val signOutUseCase: SignOut,
                         { e ->
                             errorState.value = e
                         },
-                        { Log.i(TAG, "Drawings list fetched") }
+                        { Log.e(TAG, "Drawings list fetched") }
                 )
         )
     }

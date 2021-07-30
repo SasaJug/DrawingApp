@@ -1,6 +1,5 @@
 package com.sasaj.graphics.drawingapp.di
 
-import android.app.Application
 import com.sasaj.domain.BrushRepository
 import com.sasaj.domain.DrawingRepository
 import com.sasaj.domain.UserRepository

@@ -10,19 +10,18 @@ import io.reactivex.Flowable
 @Dao
 interface DrawingDao {
 
-    @Query("SELECT * from drawing")
+    @Query("SELECT * FROM drawing")
     fun getAll(): Flowable<List<DrawingDb>>
 
-    @Query("SELECT * FROM drawing where id = :drawingId")
+    @Query("SELECT * FROM drawing WHERE id = :drawingId")
     fun getById(drawingId: Long): Flowable<List<DrawingDb>>
 
-
-    @Query("SELECT * FROM drawing where filename = :filename")
+    @Query("SELECT * FROM drawing WHERE filename = :filename")
     fun getByFilename(filename: String?): DrawingDb?
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(drawingDb: DrawingDb) : Long
 
-    @Query("DELETE from drawing")
+    @Query("DELETE FROM drawing")
     fun deleteAll()
 }

@@ -1,6 +1,7 @@
 package com.sasaj.data.repositories
 
 
+import android.util.Log
 import com.sasaj.domain.DrawingRepository
 import com.sasaj.domain.LocalFileManager
 import com.sasaj.domain.entities.Drawing
@@ -8,9 +9,11 @@ import com.sasaj.domain.usecases.NetworkManager
 import io.reactivex.Observable
 import io.reactivex.schedulers.Schedulers
 
-class DrawingRepositoryImpl(private val networkManager: NetworkManager,
-                            private val localDrawingRepository: LocalDrawingRepository,
-                            private val remoteDrawingRepository: RemoteDrawingRepository) : DrawingRepository {
+class DrawingRepositoryImpl(
+    private val networkManager: NetworkManager,
+    private val localDrawingRepository: LocalDrawingRepository,
+    private val remoteDrawingRepository: RemoteDrawingRepository
+) : DrawingRepository {
 
     override fun saveDrawing(localFileManager: LocalFileManager): Observable<Boolean> {
         return Observable.fromCallable {
@@ -48,20 +51,20 @@ class DrawingRepositoryImpl(private val networkManager: NetworkManager,
             toUpload = HashSet<Drawing>(localSet)
             toUpload.removeAll(remoteSet)
 
-           toDownload.forEach { drawing -> remoteDrawingRepository.downloadDrawing(drawing)
-                   .observeOn(Schedulers.io())
-                   .subscribe(
-                   { d: Drawing ->
-                       localDrawingRepository.saveDrawingToDb(d)
-                   },
-                   { e ->
+            toDownload.forEach { drawing ->
+                remoteDrawingRepository.downloadDrawing(drawing)
+                    .observeOn(Schedulers.io())
+                    .subscribe({ d: Drawing ->
+                        localDrawingRepository.saveDrawingToDb(d)
+                    },
+                        { e ->
+                            Log.e("DrawingRepo", e.localizedMessage)
+                        }
+                    ).dispose()
+            }
 
-                   },
-                   { }
-           )}
 
-
-            toUpload.forEach { drawing -> remoteDrawingRepository.uploadDrawing(drawing)}
+            toUpload.forEach { drawing -> remoteDrawingRepository.uploadDrawing(drawing) }
 
             true
         }

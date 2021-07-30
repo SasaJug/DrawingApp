@@ -18,9 +18,10 @@ import com.sasaj.graphics.drawingapp.BuildConfig
 import com.sasaj.graphics.drawingapp.R
 import com.sasaj.graphics.drawingapp.entities.DrawingUI
 import com.sasaj.graphics.drawingapp.main.adapter.DrawingsListAdapter
+import dagger.hilt.android.AndroidEntryPoint
 import java.io.File
 
-
+@AndroidEntryPoint
 class DrawingsListFragment : Fragment() {
 
     companion object {
@@ -79,7 +80,9 @@ class DrawingsListFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        vm?.drawingsListLiveData?.observe(viewLifecycleOwner, Observer { drawingListNavigationViewState -> handleViewState(drawingListNavigationViewState!!) })
+        vm?.drawingsListLiveData?.observe(viewLifecycleOwner, Observer {
+                drawingListNavigationViewState -> handleViewState(drawingListNavigationViewState!!)
+        })
     }
 
     private fun handleViewState(drawingsListNavigationViewState: DrawingsListNavigationViewState) {

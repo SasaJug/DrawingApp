@@ -1,5 +1,6 @@
 package com.sasaj.data.mappers
 
+import android.util.Log
 import com.sasaj.data.entities.DrawingDb
 import com.sasaj.domain.common.Mapper
 import com.sasaj.domain.entities.Drawing
@@ -14,7 +15,8 @@ class DrawingDataToEntityMapper() : Mapper<DrawingDb, Drawing>() {
 
 
    fun mapFromList(list : List<DrawingDb>) : List<Drawing>{
-        val finalList = mutableListOf<Drawing>()
+       Log.e("map", "drawings: $list")
+       val finalList = mutableListOf<Drawing>()
         list.forEach{drawingDb -> finalList.add(mapFrom(drawingDb))}
         return finalList
     }
