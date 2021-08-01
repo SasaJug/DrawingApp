@@ -1,6 +1,6 @@
 package com.sasaj.graphics.drawingapp.authentication.login
 
-import android.arch.lifecycle.MutableLiveData
+import androidx.lifecycle.MutableLiveData
 import android.util.Log
 import com.sasaj.domain.usecases.LogIn
 import com.sasaj.graphics.drawingapp.common.BaseViewModel

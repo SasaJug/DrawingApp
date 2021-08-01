@@ -1,12 +1,12 @@
 package com.sasaj.graphics.drawingapp.main
 
-import android.arch.lifecycle.Observer
-import android.arch.lifecycle.ViewModelProviders
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.support.v4.content.FileProvider
+import androidx.core.content.FileProvider
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem

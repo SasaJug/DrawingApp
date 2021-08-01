@@ -1,8 +1,8 @@
 package com.sasaj.graphics.drawingapp.drawing
 
-import android.arch.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
-import android.support.v4.app.DialogFragment
+import androidx.fragment.app.DialogFragment
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -33,13 +33,13 @@ class SelectBrushDialogFragment : DialogFragment() {
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        dialog.window!!.requestFeature(Window.FEATURE_NO_TITLE)
+        dialog?.window!!.requestFeature(Window.FEATURE_NO_TITLE)
         return inflater.inflate(R.layout.select_brush_dialog_fragment_layout, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        selectBrushView.setCurrentBrush(arguments!!.getParcelable(BRUSH_PARCELABLE))
+        selectBrushView.setCurrentBrush(requireArguments().getParcelable(BRUSH_PARCELABLE)!!)
         brushSelectorObservable = selectBrushView.getSelectorObservable()
         brushSelectorObservable
                 .subscribe(

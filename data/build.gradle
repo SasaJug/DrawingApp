@@ -11,10 +11,10 @@ android {
         versionCode 3
         versionName "2.2"
 
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
 
         def props = new Properties()
-        def File configFile = file('config/amazon.properties')
+        def File configFile = file("$rootDir/config/amazon.properties")
         if (configFile.exists() && configFile.canRead()) {
             props.load(new FileInputStream(configFile))
             props.each { key, val ->
@@ -37,30 +37,30 @@ android {
     }
 
     sourceSets {
-        main.kotlin.srcDirs += 'src/main/kotlin'
-        test.kotlin.srcDirs += 'src/test/kotlin'
-        androidTest.kotlin.srcDirs += 'src/androidTest/kotlin'
+        main.java.srcDirs += 'src/main/kotlin'
+        test.java.srcDirs += 'src/test/kotlin'
+        androidTest.java.srcDirs += 'src/androidTest/kotlin'
     }
 }
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
-    implementation "com.android.support:appcompat-v7:$rootProject.supportLibraryVersion"
+    implementation "androidx.appcompat:appcompat:1.3.0"
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     //Rx
     implementation "io.reactivex.rxjava2:rxjava:$rootProject.ext.rxJavaVersion"
 
     //Room
-    api "android.arch.persistence.room:runtime:$rootProject.archVersion"
-    api "android.arch.persistence.room:rxjava2:$rootProject.archVersion"
-    kapt "android.arch.persistence.room:compiler:$rootProject.archVersion"
+    implementation 'androidx.room:room-runtime:2.0.0'
+    implementation 'androidx.room:room-rxjava2:2.0.0'
+    kapt 'androidx.room:room-compiler:2.0.0'
 
     //aws
-    api "com.amazonaws:aws-android-sdk-core:$rootProject.ext.awsVersion"
-    api "com.amazonaws:aws-android-sdk-cognitoidentityprovider:$rootProject.ext.awsVersion"
-    api "com.amazonaws:aws-android-sdk-s3:$rootProject.ext.awsVersion"
-    api "com.amazonaws:aws-android-sdk-ddb:$rootProject.ext.awsVersion"
+    implementation "com.amazonaws:aws-android-sdk-core:$rootProject.ext.awsVersion"
+    implementation "com.amazonaws:aws-android-sdk-cognitoidentityprovider:$rootProject.ext.awsVersion"
+    implementation "com.amazonaws:aws-android-sdk-s3:$rootProject.ext.awsVersion"
+    implementation "com.amazonaws:aws-android-sdk-ddb:$rootProject.ext.awsVersion"
 
     //Mockito
     testImplementation "org.mockito:mockito-core:$rootProject.MockitoVersion"
@@ -68,8 +68,8 @@ dependencies {
     //JUnit
     testImplementation "junit:junit:$rootProject.JUnitVersion"
 
-    androidTestImplementation 'com.android.support.test:runner:1.0.2'
-    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.1'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.0'
 
 
     implementation project(':domain')

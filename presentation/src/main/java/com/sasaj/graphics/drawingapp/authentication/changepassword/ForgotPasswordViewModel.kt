@@ -1,6 +1,6 @@
 package com.sasaj.graphics.drawingapp.authentication.changepassword
 
-import android.arch.lifecycle.MutableLiveData
+import androidx.lifecycle.MutableLiveData
 import android.util.Log
 import com.sasaj.domain.usecases.ChangePasswordUseCase
 import com.sasaj.domain.usecases.NewPassword

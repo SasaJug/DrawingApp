@@ -1,9 +1,9 @@
 package com.sasaj.graphics.drawingapp.authentication.changepassword
 
-import android.arch.lifecycle.Observer
-import android.arch.lifecycle.ViewModelProviders
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
-import android.support.v4.app.Fragment
+import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,7 +15,7 @@ import kotlinx.android.synthetic.main.fragment_new_password.*
 import javax.inject.Inject
 
 
-class NewPasswordFragment : Fragment() {
+class NewPasswordFragment : androidx.fragment.app.Fragment() {
 
     @Inject
     lateinit var forgotPasswordVMFactory: ForgotPasswordVMFactory
@@ -44,10 +44,10 @@ class NewPasswordFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        vmForgotPassword.forgotPasswordLiveData.observe(this, Observer {
+        vmForgotPassword.forgotPasswordLiveData.observe(viewLifecycleOwner, Observer {
             if (it != null) handleViewState(it)
         })
-        vmForgotPassword.errorState.observe(this, Observer { uiException ->
+        vmForgotPassword.errorState.observe(viewLifecycleOwner, Observer { uiException ->
            uiException.let {
                 handleError(it)
             }

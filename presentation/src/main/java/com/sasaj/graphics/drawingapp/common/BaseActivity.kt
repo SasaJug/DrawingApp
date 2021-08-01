@@ -1,8 +1,8 @@
 package com.sasaj.graphics.drawingapp.common
 
 import android.app.ProgressDialog
-import android.support.v7.app.AlertDialog
-import android.support.v7.app.AppCompatActivity
+import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
 import com.sasaj.graphics.drawingapp.R
 
 open class BaseActivity : AppCompatActivity() {

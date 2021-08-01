@@ -1,6 +1,6 @@
 package com.sasaj.graphics.drawingapp.drawing
 
-import android.arch.lifecycle.MutableLiveData
+import androidx.lifecycle.MutableLiveData
 import android.graphics.Bitmap
 import android.util.Log
 import com.sasaj.domain.entities.Brush

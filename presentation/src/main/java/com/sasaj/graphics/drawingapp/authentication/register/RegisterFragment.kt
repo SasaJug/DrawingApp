@@ -1,9 +1,9 @@
 package com.sasaj.graphics.drawingapp.authentication.register
 
-import android.arch.lifecycle.Observer
-import android.arch.lifecycle.ViewModelProviders
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
-import android.support.v4.app.Fragment
+import androidx.fragment.app.Fragment
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -16,7 +16,7 @@ import kotlinx.android.synthetic.main.fragment_register.*
 import javax.inject.Inject
 
 
-class RegisterFragment : Fragment() {
+class RegisterFragment : androidx.fragment.app.Fragment() {
 
     @Inject
     lateinit var registerVMFactory: RegisterVMFactory
@@ -38,10 +38,10 @@ class RegisterFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        vmRegister.registerLiveData.observe(this, Observer {
+        vmRegister.registerLiveData.observe(viewLifecycleOwner, Observer {
             if (it != null) handleViewState(it)
         })
-        vmRegister.errorState.observe(this, Observer { uiException ->
+        vmRegister.errorState.observe(viewLifecycleOwner, Observer { uiException ->
             handleError(uiException)
         })
     }

@@ -1,10 +1,10 @@
 package com.sasaj.graphics.drawingapp.authentication.login
 
 
-import android.arch.lifecycle.Observer
-import android.arch.lifecycle.ViewModelProviders
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
-import android.support.v4.app.Fragment
+import androidx.fragment.app.Fragment
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -20,7 +20,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_login.*
 import javax.inject.Inject
 
-class LoginFragment : Fragment() {
+class LoginFragment : androidx.fragment.app.Fragment() {
 
     @Inject
     lateinit var loginVMFactory: LoginVMFactory
@@ -42,10 +42,10 @@ class LoginFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        vmLogin.loginLiveData.observe(this, Observer {
+        vmLogin.loginLiveData.observe(viewLifecycleOwner, Observer {
             if (it != null) handleViewState(it)
         })
-        vmLogin.errorState.observe(this, Observer { customUIException ->
+        vmLogin.errorState.observe(viewLifecycleOwner, Observer { customUIException ->
             handleError(customUIException)
         })
     }

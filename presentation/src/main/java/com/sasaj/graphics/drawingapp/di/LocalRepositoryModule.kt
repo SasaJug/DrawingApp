@@ -1,6 +1,6 @@
 package com.sasaj.graphics.drawingapp.di
 
-import android.arch.persistence.room.Room
+import androidx.room.Room
 import android.content.Context
 import com.sasaj.data.aws.AWSHelper
 import com.sasaj.data.database.AppDb

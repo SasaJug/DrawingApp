@@ -1,6 +1,6 @@
 package com.sasaj.graphics.drawingapp.splash
 
-import android.arch.lifecycle.MutableLiveData
+import androidx.lifecycle.MutableLiveData
 import android.util.Log
 import com.sasaj.domain.usecases.CheckIfLoggedIn
 import com.sasaj.graphics.drawingapp.common.SingleLiveEvent

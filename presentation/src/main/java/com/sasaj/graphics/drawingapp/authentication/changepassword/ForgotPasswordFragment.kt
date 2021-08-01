@@ -1,9 +1,9 @@
 package com.sasaj.graphics.drawingapp.authentication.changepassword
 
 
-import android.arch.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
-import android.support.v4.app.Fragment
+import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,7 +11,7 @@ import com.sasaj.graphics.drawingapp.R
 import com.sasaj.graphics.drawingapp.authentication.AuthenticationNavigationViewModel
 import kotlinx.android.synthetic.main.fragment_forgot_pasword.*
 
-class ForgotPasswordFragment : Fragment() {
+class ForgotPasswordFragment : androidx.fragment.app.Fragment() {
 
     private lateinit var vmNavigation: AuthenticationNavigationViewModel
 

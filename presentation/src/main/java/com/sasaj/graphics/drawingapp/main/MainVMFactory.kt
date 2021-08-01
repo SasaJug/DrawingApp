@@ -1,7 +1,7 @@
 package com.sasaj.graphics.drawingapp.main
 
-import android.arch.lifecycle.ViewModel
-import android.arch.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import com.sasaj.domain.usecases.GetDrawings
 import com.sasaj.domain.usecases.SignOut
 import com.sasaj.domain.usecases.SyncDrawings

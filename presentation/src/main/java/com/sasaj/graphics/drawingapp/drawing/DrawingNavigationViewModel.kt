@@ -1,6 +1,6 @@
 package com.sasaj.graphics.drawingapp.drawing
 
-import android.arch.lifecycle.MutableLiveData
+import androidx.lifecycle.MutableLiveData
 import com.sasaj.graphics.drawingapp.common.BaseViewModel
 import com.sasaj.graphics.drawingapp.common.SingleLiveEvent
 

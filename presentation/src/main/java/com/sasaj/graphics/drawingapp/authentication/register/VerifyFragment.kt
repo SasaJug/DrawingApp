@@ -1,10 +1,10 @@
 package com.sasaj.graphics.drawingapp.authentication.register
 
 
-import android.arch.lifecycle.Observer
-import android.arch.lifecycle.ViewModelProviders
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
-import android.support.v4.app.Fragment
+import androidx.fragment.app.Fragment
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -16,7 +16,7 @@ import com.sasaj.graphics.drawingapp.common.UIException
 import kotlinx.android.synthetic.main.fragment_verify.*
 import javax.inject.Inject
 
-class VerifyFragment : Fragment() {
+class VerifyFragment : androidx.fragment.app.Fragment() {
 
     @Inject
     lateinit var verifyVMFactory: VerifyVMFactory
@@ -38,7 +38,7 @@ class VerifyFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        vmVerify.verifyLiveData.observe(this, Observer {
+        vmVerify.verifyLiveData.observe(viewLifecycleOwner, Observer {
             if (it != null) handleViewState(it)
         })
         vmVerify.errorState.observe(this, Observer { uiException ->
