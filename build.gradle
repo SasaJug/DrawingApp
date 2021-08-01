@@ -26,13 +26,13 @@ task clean(type: Delete) {
 
 ext {
     // Sdk and tools
-    minSdkVersion = 21
-    targetSdkVersion = 27
-    compileSdkVersion = 27
+    minSdkVersion = 23
+    targetSdkVersion = 28
+    compileSdkVersion = 28
     buildToolsVersion = '27.0.3'
 
     // App dependencies
-    supportLibraryVersion = '27.1.1'
+    supportLibraryVersion = '28.0.0'
     daggerVersion = '2.15'
     jsr250Version = '1.0'
     constraintLayoutVersion = '1.1.2'
