@@ -17,7 +17,7 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
         def props = new Properties()
-        def File configFile = file('config/amazon.properties')
+        def File configFile = file("$rootDir/config/amazon.properties")
         if (configFile.exists() && configFile.canRead()) {
             props.load(new FileInputStream(configFile))
             props.each { key, val ->
