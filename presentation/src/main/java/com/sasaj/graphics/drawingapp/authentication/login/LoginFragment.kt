@@ -1,8 +1,5 @@
 package com.sasaj.graphics.drawingapp.authentication.login
 
-
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.util.Log
@@ -11,33 +8,48 @@ import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
-import com.sasaj.graphics.drawingapp.DrawingApplication
+import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Observer
+import com.sasaj.domain.usecases.LogIn
 import com.sasaj.graphics.drawingapp.R
-import com.sasaj.graphics.drawingapp.authentication.AuthenticationActivity
 import com.sasaj.graphics.drawingapp.authentication.AuthenticationNavigationViewModel
+import com.sasaj.graphics.drawingapp.common.BaseViewModel
+import com.sasaj.graphics.drawingapp.common.SingleLiveEvent
 import com.sasaj.graphics.drawingapp.common.UIException
-import kotlinx.android.synthetic.main.activity_main.*
+import dagger.hilt.android.AndroidEntryPoint
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.android.synthetic.main.fragment_login.*
 import javax.inject.Inject
 
-class LoginFragment : androidx.fragment.app.Fragment() {
+data class LoginViewState(
+    var loading : Boolean = false,
+    var completed : Boolean = false
+)
 
-    @Inject
-    lateinit var loginVMFactory: LoginVMFactory
+@AndroidEntryPoint
+class LoginFragment : Fragment() {
 
-    private lateinit var vmLogin: LoginViewModel
-    private lateinit var vmNavigation: AuthenticationNavigationViewModel
+//    @Inject
+//    lateinit var loginVMFactory: LoginVMFactory
+
+//    private lateinit var vmLogin: LoginViewModel
+//    private lateinit var vmNavigation: AuthenticationNavigationViewModel
+
+    private val vmLogin by viewModels<LoginViewModel>()
+    private val vmNavigation by activityViewModels<AuthenticationNavigationViewModel>()
 
     //region lifecycle callbacks
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        (activity?.application as DrawingApplication).createLoginComponent().inject(this)
+//        (activity?.application as DrawingApplication).createLoginComponent().inject(this)
 
-        vmLogin = ViewModelProviders.of(this, loginVMFactory).get(LoginViewModel::class.java)
-        activity?.let {
-            vmNavigation = ViewModelProviders.of(it).get(AuthenticationNavigationViewModel::class.java)
-        }
+//        vmLogin = ViewModelProviders.of(this, loginVMFactory).get(LoginViewModel::class.java)
+//        activity?.let {
+//            vmNavigation = ViewModelProviders.of(it).get(AuthenticationNavigationViewModel::class.java)
+//        }
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -45,7 +57,7 @@ class LoginFragment : androidx.fragment.app.Fragment() {
         vmLogin.loginLiveData.observe(viewLifecycleOwner, Observer {
             if (it != null) handleViewState(it)
         })
-        vmLogin.errorState.observe(viewLifecycleOwner, Observer { customUIException ->
+        vmLogin.errorState.observe(this, Observer { customUIException ->
             handleError(customUIException)
         })
     }
@@ -71,10 +83,10 @@ class LoginFragment : androidx.fragment.app.Fragment() {
         }
     }
 
-    override fun onDestroy() {
-        (activity?.application as DrawingApplication).releaseLoginComponent()
-        super.onDestroy()
-    }
+//    override fun onDestroy() {
+//        (activity?.application as DrawingApplication).releaseLoginComponent()
+//        super.onDestroy()
+//    }
     //endregion
 
     //region view state and error handlers
@@ -132,5 +144,53 @@ class LoginFragment : androidx.fragment.app.Fragment() {
 
     companion object {
         private val TAG = LoginFragment::class.java.simpleName
+    }
+}
+
+@HiltViewModel
+class LoginViewModel @Inject constructor(private val logInUseCase: LogIn) : BaseViewModel() {
+
+    val loginLiveData: MutableLiveData<LoginViewState> = MutableLiveData()
+    var errorState: SingleLiveEvent<UIException?> = SingleLiveEvent()
+
+    init {
+        val loginViewState = LoginViewState()
+        loginLiveData.value = loginViewState
+    }
+
+    fun logIn(username: String, password: String) {
+
+        if (username.trim() == "" || password.trim() == "") {
+            var errorCode = 0
+            loginLiveData.value = loginLiveData.value?.copy(loading = false, completed = false)
+            if (username.trim() == "") {
+                errorCode = errorCode or UIException.EMPTY_USERNAME
+            }
+            if (password.trim() == "") {
+                errorCode = errorCode or UIException.EMPTY_PASSWORD
+            }
+            errorState.value = UIException("Username and password must be provided", IllegalArgumentException(), errorCode)
+            return
+        }
+
+        loginLiveData.value = loginLiveData.value?.copy(loading = true, completed = false)
+        addDisposable(logInUseCase.logIn(username, password)
+            .subscribe(
+                { b: Boolean ->
+                    val newLoginViewState = loginLiveData.value?.copy(loading = false, completed = true)
+                    loginLiveData.value = newLoginViewState
+                    errorState.value = null
+                },
+                { e ->
+                    loginLiveData.value = loginLiveData.value?.copy(loading = false, completed = false)
+                    errorState.value = UIException(cause = e)
+                },
+                { Log.i(TAG, "Login completed") }
+            )
+        )
+    }
+
+    companion object {
+        private val TAG = LoginViewModel::class.java.simpleName
     }
 }

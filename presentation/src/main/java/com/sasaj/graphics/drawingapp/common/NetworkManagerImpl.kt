@@ -6,6 +6,6 @@ import com.sasaj.domain.usecases.NetworkManager
 class NetworkManagerImpl(private val connectivityManager: ConnectivityManager) : NetworkManager{
     override fun isConnected(): Boolean {
         val activeNetwork = connectivityManager.activeNetworkInfo
-        return activeNetwork != null && activeNetwork.isConnectedOrConnecting
+        return activeNetwork != null && activeNetwork.isConnected
     }
 }

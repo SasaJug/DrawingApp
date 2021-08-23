@@ -9,31 +9,47 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.MutableLiveData
+import com.sasaj.domain.usecases.VerifyUser
 import com.sasaj.graphics.drawingapp.DrawingApplication
 import com.sasaj.graphics.drawingapp.R
 import com.sasaj.graphics.drawingapp.authentication.AuthenticationNavigationViewModel
+import com.sasaj.graphics.drawingapp.common.BaseViewModel
+import com.sasaj.graphics.drawingapp.common.SingleLiveEvent
 import com.sasaj.graphics.drawingapp.common.UIException
+import dagger.hilt.android.AndroidEntryPoint
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.android.synthetic.main.fragment_verify.*
 import javax.inject.Inject
 
+
+data class VerifyViewState(
+    var verificationStarted : Boolean  = false,
+    var loading : Boolean = false,
+    var isVerified: Boolean = false
+)
+
+@AndroidEntryPoint
 class VerifyFragment : androidx.fragment.app.Fragment() {
 
-    @Inject
-    lateinit var verifyVMFactory: VerifyVMFactory
+//    @Inject
+//    lateinit var verifyVMFactory: VerifyVMFactory
 
-    private lateinit var vmVerify: VerifyViewModel
-    private lateinit var vmNavigation: AuthenticationNavigationViewModel
+    private val vmVerify by viewModels<VerifyViewModel>()
+    private val vmNavigation by activityViewModels<AuthenticationNavigationViewModel>()
 
     //region lifecycle callbacks
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        (activity?.application as DrawingApplication).createVerifyComponent().inject(this)
+//        (activity?.application as DrawingApplication).createVerifyComponent().inject(this)
 
-        vmVerify = ViewModelProviders.of(this, verifyVMFactory).get(VerifyViewModel::class.java)
-        activity?.let {
-            vmNavigation = ViewModelProviders.of(it).get(AuthenticationNavigationViewModel::class.java)
-        }
+//        vmVerify = ViewModelProviders.of(this, verifyVMFactory).get(VerifyViewModel::class.java)
+//        activity?.let {
+//            vmNavigation = ViewModelProviders.of(it).get(AuthenticationNavigationViewModel::class.java)
+//        }
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -61,10 +77,10 @@ class VerifyFragment : androidx.fragment.app.Fragment() {
         }
     }
 
-    override fun onDestroy() {
-        (activity?.application as DrawingApplication).releaseVerifyComponent()
-        super.onDestroy()
-    }
+//    override fun onDestroy() {
+//        (activity?.application as DrawingApplication).releaseVerifyComponent()
+//        super.onDestroy()
+//    }
     //endregion
 
     //region view state and error handlers
@@ -120,4 +136,49 @@ class VerifyFragment : androidx.fragment.app.Fragment() {
     companion object {
         private val TAG = VerifyFragment::class.java.simpleName
     }
+}
+
+@HiltViewModel
+class VerifyViewModel @Inject constructor(private val verifyUserUseCase: VerifyUser) : BaseViewModel() {
+
+    val verifyLiveData: MutableLiveData<VerifyViewState> = MutableLiveData()
+    var errorState: SingleLiveEvent<UIException> = SingleLiveEvent()
+
+    init {
+        verifyLiveData.value = VerifyViewState()
+    }
+
+    fun verify(username: String, code: String) {
+        var errorCode = 0
+
+        if (username.trim() == "")
+            errorCode = errorCode or UIException.EMPTY_USERNAME
+        if (code.trim() == "")
+            errorCode = errorCode or UIException.EMPTY_CODE
+
+        if (errorCode > 0) {
+            errorState.value = UIException("All entries must be valid", IllegalArgumentException(), errorCode)
+            return
+        }
+
+        val verifyViewState = verifyLiveData.value?.copy(verificationStarted = true, loading = true, isVerified = false)
+        verifyLiveData.value = verifyViewState
+
+        addDisposable(verifyUserUseCase.verifyUser(username, code)
+            .subscribe(
+                { b: Boolean ->
+                    val newVerifyViewState = verifyLiveData.value?.copy(verificationStarted = true, loading = false, isVerified = b)
+                    verifyLiveData.value = newVerifyViewState
+                    errorState.value = null
+                },
+                { e -> errorState.value = UIException(cause = e) },
+                { Log.i(TAG, "Verification completed") }
+            )
+        )
+    }
+
+    companion object {
+        private val TAG = VerifyViewModel::class.java.simpleName
+    }
+
 }

@@ -9,13 +9,16 @@ import com.sasaj.data.repositories.RemoteDrawingRepository
 import dagger.Module
 import dagger.Provides
 import dagger.Reusable
+import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
+import dagger.hilt.components.SingletonComponent
 
 @Module
+@InstallIn(SingletonComponent::class)
 class RemoteRepositoryModule {
 
 
     @Provides
-    @Reusable
     fun providesAmazonS3Client(AWSHelper: AWSHelper): AmazonS3Client {
         val s3 = AmazonS3Client(AWSHelper.getCredentialsProvider())
         s3.setRegion(Region.getRegion(AWSHelper.getS3BucketRegion()))
@@ -24,8 +27,7 @@ class RemoteRepositoryModule {
 
 
     @Provides
-    @Reusable
-    fun providesTransferUtility(context: Context, s3: AmazonS3Client, awsHelper: AWSHelper): TransferUtility {
+    fun providesTransferUtility(@ApplicationContext context: Context, s3: AmazonS3Client, awsHelper: AWSHelper): TransferUtility {
         return TransferUtility.builder()
                 .context(context)
                 .s3Client(s3)
@@ -35,7 +37,6 @@ class RemoteRepositoryModule {
 
 
     @Provides
-    @Reusable
     fun providesRemoteDrawingRepository(s3: AmazonS3Client,
                                         transferUtility: TransferUtility,
                                         awsHelper: AWSHelper): RemoteDrawingRepository {

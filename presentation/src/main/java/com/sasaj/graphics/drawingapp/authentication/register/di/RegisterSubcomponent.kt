@@ -4,8 +4,8 @@ import com.sasaj.graphics.drawingapp.authentication.register.RegisterFragment
 import dagger.Subcomponent
 
 
-@RegisterScope
-@Subcomponent(modules = [RegisterModule::class])
-interface RegisterSubcomponent {
-    fun inject(registerFragment: RegisterFragment)
-}
+//@RegisterScope
+//@Subcomponent(modules = [RegisterModule::class])
+//interface RegisterSubcomponent {
+//    fun inject(registerFragment: RegisterFragment)
+//}

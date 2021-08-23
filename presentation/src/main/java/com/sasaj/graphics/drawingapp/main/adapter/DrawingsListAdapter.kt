@@ -18,7 +18,7 @@ import java.util.*
  * Created by sjugurdzija on 4/22/2017.
  */
 
-class DrawingsListAdapter(context: Context, list: List<DrawingUI>, private val listener: DrawingsListFragment.DrawingItemListener) : androidx.recyclerview.widget.RecyclerView.Adapter<DrawingsListAdapter.ViewHolder>() {
+class DrawingsListAdapter(context: Context, list: List<DrawingUI>, private val listener: DrawingsListFragment.DrawingItemListener) : RecyclerView.Adapter<DrawingsListAdapter.ViewHolder>() {
     private var data: MutableList<DrawingUI> = ArrayList()
     private val inflater: LayoutInflater = LayoutInflater.from(context)
 
@@ -56,7 +56,7 @@ class DrawingsListAdapter(context: Context, list: List<DrawingUI>, private val l
         return data.size
     }
 
-    inner class ViewHolder(itemView: View) : androidx.recyclerview.widget.RecyclerView.ViewHolder(itemView) {
+    inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var imageView: ImageView = itemView.findViewById<View>(R.id.drawing_preview) as ImageView
     }
 

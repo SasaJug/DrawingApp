@@ -4,7 +4,9 @@ import android.app.ProgressDialog
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.sasaj.graphics.drawingapp.R
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 open class BaseActivity : AppCompatActivity() {
 
     private var userDialog: AlertDialog? = null

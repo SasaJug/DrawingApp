@@ -5,9 +5,11 @@ import android.util.Log
 import com.sasaj.domain.usecases.CheckIfLoggedIn
 import com.sasaj.graphics.drawingapp.common.SingleLiveEvent
 import com.sasaj.graphics.drawingapp.common.BaseViewModel
+import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
-class SplashViewModel(private val checkIfLoggedIn: CheckIfLoggedIn) : BaseViewModel() {
+@HiltViewModel
+class SplashViewModel @Inject constructor(private val checkIfLoggedIn: CheckIfLoggedIn) : BaseViewModel() {
 
     private val splashLiveData: MutableLiveData<SplashViewState> = MutableLiveData()
     var errorState: SingleLiveEvent<Throwable?> = SingleLiveEvent()

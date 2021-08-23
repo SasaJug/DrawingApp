@@ -7,38 +7,41 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import com.sasaj.graphics.drawingapp.DrawingApplication
 import com.sasaj.graphics.drawingapp.R
 import com.sasaj.graphics.drawingapp.authentication.AuthenticationNavigationViewModel
 import com.sasaj.graphics.drawingapp.common.UIException
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_new_password.*
 import javax.inject.Inject
 
-
-class NewPasswordFragment : androidx.fragment.app.Fragment() {
-
-    @Inject
-    lateinit var forgotPasswordVMFactory: ForgotPasswordVMFactory
+@AndroidEntryPoint
+class NewPasswordFragment : Fragment() {
+//
+//    @Inject
+//    lateinit var forgotPasswordVMFactory: ForgotPasswordVMFactory
 
     private var username: String? = null
 
-    private lateinit var vmForgotPassword: ForgotPasswordViewModel
-    private lateinit var vmNavigation: AuthenticationNavigationViewModel
+    private val vmForgotPassword by viewModels<ForgotPasswordViewModel>()
+    private val vmNavigation by activityViewModels<AuthenticationNavigationViewModel>()
 
     //region lifecycle callbacks
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        (activity?.application as DrawingApplication).createForgotPasswordComponent().inject(this)
+//        (activity?.application as DrawingApplication).createForgotPasswordComponent().inject(this)
 
         arguments?.let {
             username = it.getString(USERNAME)
         }
 
-        vmForgotPassword = ViewModelProviders.of(this, forgotPasswordVMFactory).get(ForgotPasswordViewModel::class.java)
-        activity?.let {
-            vmNavigation = ViewModelProviders.of(it).get(AuthenticationNavigationViewModel::class.java)
-        }
+//        vmForgotPassword = ViewModelProviders.of(this, forgotPasswordVMFactory).get(ForgotPasswordViewModel::class.java)
+//        activity?.let {
+//            vmNavigation = ViewModelProviders.of(it).get(AuthenticationNavigationViewModel::class.java)
+//        }
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -69,10 +72,10 @@ class NewPasswordFragment : androidx.fragment.app.Fragment() {
         }
     }
 
-    override fun onDestroy() {
-        (activity?.application as DrawingApplication).releaseForgotPasswordComponent()
-        super.onDestroy()
-    }
+//    override fun onDestroy() {
+//        (activity?.application as DrawingApplication).releaseForgotPasswordComponent()
+//        super.onDestroy()
+//    }
 //endregion
 
     //region view state and error handlers

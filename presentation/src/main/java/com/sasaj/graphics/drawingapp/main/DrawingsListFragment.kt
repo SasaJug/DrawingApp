@@ -14,13 +14,15 @@ import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.activityViewModels
 import com.sasaj.graphics.drawingapp.BuildConfig
 import com.sasaj.graphics.drawingapp.R
 import com.sasaj.graphics.drawingapp.entities.DrawingUI
 import com.sasaj.graphics.drawingapp.main.adapter.DrawingsListAdapter
+import dagger.hilt.android.AndroidEntryPoint
 import java.io.File
 
-
+@AndroidEntryPoint
 class DrawingsListFragment : androidx.fragment.app.Fragment() {
 
     companion object {
@@ -28,8 +30,9 @@ class DrawingsListFragment : androidx.fragment.app.Fragment() {
         private const val NUMBER_OF_COLUMNS_LANDSCAPE = 5
     }
 
-    private var vm: DrawingListNavigationViewModel? = null
-    private lateinit var drawingsList: androidx.recyclerview.widget.RecyclerView
+    private val vm by activityViewModels<DrawingListNavigationViewModel>()
+
+    private lateinit var drawingsList: RecyclerView
     private var adapter: DrawingsListAdapter? = null
 
     private var drawingItemListener: DrawingItemListener = object : DrawingItemListener {
@@ -54,7 +57,7 @@ class DrawingsListFragment : androidx.fragment.app.Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        vm = activity?.let { ViewModelProviders.of(it)[DrawingListNavigationViewModel::class.java] }
+//        vm = activity?.let { ViewModelProviders.of(it)[DrawingListNavigationViewModel::class.java] }
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,

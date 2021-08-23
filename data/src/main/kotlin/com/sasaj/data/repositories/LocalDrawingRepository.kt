@@ -47,7 +47,7 @@ class LocalDrawingRepository(private val awsHelper: AWSHelper,
         return drawing
     }
 
-    fun deleteAll() {
+    private fun deleteAll() {
         db.drawingDao().deleteAll()
     }
 

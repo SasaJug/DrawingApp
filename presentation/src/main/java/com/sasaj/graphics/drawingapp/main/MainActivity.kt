@@ -1,7 +1,6 @@
 package com.sasaj.graphics.drawingapp.main
 
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.net.Uri
 import android.os.Build
@@ -10,36 +9,37 @@ import androidx.core.content.FileProvider
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import androidx.activity.viewModels
 import com.sasaj.graphics.drawingapp.BuildConfig
-import com.sasaj.graphics.drawingapp.DrawingApplication
 import com.sasaj.graphics.drawingapp.R
 import com.sasaj.graphics.drawingapp.common.BaseActivity
 import com.sasaj.graphics.drawingapp.drawing.DrawingActivity
 import com.sasaj.graphics.drawingapp.entities.DrawingUI
 import com.sasaj.graphics.drawingapp.splash.SplashActivity
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_main.*
 import java.io.File
-import javax.inject.Inject
 
+@AndroidEntryPoint
 class MainActivity : BaseActivity() {
 
-    @Inject
-    lateinit var mainVMFactory: MainVMFactory
+//    @Inject
+//    lateinit var mainVMFactory: MainVMFactory
 
-    private lateinit var vm: MainViewModel
+    private val vm by viewModels<MainViewModel>()
 
-    private lateinit var vmNavigation: DrawingListNavigationViewModel
+    private val vmNavigation by viewModels<DrawingListNavigationViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        (application as DrawingApplication).createMainComponent().inject(this)
+//        (application as DrawingApplication).createMainComponent().inject(this)
 
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
-
-        vm = ViewModelProviders.of(this, mainVMFactory).get(MainViewModel::class.java)
-        vmNavigation = ViewModelProviders.of(this).get(DrawingListNavigationViewModel::class.java)
+//
+//        vm = ViewModelProviders.of(this, mainVMFactory).get(MainViewModel::class.java)
+//        vmNavigation = ViewModelProviders.of(this).get(DrawingListNavigationViewModel::class.java)
 
         vm.mainLiveData.observe(this, Observer { mainState -> handleResponse(mainState) })
         vm.errorState.observe(this, Observer { throwable ->
@@ -172,7 +172,7 @@ class MainActivity : BaseActivity() {
     override fun onDestroy() {
         vm.onCleared()
         vmNavigation.onCleared()
-        (application as DrawingApplication).releaseMainComponent()
+//        (application as DrawingApplication).releaseMainComponent()
         super.onDestroy()
     }
 

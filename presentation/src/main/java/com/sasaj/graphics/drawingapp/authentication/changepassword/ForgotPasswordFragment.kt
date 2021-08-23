@@ -1,27 +1,29 @@
 package com.sasaj.graphics.drawingapp.authentication.changepassword
 
 
-import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.activityViewModels
 import com.sasaj.graphics.drawingapp.R
 import com.sasaj.graphics.drawingapp.authentication.AuthenticationNavigationViewModel
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_forgot_pasword.*
 
-class ForgotPasswordFragment : androidx.fragment.app.Fragment() {
+@AndroidEntryPoint
+class ForgotPasswordFragment : Fragment() {
 
-    private lateinit var vmNavigation: AuthenticationNavigationViewModel
+    private val vmNavigation by activityViewModels<AuthenticationNavigationViewModel>()
 
     //region lifecycle callbacks
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        activity?.let {
-            vmNavigation = ViewModelProviders.of(it).get(AuthenticationNavigationViewModel::class.java)
-        }
+//        activity?.let {
+//            vmNavigation = ViewModelProviders.of(it).get(AuthenticationNavigationViewModel::class.java)
+//        }
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
