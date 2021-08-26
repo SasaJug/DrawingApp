@@ -45,8 +45,10 @@ class DrawingsListFragment : androidx.fragment.app.Fragment() {
             } else {
                 val intent = Intent()
                 intent.action = Intent.ACTION_VIEW
-                val photoUri = FileProvider.getUriForFile(activity!!, BuildConfig.APPLICATION_ID + ".provider",
-                        File(clickedItem.imagePath))
+                val photoUri = FileProvider.getUriForFile(
+                    activity!!, BuildConfig.APPLICATION_ID + ".provider",
+                    File(clickedItem.imagePath)
+                )
                 intent.data = photoUri
                 intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
                 startActivity(intent)
@@ -54,34 +56,27 @@ class DrawingsListFragment : androidx.fragment.app.Fragment() {
         }
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-//        vm = activity?.let { ViewModelProviders.of(it)[DrawingListNavigationViewModel::class.java] }
-    }
-
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
 
         val root = inflater.inflate(R.layout.fragment_drawings_list, container, false)
         drawingsList = root.findViewById(R.id.drawings_grid)
 
         val orientation = requireActivity().resources.configuration.orientation
-        if (orientation == Configuration.ORIENTATION_PORTRAIT) {
-            drawingsList.layoutManager =
-                androidx.recyclerview.widget.GridLayoutManager(
-                    activity,
-                    NUMBER_OF_COLUMNS_PORTRAIT
-                )
-        } else {
-            drawingsList.layoutManager =
-                androidx.recyclerview.widget.GridLayoutManager(
-                    activity,
-                    NUMBER_OF_COLUMNS_LANDSCAPE
-                )
-        }
+        val numberOfColumns =
+            if (orientation == Configuration.ORIENTATION_PORTRAIT)
+                NUMBER_OF_COLUMNS_PORTRAIT
+            else
+                NUMBER_OF_COLUMNS_LANDSCAPE
+        drawingsList.layoutManager =
+            GridLayoutManager(
+                activity,
+                numberOfColumns
+            )
 
-        adapter = DrawingsListAdapter(requireActivity(), ArrayList(0), drawingItemListener)
+        adapter = DrawingsListAdapter(requireActivity(), drawingItemListener)
         drawingsList.adapter = adapter
 
         return root
@@ -90,11 +85,15 @@ class DrawingsListFragment : androidx.fragment.app.Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        vm?.drawingsListLiveData?.observe(viewLifecycleOwner, Observer { drawingListNavigationViewState -> handleViewState(drawingListNavigationViewState!!) })
+        vm.drawingsListLiveData.observe(
+            viewLifecycleOwner,
+            Observer { drawingListNavigationViewState ->
+                handleViewState(drawingListNavigationViewState!!)
+            })
     }
 
     private fun handleViewState(drawingsListNavigationViewState: DrawingsListNavigationViewState) {
-        if (drawingsListNavigationViewState.list != null){
+        if (drawingsListNavigationViewState.list != null) {
             adapter?.setDrawings(drawingsListNavigationViewState.list!!)
         }
     }
