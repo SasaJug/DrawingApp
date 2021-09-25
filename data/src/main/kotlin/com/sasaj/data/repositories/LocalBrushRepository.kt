@@ -6,10 +6,13 @@ import com.sasaj.data.mappers.BrushEntityToDataMapper
 import com.sasaj.domain.entities.Brush
 import com.sasaj.domain.entities.Optional
 import io.reactivex.Observable
+import javax.inject.Inject
 
-class LocalBrushRepository(private val brushEntityToDataMapper: BrushEntityToDataMapper,
-                           private val brushDataToEntityToMapper: BrushDataToEntityMapper,
-                           private val db: AppDb) {
+internal class LocalBrushRepository @Inject constructor(
+    private val brushEntityToDataMapper: BrushEntityToDataMapper,
+    private val brushDataToEntityToMapper: BrushDataToEntityMapper,
+    private val db: AppDb
+) {
 
 
     fun getLastBrush(): Observable<Optional<Brush>> {
@@ -29,7 +32,7 @@ class LocalBrushRepository(private val brushEntityToDataMapper: BrushEntityToDat
         }
     }
 
-    fun deleteAll(){
+    fun deleteAll() {
         db.brushDao().deleteAll()
     }
 }

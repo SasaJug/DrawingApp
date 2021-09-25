@@ -1,4 +1,4 @@
-package com.sasaj.graphics.drawingapp.di
+package com.sasaj.data.di
 
 import androidx.room.Room
 import android.content.Context
@@ -19,7 +19,7 @@ import dagger.hilt.components.SingletonComponent
 
 @Module
 @InstallIn(SingletonComponent::class)
-class LocalRepositoryModule {
+internal class LocalRepositoryModule {
 
     @Provides
     fun providesAppDatabase(@ApplicationContext context: Context): AppDb {

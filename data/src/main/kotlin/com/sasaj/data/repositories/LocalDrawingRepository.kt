@@ -8,14 +8,18 @@ import com.sasaj.data.mappers.DrawingEntityToDataMapper
 import com.sasaj.domain.LocalFileManager
 import com.sasaj.domain.entities.Drawing
 import io.reactivex.Observable
+import javax.inject.Inject
 
-class LocalDrawingRepository(private val awsHelper: AWSHelper,
-                             private val drawingDataToEntityMapper: DrawingDataToEntityMapper,
-                             private val drawingEntityToDataMapper: DrawingEntityToDataMapper,
-                             private val db: AppDb) {
+internal class LocalDrawingRepository @Inject constructor(
+    private val awsHelper: AWSHelper,
+    private val drawingDataToEntityMapper: DrawingDataToEntityMapper,
+    private val drawingEntityToDataMapper: DrawingEntityToDataMapper,
+    private val db: AppDb
+) {
 
     fun getDrawings(): Observable<List<Drawing>> {
-        return db.drawingDao().getAll().map { list -> drawingDataToEntityMapper.mapFromList(list) }.toObservable()
+        return db.drawingDao().getAll().map { list -> drawingDataToEntityMapper.mapFromList(list) }
+            .toObservable()
     }
 
     fun getDrawingsFromDirectory(): List<Drawing> {
@@ -27,7 +31,8 @@ class LocalDrawingRepository(private val awsHelper: AWSHelper,
             val fileName = it.toString()
             val imagePath = "${dir.absolutePath}/$fileName"
             val lastModified = fileName.substring(8, fileName.indexOf('.')).toLong()
-            val drawing = Drawing(fileName = fileName, imagePath = imagePath, lastModified = lastModified)
+            val drawing =
+                Drawing(fileName = fileName, imagePath = imagePath, lastModified = lastModified)
             saveDrawingToDb(drawing)
             drawings.add(drawing)
         }
@@ -35,7 +40,8 @@ class LocalDrawingRepository(private val awsHelper: AWSHelper,
     }
 
     fun saveDrawing(localFileManager: LocalFileManager): Drawing {
-        val drawing = localFileManager.saveFileLocallyAndReturnEntity(awsHelper.getStorageDirectory())
+        val drawing =
+            localFileManager.saveFileLocallyAndReturnEntity(awsHelper.getStorageDirectory())
         val drawingDb = drawingEntityToDataMapper.mapFrom(drawing!!)
         db.drawingDao().insert(drawingDb)
         return drawing

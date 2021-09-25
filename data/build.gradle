@@ -51,6 +51,10 @@ dependencies {
     //Rx
     implementation "io.reactivex.rxjava2:rxjava:$rootProject.ext.rxJavaVersion"
 
+    //Hilt
+    implementation "com.google.dagger:hilt-android:$hilt_version"
+    kapt "com.google.dagger:hilt-android-compiler:$hilt_version"
+
     //Room
     implementation 'androidx.room:room-runtime:2.3.0'
     implementation 'androidx.room:room-rxjava2:2.3.0'

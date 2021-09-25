@@ -7,7 +7,7 @@ import androidx.room.Query
 import com.sasaj.data.entities.BrushDb
 
 @Dao
-interface BrushDao {
+internal interface BrushDao {
 
     @Query("SELECT * FROM brush order by id asc limit 1")
     fun getLastSaved(): BrushDb?

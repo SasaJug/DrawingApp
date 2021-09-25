@@ -4,7 +4,6 @@ apply plugin: 'dagger.hilt.android.plugin'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 
-
 android {
     compileSdkVersion rootProject.compileSdkVersion
     buildToolsVersion rootProject.buildToolsVersion
@@ -16,16 +15,6 @@ android {
         versionCode 3
         versionName "2.2"
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
-
-        def props = new Properties()
-        def File configFile = file("$rootDir/config/amazon.properties")
-        if (configFile.exists() && configFile.canRead()) {
-            props.load(new FileInputStream(configFile))
-            props.each { key, val ->
-                String[] value = val.split("#")
-                buildConfigField value[0], key, value[1]
-            }
-        }
     }
     buildTypes {
         release {
@@ -83,13 +72,6 @@ dependencies {
     kapt "androidx.room:room-compiler:2.3.0"
     implementation "androidx.room:room-rxjava2:2.3.0"
 
-    //Dagger
-//    implementation "com.google.dagger:dagger:$rootProject.ext.daggerVersion"
-//    implementation "com.google.dagger:dagger-android:$rootProject.ext.daggerVersion"
-//    implementation "com.google.dagger:dagger-android-support:$rootProject.ext.daggerVersion"
-//    kapt "com.google.dagger:dagger-compiler:$rootProject.ext.daggerVersion"
-//    implementation "javax.annotation:jsr250-api:$rootProject.ext.jsr250Version"
-
     implementation "com.google.dagger:hilt-android:$hilt_version"
     kapt "com.google.dagger:hilt-android-compiler:$hilt_version"
 
@@ -120,6 +102,7 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test:rules:1.1.1'
 
-    implementation project(path: ':domain')
-    implementation project(path: ':data')
+    implementation project(':domain')
+    implementation project(':data')
+
 }

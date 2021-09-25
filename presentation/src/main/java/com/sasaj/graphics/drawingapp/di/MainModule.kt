@@ -46,21 +46,4 @@ class MainModule {
     fun provideSignOutUseCase(userRepository: UserRepository): SignOut {
         return SignOut(ASyncTransformer(), userRepository)
     }
-
-
-//    @Provides
-//    fun provideMainVMFactory(signOutUseCase: SignOut,
-//                             syncDrawingsUseCase: SyncDrawings,
-//                             getDrawingsUseCase : GetDrawings,
-//                             drawingEntityToUIMapper: DrawingEntityToUIMapper): MainVMFactory {
-//        return MainVMFactory(signOutUseCase, syncDrawingsUseCase, getDrawingsUseCase, drawingEntityToUIMapper)
-//    }
-
-
-//    @Provides
-//    fun provideDrawingVMFactory(saveDrawingUseCase: SaveDrawing,
-//                                getBrushUseCase: GetBrush,
-//                                saveBrushUseCase: SaveBrush): DrawingVMFactory {
-//        return DrawingVMFactory(saveDrawingUseCase, getBrushUseCase, saveBrushUseCase)
-//    }
 }

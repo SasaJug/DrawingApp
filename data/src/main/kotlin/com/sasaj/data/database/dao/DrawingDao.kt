@@ -8,7 +8,7 @@ import com.sasaj.data.entities.DrawingDb
 import io.reactivex.Flowable
 
 @Dao
-interface DrawingDao {
+internal interface DrawingDao {
 
     @Query("SELECT * from drawing")
     fun getAll(): Flowable<List<DrawingDb>>

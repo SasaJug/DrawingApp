@@ -8,7 +8,7 @@ import com.sasaj.data.entities.BrushDb
 import com.sasaj.data.entities.DrawingDb
 
 @Database(entities = [(DrawingDb::class), (BrushDb::class)], version = 4, exportSchema = false)
-abstract class AppDb : RoomDatabase() {
+internal abstract class AppDb : RoomDatabase() {
     abstract fun brushDao(): BrushDao
     abstract fun drawingDao(): DrawingDao
 }
