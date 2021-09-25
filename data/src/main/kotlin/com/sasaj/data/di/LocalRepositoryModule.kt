@@ -1,7 +1,7 @@
-package com.sasaj.graphics.drawingapp.di
+package com.sasaj.data.di
 
-import android.content.Context
 import androidx.room.Room
+import android.content.Context
 import com.sasaj.data.aws.AWSHelper
 import com.sasaj.data.database.AppDb
 import com.sasaj.data.mappers.BrushDataToEntityMapper
@@ -16,15 +16,17 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
-import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-class LocalRepositoryModule {
+internal class LocalRepositoryModule {
 
     @Provides
     fun providesAppDatabase(@ApplicationContext context: Context): AppDb {
-        return Room.databaseBuilder(context, AppDb::class.java, "DrawingAppDb").fallbackToDestructiveMigration().build()
+        return Room.databaseBuilder(context, AppDb::class.java, "DrawingAppDb")
+            .fallbackToDestructiveMigration()
+            .enableMultiInstanceInvalidation()
+            .build()
     }
 
     @Provides

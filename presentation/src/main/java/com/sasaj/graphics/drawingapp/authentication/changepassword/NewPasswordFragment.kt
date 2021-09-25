@@ -1,12 +1,14 @@
 package com.sasaj.graphics.drawingapp.authentication.changepassword
 
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
+import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
+import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import com.sasaj.graphics.drawingapp.DrawingApplication
 import com.sasaj.graphics.drawingapp.R
 import com.sasaj.graphics.drawingapp.authentication.AuthenticationNavigationViewModel
@@ -17,14 +19,14 @@ import javax.inject.Inject
 
 @AndroidEntryPoint
 class NewPasswordFragment : Fragment() {
-
-    @Inject
-    lateinit var forgotPasswordVMFactory: ForgotPasswordVMFactory
+//
+//    @Inject
+//    lateinit var forgotPasswordVMFactory: ForgotPasswordVMFactory
 
     private var username: String? = null
 
-    private lateinit var vmForgotPassword: ForgotPasswordViewModel
-    private lateinit var vmNavigation: AuthenticationNavigationViewModel
+    private val vmForgotPassword by viewModels<ForgotPasswordViewModel>()
+    private val vmNavigation by activityViewModels<AuthenticationNavigationViewModel>()
 
     //region lifecycle callbacks
 
@@ -36,10 +38,10 @@ class NewPasswordFragment : Fragment() {
             username = it.getString(USERNAME)
         }
 
-        vmForgotPassword = ViewModelProviders.of(this, forgotPasswordVMFactory).get(ForgotPasswordViewModel::class.java)
-        activity?.let {
-            vmNavigation = ViewModelProviders.of(it).get(AuthenticationNavigationViewModel::class.java)
-        }
+//        vmForgotPassword = ViewModelProviders.of(this, forgotPasswordVMFactory).get(ForgotPasswordViewModel::class.java)
+//        activity?.let {
+//            vmNavigation = ViewModelProviders.of(it).get(AuthenticationNavigationViewModel::class.java)
+//        }
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -48,7 +50,7 @@ class NewPasswordFragment : Fragment() {
         vmForgotPassword.forgotPasswordLiveData.observe(viewLifecycleOwner, Observer {
             if (it != null) handleViewState(it)
         })
-        vmForgotPassword.errorState.observe(this, Observer { uiException ->
+        vmForgotPassword.errorState.observe(viewLifecycleOwner, Observer { uiException ->
            uiException.let {
                 handleError(it)
             }

@@ -1,29 +1,40 @@
 package com.sasaj.graphics.drawingapp.authentication.register
 
 import android.os.Bundle
+import androidx.fragment.app.Fragment
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
-import com.sasaj.graphics.drawingapp.DrawingApplication
+import com.sasaj.domain.usecases.SignUp
 import com.sasaj.graphics.drawingapp.R
 import com.sasaj.graphics.drawingapp.authentication.AuthenticationNavigationViewModel
+import com.sasaj.graphics.drawingapp.common.BaseViewModel
+import com.sasaj.graphics.drawingapp.common.SingleLiveEvent
 import com.sasaj.graphics.drawingapp.common.UIException
 import dagger.hilt.android.AndroidEntryPoint
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.android.synthetic.main.fragment_register.*
 import javax.inject.Inject
 
+data class RegisterViewState(
+    var registrationStarted : Boolean  = false,
+    var loading : Boolean = false,
+    var isConfirmed: Boolean = false
+)
+
 @AndroidEntryPoint
 class RegisterFragment : Fragment() {
+//
+//    @Inject
+//    lateinit var registerVMFactory: RegisterVMFactory
 
-    @Inject
-    lateinit var registerVMFactory: RegisterVMFactory
-
-    private lateinit var vmRegister: RegisterViewModel
-    private lateinit var vmNavigation: AuthenticationNavigationViewModel
+    private val vmRegister by viewModels<RegisterViewModel>()
+    private val vmNavigation by activityViewModels<AuthenticationNavigationViewModel>()
 
     //region lifecycle callbacks
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -31,18 +42,18 @@ class RegisterFragment : Fragment() {
 
 //        (activity?.application as DrawingApplication).createRegisterComponent().inject(this)
 
-        vmRegister = ViewModelProviders.of(this, registerVMFactory).get(RegisterViewModel::class.java)
-        activity?.let {
-            vmNavigation = ViewModelProviders.of(it).get(AuthenticationNavigationViewModel::class.java)
-        }
+//        vmRegister = ViewModelProviders.of(this, registerVMFactory).get(RegisterViewModel::class.java)
+//        activity?.let {
+//            vmNavigation = ViewModelProviders.of(it).get(AuthenticationNavigationViewModel::class.java)
+//        }
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        vmRegister.registerLiveData.observe(viewLifecycleOwner, Observer {
+        vmRegister.registerLiveData.observe(viewLifecycleOwner, Observer{
             if (it != null) handleViewState(it)
         })
-        vmRegister.errorState.observe(this, Observer { uiException ->
+        vmRegister.errorState.observe(viewLifecycleOwner, Observer{ uiException ->
             handleError(uiException)
         })
     }
@@ -146,4 +157,57 @@ class RegisterFragment : Fragment() {
     companion object {
         private val TAG = RegisterFragment::class.java.simpleName
     }
+}
+
+
+@HiltViewModel
+class RegisterViewModel @Inject constructor(private val signUpUseCase: SignUp) : BaseViewModel() {
+
+    val registerLiveData: MutableLiveData<RegisterViewState> = MutableLiveData()
+    var errorState: SingleLiveEvent<UIException> = SingleLiveEvent()
+
+    init {
+        registerLiveData.value = RegisterViewState()
+    }
+
+    fun register(username: String, email: String, password: String, confirmPassword: String) {
+        var errorCode = 0
+
+        if (username.trim() == "")
+            errorCode = errorCode or UIException.EMPTY_USERNAME
+        if (email.trim() == "")
+            errorCode = errorCode or UIException.EMPTY_EMAIL
+        if (password.trim() == "")
+            errorCode = errorCode or UIException.EMPTY_PASSWORD
+        if (confirmPassword.trim() == "")
+            errorCode = errorCode or UIException.EMPTY_CONFIRM_PASSWORD
+        if (password != confirmPassword)
+            errorCode = errorCode or UIException.PASSWORDS_DO_NOT_MATCH
+
+        if (errorCode > 0) {
+            errorState.value = UIException("All entries must be valid", IllegalArgumentException(), errorCode)
+            return
+        }
+
+        val registerViewState = registerLiveData.value?.copy(registrationStarted = true, loading = true, isConfirmed = false)
+        registerLiveData.value = registerViewState
+
+        addDisposable(signUpUseCase.signUp(username, password, email)
+            .subscribe(
+                { b: Boolean ->
+                    val newRegisterViewState = registerLiveData.value?.copy(loading = false, isConfirmed = b)
+                    registerLiveData.value = newRegisterViewState
+                },
+                { e ->
+                    errorState.value = UIException(cause = e)
+                },
+                { Log.i(TAG, "Registration started") }
+            )
+        )
+    }
+
+    companion object {
+        private val TAG = RegisterViewModel::class.java.simpleName
+    }
+
 }

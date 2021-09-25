@@ -1,4 +1,4 @@
-package com.sasaj.graphics.drawingapp.common
+package com.sasaj.data.aws
 
 import android.content.Context
 import android.os.Environment
@@ -6,12 +6,11 @@ import android.util.Log
 import com.amazonaws.auth.CognitoCachingCredentialsProvider
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.CognitoUserPool
 import com.amazonaws.regions.Regions
-import com.sasaj.data.aws.AWSHelper
+import com.sasaj.data.BuildConfig
 import com.sasaj.data.repositories.RemoteDrawingRepository
-import com.sasaj.graphics.drawingapp.BuildConfig
 import java.io.File
 
-class AWSHelperImpl(private val context: Context): AWSHelper {
+internal class AWSHelperImpl(private val context: Context): AWSHelper {
 
     private val userPoolId = BuildConfig.USER_POOL_ID
     private val clientId = BuildConfig.CLIENT_ID

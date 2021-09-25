@@ -1,15 +1,16 @@
 package com.sasaj.graphics.drawingapp.drawing
 
 import android.os.Bundle
+import androidx.fragment.app.DialogFragment
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.Window
-import androidx.fragment.app.DialogFragment
-import androidx.lifecycle.ViewModelProviders
+import androidx.fragment.app.activityViewModels
 import com.sasaj.graphics.drawingapp.R
 import com.sasaj.graphics.drawingapp.entities.BrushUI
+import dagger.hilt.android.AndroidEntryPoint
 import io.reactivex.Observable
 import kotlinx.android.synthetic.main.select_brush_dialog_fragment_layout.*
 
@@ -18,18 +19,20 @@ import kotlinx.android.synthetic.main.select_brush_dialog_fragment_layout.*
  * Created by sjugurdzija on 9/11/2016.
  */
 
+@AndroidEntryPoint
 class SelectBrushDialogFragment : DialogFragment() {
 
     private lateinit var brushSelectorObservable: Observable<BrushUI>
-    lateinit var drawingNavigationViewModel: DrawingNavigationViewModel
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    private val drawingNavigationViewModel by activityViewModels<DrawingNavigationViewModel>()
 
-        activity?.let {
-            drawingNavigationViewModel = ViewModelProviders.of(it).get(DrawingNavigationViewModel::class.java)
-        }
-    }
+//    override fun onCreate(savedInstanceState: Bundle?) {
+//        super.onCreate(savedInstanceState)
+//
+//        activity?.let {
+//            drawingNavigationViewModel = ViewModelProviders.of(it).get(DrawingNavigationViewModel::class.java)
+//        }
+//    }
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {

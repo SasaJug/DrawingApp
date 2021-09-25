@@ -11,7 +11,7 @@ import com.sasaj.data.database.*
  */
 
 @Entity(tableName = DRAWING_TABLE_NAME)
-data class DrawingDb(@PrimaryKey(autoGenerate = true) val id: Long?,
+internal data class DrawingDb(@PrimaryKey(autoGenerate = true) val id: Long?,
                 @ColumnInfo(name = FILENAME_COLUMN_NAME) val fileName: String,
                 @ColumnInfo(name = PATH_COLUMN_NAME) val imagePath: String,
                 @ColumnInfo(name = LAST_MODIFIED_COLUMN_NAME) val lastModified: Long) : Comparable<DrawingDb> {

@@ -1,4 +1,4 @@
-package com.sasaj.graphics.drawingapp.di
+package com.sasaj.data.di
 
 import android.content.Context
 import com.amazonaws.mobileconnectors.s3.transferutility.TransferUtility
@@ -15,7 +15,7 @@ import dagger.hilt.components.SingletonComponent
 
 @Module
 @InstallIn(SingletonComponent::class)
-class RemoteRepositoryModule {
+internal class RemoteRepositoryModule {
 
 
     @Provides

@@ -1,7 +1,7 @@
 package com.sasaj.graphics.drawingapp.main
 
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
+import android.util.Log
 import com.sasaj.domain.entities.Drawing
 import com.sasaj.domain.usecases.GetDrawings
 import com.sasaj.domain.usecases.SignOut
@@ -10,14 +10,16 @@ import com.sasaj.graphics.drawingapp.common.BaseViewModel
 import com.sasaj.graphics.drawingapp.common.SingleLiveEvent
 import com.sasaj.graphics.drawingapp.entities.DrawingUI
 import com.sasaj.graphics.drawingapp.mappers.DrawingEntityToUIMapper
-import dagger.hilt.android.AndroidEntryPoint
+import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
-
-class MainViewModel @Inject constructor(private val signOutUseCase: SignOut,
-                    private val syncDrawings: SyncDrawings,
-                    private val getDrawings: GetDrawings,
-                    private val drawingEntityToUIMapper: DrawingEntityToUIMapper) : BaseViewModel() {
+@HiltViewModel
+class MainViewModel @Inject constructor(
+    private val signOutUseCase: SignOut,
+    private val syncDrawings: SyncDrawings,
+    private val getDrawings: GetDrawings,
+    private val drawingEntityToUIMapper: DrawingEntityToUIMapper
+) : BaseViewModel() {
 
     val mainLiveData: MutableLiveData<MainViewState> = MutableLiveData()
     var errorState: SingleLiveEvent<Throwable?> = SingleLiveEvent()
@@ -32,19 +34,21 @@ class MainViewModel @Inject constructor(private val signOutUseCase: SignOut,
         mainLiveData.value = mainViewState
 
         addDisposable(getDrawings.getDrawings()
-                .map { list -> toDrawingsUI(list) }
-                .subscribe(
-                        { list ->
-                            Log.e("MainVM", "drawings: $list")
-                            val newDrawingsListViewState = mainLiveData.value?.copy(state = MainViewState.DRAWINGS_LOADED, drawingsList = list)
-                            mainLiveData.value = newDrawingsListViewState
-                            errorState.value = null
-                        },
-                        { e ->
-                            errorState.value = e
-                        },
-                        { Log.e(TAG, "Drawings list fetched") }
-                )
+            .map { list -> toDrawingsUI(list) }
+            .subscribe(
+                { list: List<DrawingUI> ->
+                    val newDrawingsListViewState = mainLiveData.value?.copy(
+                        state = MainViewState.DRAWINGS_LOADED,
+                        drawingsList = list
+                    )
+                    mainLiveData.value = newDrawingsListViewState
+                    errorState.value = null
+                },
+                { e ->
+                    errorState.value = e
+                },
+                { Log.i(TAG, "Drawings list fetched") }
+            )
         )
     }
 
@@ -53,19 +57,20 @@ class MainViewModel @Inject constructor(private val signOutUseCase: SignOut,
         mainLiveData.value = mainViewState
 
         addDisposable(signOutUseCase.signOut()
-                .subscribe(
-                        { b: Boolean ->
-                            if(b){
-                                val newMainViewState = mainLiveData.value?.copy(state = MainViewState.SIGNOUT_SUCCESSFUL)
-                                mainLiveData.value = newMainViewState
-                                errorState.value = null
-                            }
-                        },
-                        { e ->
-                            errorState.value = e
-                        },
-                        { Log.i(TAG, "Signout completed") }
-                )
+            .subscribe(
+                { b: Boolean ->
+                    if (b) {
+                        val newMainViewState =
+                            mainLiveData.value?.copy(state = MainViewState.SIGNOUT_SUCCESSFUL)
+                        mainLiveData.value = newMainViewState
+                        errorState.value = null
+                    }
+                },
+                { e ->
+                    errorState.value = e
+                },
+                { Log.i(TAG, "Signout completed") }
+            )
         )
     }
 
@@ -74,25 +79,26 @@ class MainViewModel @Inject constructor(private val signOutUseCase: SignOut,
         mainLiveData.value = mainViewState
 
         addDisposable(syncDrawings.syncDrawings()
-                .subscribe(
-                        { b: Boolean ->
-                            if(b){
-                                val newMainViewState = mainLiveData.value?.copy(state = MainViewState.SYNC_SUCCESSFUL)
-                                mainLiveData.value = newMainViewState
-                                errorState.value = null
-                            }
-                        },
-                        { e ->
-                            errorState.value = e
-                        },
-                        { Log.i(TAG, "Sync completed") }
-                )
+            .subscribe(
+                { b: Boolean ->
+                    if (b) {
+                        val newMainViewState =
+                            mainLiveData.value?.copy(state = MainViewState.SYNC_SUCCESSFUL)
+                        mainLiveData.value = newMainViewState
+                        errorState.value = null
+                    }
+                },
+                { e ->
+                    errorState.value = e
+                },
+                { Log.i(TAG, "Sync completed") }
+            )
         )
     }
 
-    private fun toDrawingsUI(list : List<Drawing>) : List<DrawingUI>{
+    private fun toDrawingsUI(list: List<Drawing>): List<DrawingUI> {
         val finalList = mutableListOf<DrawingUI>()
-        list.forEach{drawing -> finalList.add(drawingEntityToUIMapper.mapFrom(drawing))}
+        list.forEach { drawing -> finalList.add(drawingEntityToUIMapper.mapFrom(drawing)) }
         return finalList
     }
 

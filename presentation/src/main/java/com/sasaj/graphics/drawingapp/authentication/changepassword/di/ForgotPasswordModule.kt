@@ -3,7 +3,6 @@ package com.sasaj.graphics.drawingapp.authentication.changepassword.di
 import com.sasaj.domain.UserRepository
 import com.sasaj.domain.usecases.ChangePasswordUseCase
 import com.sasaj.domain.usecases.NewPassword
-import com.sasaj.graphics.drawingapp.authentication.changepassword.ForgotPasswordVMFactory
 import com.sasaj.graphics.drawingapp.common.ASyncTransformer
 import dagger.Module
 import dagger.Provides
@@ -25,10 +24,10 @@ class ForgotPasswordModule {
         return NewPassword(ASyncTransformer(), userRepository)
     }
 
-    @Provides
-    fun provideChangePasswordVMFactory(changePasswordUseCase: ChangePasswordUseCase, newPasswordUseCase: NewPassword): ForgotPasswordVMFactory {
-        return ForgotPasswordVMFactory(changePasswordUseCase, newPasswordUseCase)
-    }
+//    @Provides
+//    fun provideChangePasswordVMFactory(changePasswordUseCase: ChangePasswordUseCase, newPasswordUseCase: NewPassword): ForgotPasswordVMFactory {
+//        return ForgotPasswordVMFactory(changePasswordUseCase, newPasswordUseCase)
+//    }
 
 
 }

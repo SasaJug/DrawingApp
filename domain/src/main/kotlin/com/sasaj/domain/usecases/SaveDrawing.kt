@@ -7,7 +7,7 @@ import io.reactivex.Observable
 import java.lang.IllegalArgumentException
 import java.util.*
 
-class SaveDrawing(
+class SaveDrawing (
         transformer: Transformer<Boolean>,
         private val drawingRepository: DrawingRepository) : UseCase<Boolean>(transformer) {
 

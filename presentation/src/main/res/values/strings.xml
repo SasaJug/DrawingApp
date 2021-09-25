@@ -51,5 +51,10 @@
     <string name="password_missing_error_message">Password must be provided.</string>
     <string name="confirm_password_missing_error_message">Confirm password must be provided.</string>
     <string name="passwords_do_not_match_error">Passwords do not match</string>
+    <string name="login_title">Login</string>
+    <string name="forgot_password_title">Forgot Password</string>
+    <string name="enter_new_password_title">Enter New Password</string>
+    <string name="register_title">Register</string>
+    <string name="enter_code_title">Enter Code</string>
 
 </resources>

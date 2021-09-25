@@ -8,8 +8,9 @@ import com.sasaj.domain.entities.Drawing
 import com.sasaj.domain.usecases.NetworkManager
 import io.reactivex.Observable
 import io.reactivex.schedulers.Schedulers
+import javax.inject.Inject
 
-class DrawingRepositoryImpl(
+internal class DrawingRepositoryImpl @Inject constructor(
     private val networkManager: NetworkManager,
     private val localDrawingRepository: LocalDrawingRepository,
     private val remoteDrawingRepository: RemoteDrawingRepository

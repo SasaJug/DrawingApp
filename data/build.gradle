@@ -11,10 +11,10 @@ android {
         versionCode 3
         versionName "2.2"
 
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
 
         def props = new Properties()
-        def File configFile = file('config/amazon.properties')
+        def File configFile = file("$rootDir/config/amazon.properties")
         if (configFile.exists() && configFile.canRead()) {
             props.load(new FileInputStream(configFile))
             props.each { key, val ->
@@ -51,10 +51,14 @@ dependencies {
     //Rx
     implementation "io.reactivex.rxjava2:rxjava:$rootProject.ext.rxJavaVersion"
 
+    //Hilt
+    implementation "com.google.dagger:hilt-android:$hilt_version"
+    kapt "com.google.dagger:hilt-android-compiler:$hilt_version"
+
     //Room
-    implementation "android.arch.persistence.room:runtime:$rootProject.archVersion"
-    implementation "android.arch.persistence.room:rxjava2:$rootProject.archVersion"
-    kapt "android.arch.persistence.room:compiler:$rootProject.archVersion"
+    implementation 'androidx.room:room-runtime:2.3.0'
+    implementation 'androidx.room:room-rxjava2:2.3.0'
+    kapt 'androidx.room:room-compiler:2.3.0'
 
     //aws
     implementation "com.amazonaws:aws-android-sdk-core:$rootProject.ext.awsVersion"
@@ -68,8 +72,8 @@ dependencies {
     //JUnit
     testImplementation "junit:junit:$rootProject.JUnitVersion"
 
-    androidTestImplementation 'com.android.support.test:runner:1.0.2'
-    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.1'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.0'
 
 
     implementation project(':domain')

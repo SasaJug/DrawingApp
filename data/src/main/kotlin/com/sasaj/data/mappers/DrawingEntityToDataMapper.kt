@@ -4,7 +4,7 @@ import com.sasaj.data.entities.DrawingDb
 import com.sasaj.domain.common.Mapper
 import com.sasaj.domain.entities.Drawing
 
-class DrawingEntityToDataMapper() : Mapper<Drawing, DrawingDb>() {
+internal class DrawingEntityToDataMapper() : Mapper<Drawing, DrawingDb>() {
     override fun mapFrom(from: Drawing): DrawingDb {
         return DrawingDb(
                 from.fileName,

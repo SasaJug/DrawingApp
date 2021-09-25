@@ -1,9 +1,9 @@
 package com.sasaj.graphics.drawingapp.drawing
 
-import android.arch.core.executor.testing.InstantTaskExecutorRule
-import android.arch.lifecycle.Observer
-import android.support.test.annotation.UiThreadTest
-import android.support.test.runner.AndroidJUnit4
+import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import androidx.lifecycle.Observer
+import androidx.test.annotation.UiThreadTest
+import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.sasaj.domain.BrushRepository
 import com.sasaj.domain.DrawingRepository
 import com.sasaj.domain.entities.Optional

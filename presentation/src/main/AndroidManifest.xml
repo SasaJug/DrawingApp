@@ -23,25 +23,21 @@
             android:theme="@style/AppTheme.Launcher">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
         <activity
             android:name=".authentication.AuthenticationActivity"
-            android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:label="@string/app_name"/>
 
         <activity
             android:name="com.sasaj.graphics.drawingapp.main.MainActivity"
-            android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:label="@string/app_name" />
 
         <activity
             android:name="com.sasaj.graphics.drawingapp.drawing.DrawingActivity"
-            android:hardwareAccelerated="false"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:hardwareAccelerated="false"/>
 
         <provider
             android:name="androidx.core.content.FileProvider"

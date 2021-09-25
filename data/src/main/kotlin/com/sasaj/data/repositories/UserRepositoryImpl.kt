@@ -11,9 +11,13 @@ import com.sasaj.domain.UserRepository
 import io.reactivex.Observable
 import io.reactivex.subjects.PublishSubject
 import io.reactivex.subjects.ReplaySubject
+import javax.inject.Inject
 
 
-class UserRepositoryImpl(private val awsHelper: AWSHelper, private val localRepository: LocalRepository) : UserRepository {
+internal class UserRepositoryImpl @Inject constructor(
+    private val awsHelper: AWSHelper,
+    private val localRepository: LocalRepository
+) : UserRepository {
 
     companion object {
         val TAG: String = UserRepositoryImpl::class.java.simpleName
@@ -34,7 +38,10 @@ class UserRepositoryImpl(private val awsHelper: AWSHelper, private val localRepo
             loginSubject.onNext(true)
         }
 
-        override fun getAuthenticationDetails(authenticationContinuation: AuthenticationContinuation, userId: String?) {
+        override fun getAuthenticationDetails(
+            authenticationContinuation: AuthenticationContinuation,
+            userId: String?
+        ) {
             if (password != null) {
                 val authenticationDetails = AuthenticationDetails(userId, password, null)
                 password = null
@@ -59,7 +66,10 @@ class UserRepositoryImpl(private val awsHelper: AWSHelper, private val localRepo
             checkLoggedInSubject.onNext(userSession.username)
         }
 
-        override fun getAuthenticationDetails(authenticationContinuation: AuthenticationContinuation, userId: String?) {
+        override fun getAuthenticationDetails(
+            authenticationContinuation: AuthenticationContinuation,
+            userId: String?
+        ) {
             checkLoggedInSubject.onNext("")
         }
 
@@ -75,7 +85,11 @@ class UserRepositoryImpl(private val awsHelper: AWSHelper, private val localRepo
     }
 
     private val signUpHandler = object : SignUpHandler {
-        override fun onSuccess(user: CognitoUser, signUpConfirmationState: Boolean, cognitoUserCodeDeliveryDetails: CognitoUserCodeDeliveryDetails) {
+        override fun onSuccess(
+            user: CognitoUser,
+            signUpConfirmationState: Boolean,
+            cognitoUserCodeDeliveryDetails: CognitoUserCodeDeliveryDetails
+        ) {
             registerSubject.onNext(signUpConfirmationState)
         }
 
@@ -126,16 +140,22 @@ class UserRepositoryImpl(private val awsHelper: AWSHelper, private val localRepo
         return loginSubject
     }
 
-    override fun signUp(username: String?, password: String?, attr: HashMap<String, String>): Observable<Boolean> {
+    override fun signUp(
+        username: String?,
+        password: String?,
+        attr: HashMap<String, String>
+    ): Observable<Boolean> {
         registerSubject = PublishSubject.create<Boolean>()
         val attributes = CognitoUserAttributes()
         attr.forEach { (key, value) -> attributes.addAttribute(key, value) }
 
-        awsHelper.getUserPool().signUpInBackground(username,
-                password,
-                attributes,
-                null,
-                signUpHandler)
+        awsHelper.getUserPool().signUpInBackground(
+            username,
+            password,
+            attributes,
+            null,
+            signUpHandler
+        )
 
         return registerSubject
     }

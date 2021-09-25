@@ -5,16 +5,13 @@ import com.sasaj.domain.DrawingRepository
 import com.sasaj.domain.UserRepository
 import com.sasaj.domain.usecases.*
 import com.sasaj.graphics.drawingapp.common.ASyncTransformer
-import com.sasaj.graphics.drawingapp.drawing.DrawingVMFactory
-import com.sasaj.graphics.drawingapp.main.MainVMFactory
-import com.sasaj.graphics.drawingapp.mappers.DrawingEntityToUIMapper
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.android.components.ActivityComponent
+import dagger.hilt.components.SingletonComponent
 
 @Module
-@InstallIn(ActivityComponent::class)
+@InstallIn(SingletonComponent::class)
 class MainModule {
 
     @Provides
@@ -48,22 +45,5 @@ class MainModule {
     @Provides
     fun provideSignOutUseCase(userRepository: UserRepository): SignOut {
         return SignOut(ASyncTransformer(), userRepository)
-    }
-
-
-    @Provides
-    fun provideMainVMFactory(signOutUseCase: SignOut,
-                             syncDrawingsUseCase: SyncDrawings,
-                             getDrawingsUseCase : GetDrawings,
-                             drawingEntityToUIMapper: DrawingEntityToUIMapper): MainVMFactory {
-        return MainVMFactory(signOutUseCase, syncDrawingsUseCase, getDrawingsUseCase, drawingEntityToUIMapper)
-    }
-
-
-    @Provides
-    fun provideDrawingVMFactory(saveDrawingUseCase: SaveDrawing,
-                                getBrushUseCase: GetBrush,
-                                saveBrushUseCase: SaveBrush): DrawingVMFactory {
-        return DrawingVMFactory(saveDrawingUseCase, getBrushUseCase, saveBrushUseCase)
     }
 }

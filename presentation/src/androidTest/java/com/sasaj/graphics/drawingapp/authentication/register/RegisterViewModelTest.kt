@@ -1,9 +1,9 @@
 package com.sasaj.graphics.drawingapp.authentication.register
 
-import android.arch.core.executor.testing.InstantTaskExecutorRule
-import android.arch.lifecycle.Observer
-import android.support.test.annotation.UiThreadTest
-import android.support.test.runner.AndroidJUnit4
+import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import androidx.lifecycle.Observer
+import androidx.test.annotation.UiThreadTest
+import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.sasaj.domain.UserRepository
 import com.sasaj.domain.usecases.SignUp
 import com.sasaj.graphics.drawingapp.common.TestTransformer

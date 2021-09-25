@@ -7,7 +7,7 @@ import androidx.room.PrimaryKey
 import com.sasaj.data.database.*
 
 @Entity(tableName = BRUSH_TABLE_NAME)
-data class BrushDb(@PrimaryKey val id: Long,
+internal data class BrushDb(@PrimaryKey val id: Long,
                    @ColumnInfo(name = SIZE_COLUMN_NAME) var size: Int,
                    @ColumnInfo(name = BLUR_COLUMN_NAME) var blur: Float,
                    @ColumnInfo(name = COLOR_COLUMN_NAME) var color: Int) {

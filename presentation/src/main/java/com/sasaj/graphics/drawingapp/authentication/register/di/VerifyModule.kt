@@ -2,7 +2,6 @@ package com.sasaj.graphics.drawingapp.authentication.register.di
 
 import com.sasaj.domain.UserRepository
 import com.sasaj.domain.usecases.VerifyUser
-import com.sasaj.graphics.drawingapp.authentication.register.VerifyVMFactory
 import com.sasaj.graphics.drawingapp.common.ASyncTransformer
 import dagger.Module
 import dagger.Provides
@@ -18,8 +17,8 @@ class VerifyModule {
         return VerifyUser(ASyncTransformer(), userRepository)
     }
 
-    @Provides
-    fun provideVerifyVMFactory(verifyUserUseCase: VerifyUser): VerifyVMFactory {
-        return VerifyVMFactory(verifyUserUseCase)
-    }
+//    @Provides
+//    fun provideVerifyVMFactory(verifyUserUseCase: VerifyUser): VerifyVMFactory {
+//        return VerifyVMFactory(verifyUserUseCase)
+//    }
 }
