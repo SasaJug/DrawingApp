@@ -19,29 +19,20 @@ import javax.inject.Inject
 
 @AndroidEntryPoint
 class NewPasswordFragment : Fragment() {
-//
-//    @Inject
-//    lateinit var forgotPasswordVMFactory: ForgotPasswordVMFactory
 
     private var username: String? = null
 
     private val vmForgotPassword by viewModels<ForgotPasswordViewModel>()
     private val vmNavigation by activityViewModels<AuthenticationNavigationViewModel>()
 
-    //region lifecycle callbacks
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-//        (activity?.application as DrawingApplication).createForgotPasswordComponent().inject(this)
 
         arguments?.let {
             username = it.getString(USERNAME)
         }
 
-//        vmForgotPassword = ViewModelProviders.of(this, forgotPasswordVMFactory).get(ForgotPasswordViewModel::class.java)
-//        activity?.let {
-//            vmNavigation = ViewModelProviders.of(it).get(AuthenticationNavigationViewModel::class.java)
-//        }
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -71,14 +62,6 @@ class NewPasswordFragment : Fragment() {
             vmForgotPassword.newPassword(newPasswordCode.text.toString(), newPassword.text.toString(), confirmNewPassword.text.toString())
         }
     }
-
-//    override fun onDestroy() {
-//        (activity?.application as DrawingApplication).releaseForgotPasswordComponent()
-//        super.onDestroy()
-//    }
-//endregion
-
-    //region view state and error handlers
 
     private fun handleViewState(forgotPasswordViewState: ForgotPasswordViewState) {
         when {
@@ -114,9 +97,7 @@ class NewPasswordFragment : Fragment() {
             vmNavigation.error(customUIException)
         }
     }
-    //endregion
 
-    //region rendering
     private fun showProgress(show: Boolean) {
         if (show)
             changePasswordProgress.visibility = View.VISIBLE
@@ -141,7 +122,6 @@ class NewPasswordFragment : Fragment() {
         newPasswordLayout.error = null
         confirmNewPasswordLayout.error = null
     }
-    //endregion
 
     companion object {
         private const val USERNAME = "username"

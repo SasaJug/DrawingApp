@@ -17,15 +17,6 @@ class ForgotPasswordFragment : Fragment() {
 
     private val vmNavigation by activityViewModels<AuthenticationNavigationViewModel>()
 
-    //region lifecycle callbacks
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-//        activity?.let {
-//            vmNavigation = ViewModelProviders.of(it).get(AuthenticationNavigationViewModel::class.java)
-//        }
-    }
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_forgot_pasword, container, false)
@@ -38,5 +29,4 @@ class ForgotPasswordFragment : Fragment() {
             vmNavigation.getCode(forgotPasswordUsername.text.toString())
         }
     }
-    //endregion
 }

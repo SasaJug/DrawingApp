@@ -34,23 +34,8 @@ data class VerifyViewState(
 @AndroidEntryPoint
 class VerifyFragment : androidx.fragment.app.Fragment() {
 
-//    @Inject
-//    lateinit var verifyVMFactory: VerifyVMFactory
-
     private val vmVerify by viewModels<VerifyViewModel>()
     private val vmNavigation by activityViewModels<AuthenticationNavigationViewModel>()
-
-    //region lifecycle callbacks
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-//        (activity?.application as DrawingApplication).createVerifyComponent().inject(this)
-
-//        vmVerify = ViewModelProviders.of(this, verifyVMFactory).get(VerifyViewModel::class.java)
-//        activity?.let {
-//            vmNavigation = ViewModelProviders.of(it).get(AuthenticationNavigationViewModel::class.java)
-//        }
-    }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
@@ -77,13 +62,6 @@ class VerifyFragment : androidx.fragment.app.Fragment() {
         }
     }
 
-//    override fun onDestroy() {
-//        (activity?.application as DrawingApplication).releaseVerifyComponent()
-//        super.onDestroy()
-//    }
-    //endregion
-
-    //region view state and error handlers
     private fun handleViewState(verifyViewState: VerifyViewState) {
         when {
             verifyViewState.verificationStarted.not() -> return
@@ -109,9 +87,7 @@ class VerifyFragment : androidx.fragment.app.Fragment() {
             vmNavigation.error(customUIException)
         }
     }
-    //endregion
 
-    //region rendering
     private fun showProgress(show: Boolean) {
         if (show)
             verifyProgress.visibility = View.VISIBLE
@@ -131,7 +107,6 @@ class VerifyFragment : androidx.fragment.app.Fragment() {
         showUsernameError(null)
         showCodeError(null)
     }
-    //endregion
 
     companion object {
         private val TAG = VerifyFragment::class.java.simpleName

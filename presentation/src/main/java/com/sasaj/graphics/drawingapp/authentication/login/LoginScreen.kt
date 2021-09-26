@@ -31,26 +31,8 @@ data class LoginViewState(
 @AndroidEntryPoint
 class LoginFragment : Fragment() {
 
-//    @Inject
-//    lateinit var loginVMFactory: LoginVMFactory
-
-//    private lateinit var vmLogin: LoginViewModel
-//    private lateinit var vmNavigation: AuthenticationNavigationViewModel
-
     private val vmLogin by viewModels<LoginViewModel>()
     private val vmNavigation by activityViewModels<AuthenticationNavigationViewModel>()
-
-    //region lifecycle callbacks
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-//        (activity?.application as DrawingApplication).createLoginComponent().inject(this)
-
-//        vmLogin = ViewModelProviders.of(this, loginVMFactory).get(LoginViewModel::class.java)
-//        activity?.let {
-//            vmNavigation = ViewModelProviders.of(it).get(AuthenticationNavigationViewModel::class.java)
-//        }
-    }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
@@ -83,13 +65,6 @@ class LoginFragment : Fragment() {
         }
     }
 
-//    override fun onDestroy() {
-//        (activity?.application as DrawingApplication).releaseLoginComponent()
-//        super.onDestroy()
-//    }
-    //endregion
-
-    //region view state and error handlers
     private fun handleViewState(loginViewState: LoginViewState) {
         resetErrors()
         if (loginViewState.loading)
@@ -117,9 +92,7 @@ class LoginFragment : Fragment() {
             vmNavigation.error(customUIException)
         }
     }
-    //endregion
 
-    //region rendering
     private fun showProgress(show: Boolean) {
         if (show)
             loginProgress.visibility = VISIBLE
@@ -140,7 +113,6 @@ class LoginFragment : Fragment() {
         showUsernameError(null)
         showPasswordError(null)
     }
-    //endregion
 
     companion object {
         private val TAG = LoginFragment::class.java.simpleName

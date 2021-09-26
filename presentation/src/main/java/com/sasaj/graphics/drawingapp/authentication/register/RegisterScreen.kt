@@ -29,24 +29,9 @@ data class RegisterViewState(
 
 @AndroidEntryPoint
 class RegisterFragment : Fragment() {
-//
-//    @Inject
-//    lateinit var registerVMFactory: RegisterVMFactory
 
     private val vmRegister by viewModels<RegisterViewModel>()
     private val vmNavigation by activityViewModels<AuthenticationNavigationViewModel>()
-
-    //region lifecycle callbacks
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-//        (activity?.application as DrawingApplication).createRegisterComponent().inject(this)
-
-//        vmRegister = ViewModelProviders.of(this, registerVMFactory).get(RegisterViewModel::class.java)
-//        activity?.let {
-//            vmNavigation = ViewModelProviders.of(it).get(AuthenticationNavigationViewModel::class.java)
-//        }
-    }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
@@ -75,13 +60,6 @@ class RegisterFragment : Fragment() {
         }
     }
 
-//    override fun onDestroy() {
-//        (activity?.application as DrawingApplication).releaseRegisterComponent()
-//        super.onDestroy()
-//    }
-    //endregion
-
-    //region view state and error handlers
     private fun handleViewState(registerViewState: RegisterViewState) {
         when {
             registerViewState.registrationStarted.not() -> return
@@ -120,9 +98,7 @@ class RegisterFragment : Fragment() {
             vmNavigation.error(customUIException)
         }
     }
-    //endregion
 
-    //region rendering
     private fun showProgress(show: Boolean) {
         if (show)
             registerProgress.visibility = View.VISIBLE
@@ -152,7 +128,6 @@ class RegisterFragment : Fragment() {
         showPasswordError(null)
         showConfirmPasswordError(null)
     }
-    //endregion
 
     companion object {
         private val TAG = RegisterFragment::class.java.simpleName

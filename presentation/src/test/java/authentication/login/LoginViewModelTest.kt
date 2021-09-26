@@ -1,4 +1,4 @@
-package com.sasaj.graphics.drawingapp.authentication.login
+package authentication.login
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
@@ -6,6 +6,8 @@ import androidx.test.annotation.UiThreadTest
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.sasaj.domain.UserRepository
 import com.sasaj.domain.usecases.LogIn
+import com.sasaj.graphics.drawingapp.authentication.login.LoginViewModel
+import com.sasaj.graphics.drawingapp.authentication.login.LoginViewState
 import com.sasaj.graphics.drawingapp.common.TestTransformer
 import com.sasaj.graphics.drawingapp.common.UIException
 import io.reactivex.Observable
@@ -22,7 +24,7 @@ import org.mockito.Mockito.*
 
 @Suppress("UNCHECKED_CAST")
 @RunWith(AndroidJUnit4::class)
-class LoginViewModelInstrumentationTest {
+class LoginViewModelTest {
 
     @get:Rule
     var rule: TestRule = InstantTaskExecutorRule()

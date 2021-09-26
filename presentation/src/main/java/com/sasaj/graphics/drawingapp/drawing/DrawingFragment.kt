@@ -25,14 +25,6 @@ class DrawingFragment : Fragment() {
     val bitmap: Bitmap?
         get() = drawing!!.bitmapFromView
 
-//    override fun onCreate(savedInstanceState: Bundle?) {
-//        super.onCreate(savedInstanceState)
-
-//        activity?.let {
-//            drawingNavigationViewModel = ViewModelProviders.of(it).get(DrawingNavigationViewModel::class.java)
-//        }
-//    }
-
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         drawingNavigationViewModel.drawingNavigationLiveData.observe(viewLifecycleOwner, Observer{

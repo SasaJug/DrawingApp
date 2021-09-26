@@ -16,9 +16,4 @@ class LoginModule {
     fun provideLoginUseCase(userRepository: UserRepository): LogIn {
         return LogIn(ASyncTransformer(), userRepository)
     }
-
-//    @Provides
-//    fun provideLoginVMFactory(loginUseCase: LogIn): LoginVMFactory {
-//        return LoginVMFactory(loginUseCase)
-//    }
 }

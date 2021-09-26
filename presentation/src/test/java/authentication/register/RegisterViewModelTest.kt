@@ -1,4 +1,4 @@
-package com.sasaj.graphics.drawingapp.authentication.register
+package authentication.register
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
@@ -6,6 +6,8 @@ import androidx.test.annotation.UiThreadTest
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.sasaj.domain.UserRepository
 import com.sasaj.domain.usecases.SignUp
+import com.sasaj.graphics.drawingapp.authentication.register.RegisterViewModel
+import com.sasaj.graphics.drawingapp.authentication.register.RegisterViewState
 import com.sasaj.graphics.drawingapp.common.TestTransformer
 import com.sasaj.graphics.drawingapp.common.UIException
 import io.reactivex.Observable

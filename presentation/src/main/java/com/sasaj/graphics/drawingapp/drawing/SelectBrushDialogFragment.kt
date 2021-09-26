@@ -26,14 +26,6 @@ class SelectBrushDialogFragment : DialogFragment() {
 
     private val drawingNavigationViewModel by activityViewModels<DrawingNavigationViewModel>()
 
-//    override fun onCreate(savedInstanceState: Bundle?) {
-//        super.onCreate(savedInstanceState)
-//
-//        activity?.let {
-//            drawingNavigationViewModel = ViewModelProviders.of(it).get(DrawingNavigationViewModel::class.java)
-//        }
-//    }
-
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         dialog?.window!!.requestFeature(Window.FEATURE_NO_TITLE)

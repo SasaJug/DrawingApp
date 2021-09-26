@@ -55,7 +55,6 @@ class AuthenticationActivity : BaseActivity() {
         setContentView(R.layout.activity_authentication)
         setSupportActionBar(toolbar)
 
-//        vm = ViewModelProviders.of(this).get(AuthenticationNavigationViewModel::class.java)
         vm.navigationLiveData.observe(this) { navigationState -> handleResponse(navigationState) }
         vm.errorState.observe(this) { uiException ->
             renderErrorState(uiException!!)
