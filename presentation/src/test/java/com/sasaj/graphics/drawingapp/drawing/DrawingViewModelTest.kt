@@ -10,7 +10,6 @@ import com.sasaj.domain.entities.Optional
 import com.sasaj.domain.usecases.GetBrush
 import com.sasaj.domain.usecases.SaveBrush
 import com.sasaj.domain.usecases.SaveDrawing
-import com.sasaj.graphics.drawingapp.authentication.login.LoginViewState
 import com.sasaj.graphics.drawingapp.common.TestTransformer
 import com.sasaj.graphics.drawingapp.common.UIException
 import io.reactivex.Observable
@@ -21,9 +20,7 @@ import org.junit.Test
 import org.junit.rules.TestRule
 import org.junit.runner.RunWith
 import org.mockito.ArgumentCaptor
-import org.mockito.ArgumentMatchers
 import org.mockito.Mockito
-import org.mockito.Mockito.*
 
 
 @Suppress("UNCHECKED_CAST")
@@ -47,15 +44,15 @@ class DrawingViewModelTest {
 
     @Before
     fun setUp() {
-        drawingRepository = mock(DrawingRepository::class.java)
-        brushRepository = mock(BrushRepository::class.java)
+        drawingRepository = Mockito.mock(DrawingRepository::class.java)
+        brushRepository = Mockito.mock(BrushRepository::class.java)
         saveDrawing = SaveDrawing(TestTransformer(), drawingRepository)
         getBrush = GetBrush(TestTransformer(), brushRepository)
         saveBrush = SaveBrush(TestTransformer(),brushRepository)
         drawingViewModel = DrawingViewModel(saveDrawing, getBrush, saveBrush)
 
-        viewStateObserver = mock(Observer::class.java) as Observer<DrawingViewState>
-        errorObserver = mock(Observer::class.java) as Observer<UIException?>
+        viewStateObserver = Mockito.mock(Observer::class.java) as Observer<DrawingViewState>
+        errorObserver = Mockito.mock(Observer::class.java) as Observer<UIException?>
 
         drawingViewModel.drawingLiveData.observeForever(viewStateObserver)
         drawingViewModel.errorState.observeForever(errorObserver)
@@ -67,13 +64,13 @@ class DrawingViewModelTest {
     @UiThreadTest
     fun noLastBrush() {
         val argument = ArgumentCaptor.forClass(DrawingViewState::class.java)
-        `when`(brushRepository.getCurrentBrush()).thenReturn(Observable.just(Optional.empty()))
+        Mockito.`when`(brushRepository.getCurrentBrush()).thenReturn(Observable.just(Optional.empty()))
         drawingViewModel.getLastBrush()
 
 
         Mockito.verify(viewStateObserver, Mockito.times(3)).onChanged(argument.capture())
 
         Assert.assertEquals(null, argument.allValues[2].brush)
-        verifyZeroInteractions(errorObserver)
+        Mockito.verifyZeroInteractions(errorObserver)
     }
 }

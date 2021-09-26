@@ -46,8 +46,8 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
-    implementation "androidx.appcompat:appcompat:1.3.0"
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation "androidx.appcompat:appcompat:$rootProject.ext.appcompatVersion"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlinStdLibVersion"
     //Rx
     implementation "io.reactivex.rxjava2:rxjava:$rootProject.ext.rxJavaVersion"
 
@@ -56,9 +56,12 @@ dependencies {
     kapt "com.google.dagger:hilt-android-compiler:$hilt_version"
 
     //Room
-    implementation 'androidx.room:room-runtime:2.3.0'
-    implementation 'androidx.room:room-rxjava2:2.3.0'
-    kapt 'androidx.room:room-compiler:2.3.0'
+    implementation "androidx.room:room-runtime:$rootProject.ext.roomVersion"
+    kapt "androidx.room:room-compiler:$rootProject.ext.roomVersion"
+    implementation "androidx.room:room-rxjava2:$rootProject.ext.roomVersion"
+
+    //DebugDb
+    debugImplementation "com.amitshekhar.android:debug-db:$rootProject.debugDbVersion"
 
     //aws
     implementation "com.amazonaws:aws-android-sdk-core:$rootProject.ext.awsVersion"
@@ -67,14 +70,10 @@ dependencies {
     implementation "com.amazonaws:aws-android-sdk-ddb:$rootProject.ext.awsVersion"
 
     //Mockito
-    testImplementation "org.mockito:mockito-core:$rootProject.MockitoVersion"
+    testImplementation "org.mockito:mockito-core:$rootProject.MockitoCoreVersion"
 
     //JUnit
     testImplementation "junit:junit:$rootProject.JUnitVersion"
-
-    androidTestImplementation 'androidx.test.ext:junit:1.1.1'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.0'
-
 
     implementation project(':domain')
 }

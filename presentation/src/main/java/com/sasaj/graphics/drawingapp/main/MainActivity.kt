@@ -1,17 +1,14 @@
 package com.sasaj.graphics.drawingapp.main
 
-import android.content.Context
 import androidx.lifecycle.Observer
 import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.util.AttributeSet
 import androidx.core.content.FileProvider
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
 import androidx.activity.viewModels
 import com.sasaj.graphics.drawingapp.BuildConfig
 import com.sasaj.graphics.drawingapp.R
