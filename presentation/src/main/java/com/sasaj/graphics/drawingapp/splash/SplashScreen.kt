@@ -26,6 +26,11 @@ import javax.inject.Inject
  * Created by sjugurdzija on 4/22/2017
  */
 
+data class SplashViewState(
+    var loading : Boolean = true,
+    var username : String = ""
+)
+
 @AndroidEntryPoint
 class SplashActivity : BaseActivity() {
 

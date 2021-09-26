@@ -30,35 +30,26 @@ import javax.inject.Inject
 
 @AndroidEntryPoint
 class DrawingActivity : BaseActivity() {
-//
-//    @Inject
-//    lateinit var drawingVMFactory: DrawingVMFactory
 
     private val vmDrawing by viewModels<DrawingViewModel>()
     private val vmNavigation by viewModels<DrawingNavigationViewModel>()
 
-    //region activity callbacks
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-//        (application as DrawingApplication).createMainComponent().inject(this)
 
         setScreenOrientation(intent.getIntExtra(ORIENTATION, PORTRAIT))
         setContentView(R.layout.activity_drawing)
         setSupportActionBar(toolbar_drawing)
 
-//        vmDrawing = ViewModelProviders.of(this, drawingVMFactory).get(DrawingViewModel::class.java)
-//        vmNavigation = ViewModelProviders.of(this).get(DrawingNavigationViewModel::class.java)
-
-        vmDrawing.drawingLiveData.observe(this, Observer {
+        vmDrawing.drawingLiveData.observe(this, {
             if (it != null) handleViewState(it)
         })
 
-        vmDrawing.errorState.observe(this, Observer {
+        vmDrawing.errorState.observe(this, {
             if (it != null) handleError(it)
         })
 
-        vmNavigation.drawingNavigationLiveData.observe(this, Observer {
+        vmNavigation.drawingNavigationLiveData.observe(this, {
             if (it != null) handleNavigationState(it)
         })
 
@@ -70,11 +61,7 @@ class DrawingActivity : BaseActivity() {
 
         vmDrawing.getLastBrush()
     }
-//
-//    override fun onDestroy() {
-//        (application as DrawingApplication).releaseMainComponent()
-//        super.onDestroy()
-//    }
+
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu_drawing, menu)
@@ -94,9 +81,7 @@ class DrawingActivity : BaseActivity() {
             else -> super.onOptionsItemSelected(item)
         }
     }
-    //endregion
 
-    //region view state and error handlers
     private fun handleViewState(drawingViewState: DrawingViewState) {
         showProgress(false)
         when {
@@ -129,9 +114,6 @@ class DrawingActivity : BaseActivity() {
             vmDrawing.saveBrush(navigationViewState.brushUI!!)
         }
     }
-    //endregion
-
-    //region rendering
 
     private fun startToolsDialog() {
         val currentBrush = (supportFragmentManager.findFragmentByTag(DRAWING_FRAGMENT_TAG) as DrawingFragment).currentBrushUI
@@ -171,7 +153,6 @@ class DrawingActivity : BaseActivity() {
             ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
         }
     }
-    //endregion
 
     companion object {
         val TAG: String = DrawingActivity::class.java.simpleName

@@ -16,9 +16,4 @@ class RegisterModule {
     fun provideSignUpUseCase(userRepository: UserRepository): SignUp {
         return SignUp(ASyncTransformer(), userRepository)
     }
-
-//    @Provides
-//    fun provideRegisterVMFactory(signUpUseCase: SignUp): RegisterVMFactory {
-//        return RegisterVMFactory(signUpUseCase)
-//    }
 }

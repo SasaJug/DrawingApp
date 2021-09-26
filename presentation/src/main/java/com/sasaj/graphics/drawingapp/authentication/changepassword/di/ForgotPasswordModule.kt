@@ -23,11 +23,4 @@ class ForgotPasswordModule {
     fun provideNewPassword(userRepository: UserRepository): NewPassword {
         return NewPassword(ASyncTransformer(), userRepository)
     }
-
-//    @Provides
-//    fun provideChangePasswordVMFactory(changePasswordUseCase: ChangePasswordUseCase, newPasswordUseCase: NewPassword): ForgotPasswordVMFactory {
-//        return ForgotPasswordVMFactory(changePasswordUseCase, newPasswordUseCase)
-//    }
-
-
 }

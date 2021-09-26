@@ -18,9 +18,4 @@ class SplashModule {
         return CheckIfLoggedIn(ASyncTransformer(), userRepository)
     }
 
-//    @Provides
-////    @SplashScope
-//    fun provideSplashVMFactory(checkIfLoggedIn: CheckIfLoggedIn): SplashVMFactory {
-//        return SplashVMFactory(checkIfLoggedIn)
-//    }
 }

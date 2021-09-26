@@ -16,9 +16,4 @@ class VerifyModule {
     fun provideVerifyUserUseCase(userRepository: UserRepository): VerifyUser {
         return VerifyUser(ASyncTransformer(), userRepository)
     }
-
-//    @Provides
-//    fun provideVerifyVMFactory(verifyUserUseCase: VerifyUser): VerifyVMFactory {
-//        return VerifyVMFactory(verifyUserUseCase)
-//    }
 }
